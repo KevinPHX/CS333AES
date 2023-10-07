@@ -1,0 +1,2 @@
+smart_open==6.4.0
+mendelai-brat-parser==0.0.11
