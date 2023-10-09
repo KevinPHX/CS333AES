@@ -1,0 +1,109 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>CS333_Project</groupId>
+  <artifactId>dkpro_preprocessing</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <properties>
+  <dkpro.core.version>2.2.0</dkpro.core.version>
+	</properties>
+	
+	<dependencies>
+	  <dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.opennlp-asl
+  		</artifactId>
+  		<version>1.10.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.languagetool-asl
+  		</artifactId>
+  		<version>1.10.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.maltparser-asl
+  		</artifactId>
+  		<version>1.10.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.io.text-asl
+  		</artifactId>
+  		<version>1.10.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.io.conll-asl
+  		</artifactId>
+  		<version>1.10.0</version>
+  	</dependency>
+  	
+  	<dependency>
+		  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+		  <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-tagger-en-maxent</artifactId>
+		  <version>20120616.1</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-tagger-en-maxent</artifactId>
+	  <version>20120616.1</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-sentence-en-maxent</artifactId>
+	  <version>20120616.1</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-token-en-maxent</artifactId>
+	  <version>20120616.1</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-token-en-maxent</artifactId>
+	  <version>20120616.1</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-token-en-maxent</artifactId>
+	  <version>20120616.1</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.maltparser-model-parser-en-linear</artifactId>
+	  <version>20120312.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.maltparser-model-parser-en-linear</artifactId>
+	  <version>20120312.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.maltparser-model-parser-en-linear</artifactId>
+	  <version>20120312.1</version>
+	</dependency>
+	</dependencies>
+
+	
+	<repositories>
+	  <repository>
+	  <id>ukp-oss-public-model-releases-local</id>
+	  <name>UKP Maven Repository</name>
+	  <url>https://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-model-releases-local</url>
+</repository>
+</repositories>
+</project>
