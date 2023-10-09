@@ -32,7 +32,9 @@ Replication study of a paper by Stab & Gurveych (2017) on the Hewlett's Foundati
 
 6. Discourse Parser
 
-    - **NOTE**: Unspecified. We can either use the Berkeley Parser or OpenNLP Parser. Both offer a 'writePennTree' parameter to annotate each sentence with a Penn Treebank-style parse tree. There is no single discourse parser. Authors say that they use a methodology from Lin, Ng, and Kan (2014), which I have yet to find a ready-to-use implementation of online. 
+    - Original Ruby implementation by Lin et al.: https://github.com/linziheng/pdtb-parser
+    - Java Implementation: https://github.com/WING-NUS/pdtb-parser
+    - There is also the 'writePennTree' option for the Berkeley Parser and OpenNLP parser in the DKPro Core toolkit. 
 
 ## Feature Extraction 
 
