@@ -22,9 +22,9 @@ Replication study of a paper by Stab & Gurveych (2017) on the Hewlett's Foundati
 
 3. Stanford POS tagger: https://dkpro.github.io/dkpro-core/releases/2.2.0/docs/component-reference.html#engine-StanfordPosTagger
 
-4. Constituent and Dependency Parsers: https://dkpro.github.io/dkpro-core/releases/2.2.0/docs/component-reference.html#_parser
+4. Stanford Constituent and Dependency Parsers: https://dkpro.github.io/dkpro-core/releases/2.2.0/docs/component-reference.html#engine-StanfordParser 
 
-    - **NOTE**: Unspecified. We have many options in DKPro Core. 
+    - **NOTE**: Klein and Manning 2003 --> https://nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/parser/lexparser/LexicalizedParser.html 
 
 5. Sentiment Analyzer: https://dkpro.github.io/dkpro-core/releases/2.2.0/docs/component-reference.html#engine-StanfordSentimentAnalyzer
 

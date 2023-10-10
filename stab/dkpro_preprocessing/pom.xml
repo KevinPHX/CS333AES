@@ -11,6 +11,13 @@
 	</properties>
 	
 	<dependencies>
+		 <dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl
+  		</artifactId>
+  		<version>1.10.0</version>
+  	</dependency>
 	  <dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
   		<artifactId>
@@ -22,6 +29,13 @@
   		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
   		<artifactId>
   			de.tudarmstadt.ukp.dkpro.core.languagetool-asl
+  		</artifactId>
+  		<version>1.10.0</version>
+  	</dependency>
+  	  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.matetools-gpl
   		</artifactId>
   		<version>1.10.0</version>
   	</dependency>
@@ -98,6 +112,57 @@
 	  <artifactId>de.tudarmstadt.ukp.dkpro.core.maltparser-model-parser-en-linear</artifactId>
 	  <version>20120312.1</version>
 	</dependency>
+	
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-tagger-en-bidirectional-distsim</artifactId>
+	  <version>20140616.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-tagger-en-bidirectional-distsim</artifactId>
+	  <version>20140616.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-tagger-en-bidirectional-distsim</artifactId>
+	  <version>20140616.1</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.matetools-model-lemmatizer-en-conll2009</artifactId>
+	  <version>20130117.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.matetools-model-lemmatizer-en-conll2009</artifactId>
+	  <version>20130117.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+	  <artifactId>de.tudarmstadt.ukp.dkpro.core.matetools-model-lemmatizer-en-conll2009</artifactId>
+	  <version>20130117.1</version>
+	</dependency>
+	
+<dependency>
+  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-parser-en-rnn</artifactId>
+  <version>20140104.1</version>
+</dependency>
+
+<dependency>
+  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-parser-en-rnn</artifactId>
+  <version>20140104.1</version>
+</dependency>
+
+<dependency>
+  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-parser-en-rnn</artifactId>
+  <version>20140104.1</version>
+</dependency>
+
 	</dependencies>
 
 	
