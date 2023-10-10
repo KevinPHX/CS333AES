@@ -11,7 +11,29 @@
 	</properties>
 	
 	<dependencies>
-		 <dependency>
+		
+	
+	<dependency>
+	    <groupId>edu.stanford.nlp</groupId>
+	    <artifactId>stanford-corenlp</artifactId>
+	    <version>4.4.0</version>
+	</dependency>
+	<dependency>
+       <groupId>edu.stanford.nlp</groupId>
+       <artifactId>stanford-corenlp</artifactId>
+       <version>4.4.0</version>
+       <classifier>models</classifier>
+   </dependency>
+	
+	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.api.sentiment-asl
+  		</artifactId>
+  		<version>1.8.0</version>
+  	</dependency>
+	
+	<dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
   		<artifactId>
   			de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl
@@ -61,16 +83,11 @@
   		<version>1.10.0</version>
   	</dependency>
   	
+  	
   	<dependency>
 		  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
 		  <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-tagger-en-maxent</artifactId>
 		  <version>20120616.1</version>
-	</dependency>
-	
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-tagger-en-maxent</artifactId>
-	  <version>20120616.1</version>
 	</dependency>
 	
 	<dependency>
@@ -85,60 +102,21 @@
 	  <version>20120616.1</version>
 	</dependency>
 	
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-token-en-maxent</artifactId>
-	  <version>20120616.1</version>
-	</dependency>
-	
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-token-en-maxent</artifactId>
-	  <version>20120616.1</version>
-	</dependency>
 	
 	<dependency>
 	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
 	  <artifactId>de.tudarmstadt.ukp.dkpro.core.maltparser-model-parser-en-linear</artifactId>
 	  <version>20120312.1</version>
 	</dependency>
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.maltparser-model-parser-en-linear</artifactId>
-	  <version>20120312.1</version>
-	</dependency>
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.maltparser-model-parser-en-linear</artifactId>
-	  <version>20120312.1</version>
-	</dependency>
+
 	
 	<dependency>
 	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
 	  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-tagger-en-bidirectional-distsim</artifactId>
 	  <version>20140616.1</version>
 	</dependency>
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-tagger-en-bidirectional-distsim</artifactId>
-	  <version>20140616.1</version>
-	</dependency>
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-tagger-en-bidirectional-distsim</artifactId>
-	  <version>20140616.1</version>
-	</dependency>
+
 	
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.matetools-model-lemmatizer-en-conll2009</artifactId>
-	  <version>20130117.1</version>
-	</dependency>
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.matetools-model-lemmatizer-en-conll2009</artifactId>
-	  <version>20130117.1</version>
-	</dependency>
 	<dependency>
 	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
 	  <artifactId>de.tudarmstadt.ukp.dkpro.core.matetools-model-lemmatizer-en-conll2009</artifactId>
@@ -153,16 +131,9 @@
 
 <dependency>
   <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-parser-en-rnn</artifactId>
+  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-parser-en-pcfg</artifactId>
   <version>20140104.1</version>
 </dependency>
-
-<dependency>
-  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-parser-en-rnn</artifactId>
-  <version>20140104.1</version>
-</dependency>
-
 	</dependencies>
 
 	

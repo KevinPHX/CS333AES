@@ -28,7 +28,8 @@ Replication study of a paper by Stab & Gurveych (2017) on the Hewlett's Foundati
 
 5. Sentiment Analyzer: https://dkpro.github.io/dkpro-core/releases/2.2.0/docs/component-reference.html#engine-StanfordSentimentAnalyzer
 
-    - **NOTE**: Unspecified, but the only available option in DKPro Core is the Stanford Sentiment Analyzer 
+    - **NOTE**: Actually not found in DKPro; just use the original functions from Stanford's CoreNLP 
+    - **NOTE**: Stab and Gurevych measure subjectivity by examining the "[p]resence of negative words; number of negative, positive, and neutral words; number of positive words subtracted by the number of negative words." Having trouble pinpointing how they got the sentiment scores for individual words.   
 
 6. Discourse Parser
 
