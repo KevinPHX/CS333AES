@@ -47,10 +47,7 @@ public class SentimentAnalyzer {
 		  System.out.println("\t" + "Very Positive: " + veryPositive + "\n");
 	    }
      }
-    public boolean isAlphaNumeric(String s){
-        String pattern= "^[a-zA-Z0-9]*$";
-        return s.matches(pattern);
-    }
+
     
     public static void token_sentiment(String text)
     {
