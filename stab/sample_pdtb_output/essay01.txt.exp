@@ -1,0 +1,13 @@
+conn_lc:and conn:and conn_POS:CC with_prev_full:,_and xxx£
+conn_lc:as_a_result conn:as_a_result conn_POS:IN_DT_NN with_prev_full:and_as_a_result xxx£
+conn_lc:however conn:However conn_POS:RB xxx£
+conn_lc:when conn:when conn_POS:WRB with_prev_full:,_when xxx£
+conn_lc:but conn:but conn_POS:CC with_prev_full:,_but xxx£
+conn_lc:and conn:and conn_POS:CC with_prev_full:,_and xxx£
+conn_lc:when conn:when conn_POS:WRB with_prev_full:members_when xxx£
+conn_lc:on_the_other_hand conn:On_the_other_hand conn_POS:IN_DT_JJ_NN xxx£
+conn_lc:hence conn:Hence conn_POS:RB xxx£
+conn_lc:however conn:However conn_POS:RB xxx£
+conn_lc:for_instance conn:for_instance conn_POS:IN_NN with_prev_full:competition_for_instance xxx£
+conn_lc:but conn:but conn_POS:CC with_prev_full:athlete_but xxx£
+conn_lc:consequently conn:Consequently conn_POS:RB xxx£

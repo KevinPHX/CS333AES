@@ -1,0 +1,13 @@
+240..243|Expansion
+244..255|Contingency
+285..292|Comparison
+294..298|Temporal
+405..408|Comparison
+1012..1015|Expansion
+1063..1067|Temporal
+1193..1210|Comparison
+1303..1308|Contingency
+1378..1385|Comparison
+1599..1611|Expansion
+1874..1877|Comparison
+1994..2006|Contingency

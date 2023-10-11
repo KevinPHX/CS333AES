@@ -1,0 +1,13 @@
+conn:and conn_POS:CC prev1:, prev1_POS:, with_prev1_full:,_and with_prev1_POS_full:,_CC prev2:service prev2_POS:NN with_prev2_full:service_and with_prev2_POS_full:NN_CC NA
+conn:as_a_result conn_POS:IN_DT_NN prev1:and prev1_POS:CC with_prev1_full:and_as_a_result with_prev1_POS_full:CC_IN_DT_NN prev2:, prev2_POS:, with_prev2_full:,_as_a_result with_prev2_POS_full:,_IN_DT_NN NA
+conn:However conn_POS:RB sent_pos:0 NA
+conn:when conn_POS:WRB sent_pos:2 prev1:, prev1_POS:, with_prev1_full:,_when with_prev1_POS_full:,_WRB prev2:However prev2_POS:RB with_prev2_full:However_when with_prev2_POS_full:RB_WRB NA
+conn:but conn_POS:CC prev1:, prev1_POS:, with_prev1_full:,_but with_prev1_POS_full:,_CC prev2:society prev2_POS:NN with_prev2_full:society_but with_prev2_POS_full:NN_CC NA
+conn:and conn_POS:CC prev1:, prev1_POS:, with_prev1_full:,_and with_prev1_POS_full:,_CC prev2:comprehensively prev2_POS:RB with_prev2_full:comprehensively_and with_prev2_POS_full:RB_CC NA
+conn:when conn_POS:WRB prev1:members prev1_POS:NNS with_prev1_full:members_when with_prev1_POS_full:NNS_WRB prev2:team prev2_POS:NN with_prev2_full:team_when with_prev2_POS_full:NN_WRB NA
+conn:On_the_other_hand conn_POS:IN_DT_JJ_NN sent_pos:0 NA
+conn:Hence conn_POS:RB sent_pos:0 NA
+conn:However conn_POS:RB sent_pos:0 NA
+conn:for_instance conn_POS:IN_NN prev1:competition prev1_POS:NN with_prev1_full:competition_for_instance with_prev1_POS_full:NN_IN_NN prev2:of prev2_POS:IN with_prev2_full:of_for_instance with_prev2_POS_full:IN_IN_NN NA
+conn:but conn_POS:CC prev1:athlete prev1_POS:NN with_prev1_full:athlete_but with_prev1_POS_full:NN_CC prev2:the prev2_POS:DT with_prev2_full:the_but with_prev2_POS_full:DT_CC NA
+conn:Consequently conn_POS:RB sent_pos:0 NA
