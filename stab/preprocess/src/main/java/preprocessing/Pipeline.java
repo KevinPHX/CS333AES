@@ -1,4 +1,4 @@
-package dkpro_preprocessing;
+package preprocessing;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 import static org.apache.uima.fit.factory.CollectionReaderFactory.createReaderDescription;
@@ -8,21 +8,17 @@ import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
 import de.tudarmstadt.ukp.dkpro.core.matetools.MateLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.languagetool.LanguageToolSegmenter;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordParser;
 
 public class Pipeline {
 
   public static void main(String[] args) throws Exception {
     runPipeline(
         createReaderDescription(TextReader.class,
-            TextReader.PARAM_SOURCE_LOCATION, "src/main/resources/sample.txt",
+            TextReader.PARAM_SOURCE_LOCATION, "CS333AES/stab/preprocess/src/main/resources/essay01.txt",
             TextReader.PARAM_LANGUAGE, "en"),
         createEngineDescription(LanguageToolSegmenter.class),
         createEngineDescription(StanfordPosTagger.class),
         createEngineDescription(MateLemmatizer.class),
-        createEngineDescription(StanfordParser.class, 
-        		StanfordParser.PARAM_VARIANT, "pcfg",
-        		StanfordParser.PARAM_WRITE_PENN_TREE, true),
         createEngineDescription(Conll2006Writer.class,
             Conll2006Writer.PARAM_TARGET_LOCATION, ".")
         );
