@@ -31,7 +31,7 @@ public class Pipeline2 {
 	}
 	public static void run_parser(Annotation annotation)
     {
-		// sample code from official documentation: https://stanfordnlp.github.io/CoreNLP/parse.html 
+		// sample code from the official documentation: https://stanfordnlp.github.io/CoreNLP/parse.html 
 		// gets all the NP and VP constituents in each sentence 
     	for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
 	    {
