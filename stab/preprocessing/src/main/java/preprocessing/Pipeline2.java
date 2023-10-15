@@ -12,22 +12,19 @@ import edu.stanford.nlp.util.CoreMap;
 import org.ejml.simple.SimpleMatrix;
 
 public class Pipeline2 {
-	public static StanfordCoreNLP sentiment_pipeline, token_pipeline;
+	public static StanfordCoreNLP pipeline;
     
 	public static void init() 
     {
-        Properties props1 = new Properties();
+        Properties props = new Properties();
 		// default parser is PCFG 
-        props1.setProperty("annotators", "tokenize,ssplit,parse,sentiment");
-        sentiment_pipeline = new StanfordCoreNLP(props1);
-        
-        Properties props2 = new Properties();
-        props2.setProperty("annotators", "tokenize,ssplit,pos,lemma");
-        token_pipeline = new StanfordCoreNLP(props2);
+        props.setProperty("annotators", "tokenize,ssplit,pos,lemma,parse,sentiment");
+        pipeline = new StanfordCoreNLP(props);
+
     }
 
 	public static Annotation annotate(String text){
-		return sentiment_pipeline.process(text);
+		return pipeline.process(text);
 	}
 	public static void run_parser(Annotation annotation)
     {
@@ -75,17 +72,14 @@ public class Pipeline2 {
      }
 
     
-    public static void token_sentiment(String text)
+    public static void token_sentiment(Annotation annotation)
     {
-    	CoreDocument document = token_pipeline.processToCoreDocument(text);
-		for (CoreLabel tok : document.tokens()) {
-			System.out.println(tok.word() + "\t" + tok.lemma() + "\t" + tok.tag());
-		}
-    	for (CoreLabel tok : document.tokens()) {
+    	for (CoreLabel tok : annotation.get(CoreAnnotations.TokensAnnotation.class)) {
+    		System.out.println(tok.word() + "\t" + tok.lemma() + "\t" + tok.tag());
     		String token = tok.word();
     		if (token.matches("^[a-zA-Z0-9]+")) {
-				Annotation annotation = Pipeline2.annotate(token);
-            	Pipeline2.run_sentiment_analysis(annotation,false);
+    			Annotation token_annotation = Pipeline2.annotate(token);
+            	Pipeline2.run_sentiment_analysis(token_annotation,false);
     		}
         }
     }
@@ -98,6 +92,6 @@ public class Pipeline2 {
 		Annotation annotation = Pipeline2.annotate(sample);
 		Pipeline2.run_parser(annotation);
     	Pipeline2.run_sentiment_analysis(annotation,true);
-    	Pipeline2.token_sentiment(sample);
+    	Pipeline2.token_sentiment(annotation);
     }
 }
