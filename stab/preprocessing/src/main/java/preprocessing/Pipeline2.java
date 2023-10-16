@@ -16,9 +16,7 @@ import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
 import org.ejml.simple.SimpleMatrix;
-import org.javatuples.Pair;
-import org.javatuples.Quintet;
-import org.javatuples.Septet; 
+import org.javatuples.*; 
 
 public class Pipeline2 {
 	public static StanfordCoreNLP pipeline;
@@ -68,9 +66,9 @@ public class Pipeline2 {
 				double neutral = fivescores.get(2);
 				double positive = fivescores.get(3);
 				double veryPositive = fivescores.get(4);
-				Septet<Integer,String,Double,Double,Double,Double,Double> info = 
-						new Septet<Integer,String,Double,Double,Double,Double,Double>
-						(sentIdx,category,veryNegative,negative,neutral,positive,veryPositive);
+				Octet<Integer,String,Double,Double,Double,Double,Double,String> info = 
+						new Octet<Integer,String,Double,Double,Double,Double,Double,String>
+						(sentIdx,category,veryNegative,negative,neutral,positive,veryPositive,"SENTENCE:\t\t"+sentence.toString());
 				score_info_verbose.add(info.toList());
 			} 
 			else {
@@ -119,6 +117,7 @@ public class Pipeline2 {
 			sentIdx++;
 	    }
 		// Find the lemma, POS tag, and sentiment for each token 
+		// outputs as [index of covering sentence, token, lemma, POS, sentiment]
 		PrintWriter token_output = null;
 		try {
 			token_output = new PrintWriter(token_file);
@@ -139,9 +138,9 @@ public class Pipeline2 {
             		for(Object item : sent_info) {
             			if(idx == 1) {
             				String sentiment = item.toString();
-            				Quintet<Integer,String,String,String,String> info = 
-            						new Quintet<Integer,String,String,String,String>
-            						(covering_sent,token, tok.lemma(), tok.tag(), sentiment);
+            				Sextet<Integer,Integer,String,String,String,String> info = 
+            						new Sextet<Integer,Integer,String,String,String,String>
+            						(covering_sent,tok.index(),token, tok.lemma(), tok.tag(), sentiment);
             				token_output.println(info.toList());
             				
             			}
@@ -150,9 +149,9 @@ public class Pipeline2 {
             	}
     		}
     		else {
-    			Quintet<Integer,String,String,String,String> info = 
-						new Quintet<Integer,String,String,String,String>
-						(covering_sent,token, tok.lemma(), tok.tag(), "");
+    			Sextet<Integer,Integer,String,String,String,String> info = 
+						new Sextet<Integer,Integer,String,String,String,String>
+						(covering_sent,tok.index(),token, tok.lemma(), tok.tag(), "");
 				token_output.println(info.toList());    		
 				}
     		tokenIdx++; 
