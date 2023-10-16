@@ -2,8 +2,12 @@ package preprocessing;
 
 import java.util.*;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.File;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.*;
 import edu.stanford.nlp.trees.*;
@@ -190,12 +194,19 @@ public class Pipeline2 {
 
     }
     
-    public static void main(String[] args) throws FileNotFoundException 
+    public static void main(String[] args) throws IOException 
     {
-    	String sample = "What a fascinating book! I absolutely love it. Thank you for recommending it to me!";
     	Pipeline2.init();
-    	Pipeline2.run_pipeline(sample, "sample.txt");
-		
+    	String dirname = "src/main/resources/essays";
+    	File dir = new File(dirname);
+    	File[] files = dir.listFiles();
+	    for (File f_name : files) {
+	    	String filename = f_name.toString();
+	    	String essay_name = filename.replace(dirname + "/","");
+	    	String essay = new String(Files.readAllBytes(Paths.get(filename)));
+	    	Pipeline2.run_pipeline(essay, essay_name);
+	    	
+	    }		
     	
     }
 }

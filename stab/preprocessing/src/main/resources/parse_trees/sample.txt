@@ -1,3 +1,0 @@
-(ROOT (NP (WDT What) (DT a) (JJ fascinating) (NN book) (. !)))
-(ROOT (S (NP (PRP I)) (ADVP (RB absolutely)) (VP (VBP love) (NP (PRP it))) (. .)))
-(ROOT (S (VP (VBP Thank) (NP (PRP you)) (PP (IN for) (S (VP (VBG recommending) (NP (PRP it)) (PP (IN to) (NP (PRP me))))))) (. !)))
