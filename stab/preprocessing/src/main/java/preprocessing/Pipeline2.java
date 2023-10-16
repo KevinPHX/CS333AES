@@ -1,15 +1,20 @@
 package preprocessing;
 
-import java.util.Properties;
-import java.util.Set;
-
+import java.util.*;
+import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.PrintWriter;
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.*;
 import edu.stanford.nlp.trees.*;
 import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
+
 import org.ejml.simple.SimpleMatrix;
+import org.javatuples.Pair;
+import org.javatuples.Quintet;
+import org.javatuples.Septet; 
 
 public class Pipeline2 {
 	public static StanfordCoreNLP pipeline;
@@ -26,35 +31,32 @@ public class Pipeline2 {
 	public static Annotation annotate(String text){
 		return pipeline.process(text);
 	}
-	public static void run_parser(Annotation annotation)
+	
+	public static ArrayList<Tree> run_parser(Annotation annotation)
     {
-		// sample code from the official documentation: https://stanfordnlp.github.io/CoreNLP/parse.html 
-		// gets all the NP and VP constituents in each sentence 
+		ArrayList<Tree> trees = new ArrayList<Tree>();
     	for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
 	    {
 			Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
-			System.out.println(tree);
-			Set<Constituent> treeConstituents = tree.constituents(new LabeledScoredConstituentFactory());
-			for (Constituent constituent : treeConstituents) {
-				if (constituent.label() != null &&
-					(constituent.label().toString().equals("VP") || constituent.label().toString().equals("NP"))) {
-					System.err.println("found constituent: "+constituent.toString());
-					System.err.println(tree.getLeaves().subList(constituent.start(), constituent.end()+1));
-          }
-        }
-      } 
+			trees.add(tree);
+	    } 
+    	return trees;
     }
 	
-    public static void run_sentiment_analysis(Annotation annotation, Boolean getDetails)
+    public static List<List>[] run_sentiment_analysis(Annotation annotation, Boolean getDetails)
     {
-    	int predictedScore;
+    	
 	    String category; 
+	    int sentIdx = 0;
+	    
+	    ArrayList<List> score_info_verbose = new ArrayList<List>();
+	    ArrayList<List> score_info = new ArrayList<List>();
+
+	    
 	    for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
 	    {
 			Tree tree = sentence.get(SentimentCoreAnnotations.SentimentAnnotatedTree.class);
-			predictedScore = RNNCoreAnnotations.getPredictedClass(tree); 
-			category = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-			System.out.println(category + "\t" + predictedScore + "\t" + sentence);
+			category = sentence.get(SentimentCoreAnnotations.SentimentClass.class);			
 			if(getDetails == true){
 				SimpleMatrix fivescores = RNNCoreAnnotations.getPredictions(tree);
 				double veryNegative = fivescores.get(0);
@@ -62,13 +64,22 @@ public class Pipeline2 {
 				double neutral = fivescores.get(2);
 				double positive = fivescores.get(3);
 				double veryPositive = fivescores.get(4);
-				System.out.println("\t" + "Very Negative: " + veryNegative);
-				System.out.println("\t" + "Negative: " + negative);
-				System.out.println("\t" + "Neutral: " + neutral);
-				System.out.println("\t" + "Positive: " + positive);
-				System.out.println("\t" + "Very Positive: " + veryPositive + "\n");
-			}	
+				Septet<Integer,String,Double,Double,Double,Double,Double> info = 
+						new Septet<Integer,String,Double,Double,Double,Double,Double>
+						(sentIdx,category,veryNegative,negative,neutral,positive,veryPositive);
+				score_info_verbose.add(info.toList());
+			} 
+			else {
+				Pair<Integer,String> info = new Pair<Integer,String>(sentIdx,category);
+				score_info.add(info.toList());
+			}
+			sentIdx++;
 	    }
+	    List[] scores = new List[2];
+	    scores[0] = score_info;
+	    scores[1] = score_info_verbose;
+	    return scores;
+
      }
 
     
@@ -84,14 +95,107 @@ public class Pipeline2 {
         }
     }
 
+    public static void run_pipeline(String text, String filename){
+        File token_file = new File("src/main/resources/token_level/"+filename);
+        File parse_file = new File("src/main/resources/parse_trees/"+filename);
+		File sent_file = new File("src/main/resources/sentence_sentiment/"+filename);
+
+		Annotation annotation = Pipeline2.annotate(text);
+		
+		// Annotate each token with its covering sentence 
+		List<Integer> tokenSentIdx = new ArrayList<Integer>(); 
+		int sentIdx = 0; 
+		for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
+	    {
+			Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
+			List tokens = tree.getLeaves();
+			for (Object token : tokens) {
+				tokenSentIdx.add(sentIdx);
+			}
+			sentIdx++;
+	    }
+		// Find the lemma, POS tag, and sentiment for each token 
+		PrintWriter token_output = null;
+		try {
+			token_output = new PrintWriter(token_file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		int tokenIdx = 0; 
+		for (CoreLabel tok : annotation.get(CoreAnnotations.TokensAnnotation.class)) {
+    		String token = tok.word();
+			int covering_sent = tokenSentIdx.get(tokenIdx);
+    		if (token.matches("^[a-zA-Z0-9]+")) {
+    			Annotation token_annotation = Pipeline2.annotate(token);
+            	List<List>[] sent_analysis = Pipeline2.run_sentiment_analysis(token_annotation,false);
+            	List<List> score_info = sent_analysis[0]; 
+            	int idx = 0;
+            	for(List sent_info : score_info) {
+            		for(Object item : sent_info) {
+            			if(idx == 1) {
+            				String sentiment = item.toString();
+            				Quintet<Integer,String,String,String,String> info = 
+            						new Quintet<Integer,String,String,String,String>
+            						(covering_sent,token, tok.lemma(), tok.tag(), sentiment);
+            				token_output.println(info.toList());
+            				
+            			}
+                		idx++;
+            		}
+            	}
+    		}
+    		else {
+    			Quintet<Integer,String,String,String,String> info = 
+						new Quintet<Integer,String,String,String,String>
+						(covering_sent,token, tok.lemma(), tok.tag(), "");
+				token_output.println(info.toList());    		
+				}
+    		tokenIdx++; 
+        }
+    	token_output.close();
+    	System.out.println("Finished processing tokens of " + filename);
+		
+		// Sentiment scores and parse tree of each sentence 
+
+        PrintWriter sent_output = null;
+		try {
+			sent_output = new PrintWriter(sent_file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		PrintWriter parse_output = null;
+		try {
+			parse_output = new PrintWriter(parse_file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+
+		List<List>[] sent_analysis = Pipeline2.run_sentiment_analysis(annotation,true);
+    	List<List> score_info = sent_analysis[1];
+    	ArrayList<Tree> parse_trees = Pipeline2.run_parser(annotation);
+    	sentIdx = 0;
+    	for(List sent_info : score_info) {
+    		sent_output.println(sent_info);
+    		parse_output.println(parse_trees.get(sentIdx).toString());
+        	sentIdx++;
+    	}
+    	sent_output.close();
+    	parse_output.close();
+    	System.out.println("Finished processing sentiments of " + filename);
+    	System.out.println("Finished processing parse trees of " + filename);
+
+
+    }
     
-    public static void main(String[] args) 
+    public static void main(String[] args) throws FileNotFoundException 
     {
-    	String sample = "What a fascinating book! I really loved reading it. Thank you for recommending it to me!";
+    	String sample = "What a fascinating book! I absolutely love it. Thank you for recommending it to me!";
     	Pipeline2.init();
-		Annotation annotation = Pipeline2.annotate(sample);
-		Pipeline2.run_parser(annotation);
-    	Pipeline2.run_sentiment_analysis(annotation,true);
-    	Pipeline2.token_sentiment(annotation);
+    	Pipeline2.run_pipeline(sample, "sample.txt");
+		
+    	
     }
 }
