@@ -95,12 +95,14 @@ public static StanfordCoreNLP pipeline;
 				String c_token = current.parent(tree).label().toString();
 				if (i < tokens.size()-1) { // is not the last token 
 					Tree following = tokens.get(i+1);
+					following_label = following.toString();
 					c_following = following.parent(tree).label().toString();
 					Tree lca_following = syntactic.get_LCA(tree, current, following);
 					lcaPath_following = (float) lca_following.depth(current) / depth;	
 				}
 				if (i > 0) { // is not the first token 
 					Tree preceding = tokens.get(i-1);
+					preceding_label = preceding.toString();
 					c_preceding = preceding.parent(tree).label().toString();
 					Tree lca_preceding = syntactic.get_LCA(tree, current, preceding);
 					lcaPath_preceding = (float) lca_preceding.depth(current) / depth;
