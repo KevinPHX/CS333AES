@@ -74,7 +74,7 @@ public static StanfordCoreNLP pipeline;
 			e.printStackTrace();
 		}
 		
-		
+		int sentIdx = 0;
     	for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
 	    {
 			Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
@@ -107,15 +107,16 @@ public static StanfordCoreNLP pipeline;
 					Tree lca_preceding = syntactic.get_LCA(tree, current, preceding);
 					lcaPath_preceding = (float) lca_preceding.depth(current) / depth;
 				}
-				// current token, current token's label, constituent of current,
+				// index of covering sentence, current token, current token's label, constituent of current,
 				// preceding token, constituent of preceding, lcaPath_preceding 
 				// following token, constituent of following, lcaPath_following 
-				String info = String.format("%s\t%s\t%s\t%s\t%s\t%f\t%s\t%s\t%f\n", 
-						current.toString(), current.label().toString(), c_token,
+				String info = String.format("%d\t%s\t%s\t%s\t%s\t%s\t%f\t%s\t%s\t%f", 
+						sentIdx, current.toString(), current.label().toString(), c_token,
 						preceding_label, c_preceding, lcaPath_preceding,
 						following_label, c_following, lcaPath_following);
 				lca_output.println(info);
 			}
+			sentIdx ++; 
 	    } 
     	lca_output.close();
     	System.out.println("Finished processing " + filename);

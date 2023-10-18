@@ -57,11 +57,6 @@ public class lexico_syntactic {
 		Tree parent = node.ancestor(1,root); 
 		String parent_head = heads.get(parent.nodeNumber(root));
 		String node_head = heads.get(node.nodeNumber(root));
-		if (node.isLeaf() == false) {
-			// only need to print out info for the intermediary nodes between the token t and the uppermost node n 
-			lex_output.println(node.label() + "\t" + node_head);
-		}
-//		System.out.println(parent.label() + " " + parent_head);
 		if (parent == root) { 
 			// edge case where the uppermost ancestor with the same lexical head is the root 
 			return root;
@@ -89,21 +84,43 @@ public class lexico_syntactic {
 		Annotation annotation = syntactic.annotate(text);
 		for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
 	    {
+			heads = new HashMap<Integer, String>(); 
 			Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
 			
 			// find the lexical head of each node in the tree 
 			List<Tree> nodes = tree.postOrderNodeList();
+			List<String> node_labels = new ArrayList<String>();
 			for (Tree node : nodes) {
-//				System.out.println(node.label() + " " + node.nodeNumber(tree));
+				node_labels.add(String.format("%s\t%s", node.label().toString(), node.nodeNumber(tree)));
 				String lex_head = find_head(node, tree);
 			}
 			
+			HashMap<Tree,Tree> uppermost_nodes = new HashMap<Tree,Tree>();
 			for (Tree token : tree.getLeaves()) { 
 				// get the uppermost node n with lexical head t for each token t 
 				Tree uppermost = uppermost(token,tree);
+				uppermost_nodes.put(token,uppermost);
 				// use extra newline to separate out the info for each token 
-				lex_output.println(token.label() + "\t" + uppermost.label()+"\n");
 			}
+			
+			for (Tree token : tree.getLeaves()) { 
+				// write output and get children of uppermost node n and their lexical heads 
+				Tree n = uppermost_nodes.get(token);
+				lex_output.println(token.label() + "\t" + n.label());
+				List<Tree> pathNodes = tree.pathNodeToNode(token,n);				
+				int length = pathNodes.size();
+				if (length > 2) {
+					List<Tree> children = n.getChildrenAsList();
+					for (Tree c : children) {
+						int c_idx = c.nodeNumber(tree);
+						String c_label = c.label().toString();
+						lex_output.println(token.label() + "\t" + c_label + "\t" + heads.get(c_idx));
+					}
+				}
+			}
+			lex_output.println(node_labels);
+			lex_output.println(heads);
+			lex_output.print("\n");
 		}
 		lex_output.close();
 		System.out.println("Finished processing " + filename);
