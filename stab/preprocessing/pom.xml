@@ -28,76 +28,7 @@
        <classifier>models</classifier>
    </dependency>
 	
-	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  		<artifactId>
-  			de.tudarmstadt.ukp.dkpro.core.api.sentiment-asl
-  		</artifactId>
-  		<version>1.8.0</version>
-  	</dependency>
-	
-	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  		<artifactId>
-  			de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl
-  		</artifactId>
-  		<version>1.10.0</version>
-  	</dependency>
-
-  	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  		<artifactId>
-  			de.tudarmstadt.ukp.dkpro.core.languagetool-asl
-  		</artifactId>
-  		<version>1.10.0</version>
-  	</dependency>
-  	  	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  		<artifactId>
-  			de.tudarmstadt.ukp.dkpro.core.matetools-gpl
-  		</artifactId>
-  		<version>1.10.0</version>
-  	</dependency>
-  	
-  	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  		<artifactId>
-  			de.tudarmstadt.ukp.dkpro.core.io.text-asl
-  		</artifactId>
-  		<version>1.10.0</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  		<artifactId>
-  			de.tudarmstadt.ukp.dkpro.core.io.conll-asl
-  		</artifactId>
-  		<version>1.10.0</version>
-  	</dependency>
-  	
-  	
-  	
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-tagger-en-bidirectional-distsim</artifactId>
-	  <version>20140616.1</version>
-	</dependency>
-
-	
-	<dependency>
-	  <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-	  <artifactId>de.tudarmstadt.ukp.dkpro.core.matetools-model-lemmatizer-en-conll2009</artifactId>
-	  <version>20130117.1</version>
-	</dependency>
-	
 	</dependencies>
 
-	
-	<repositories>
-	  <repository>
-	  <id>ukp-oss-public-model-releases-local</id>
-	  <name>UKP Maven Repository</name>
-	  <url>https://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-model-releases-local</url>
-    </repository>
-    </repositories>
 
 </project>

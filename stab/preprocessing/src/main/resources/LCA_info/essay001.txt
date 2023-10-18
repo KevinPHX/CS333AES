@@ -1,816 +1,816 @@
-It	PRP			-1.000000	is	VBZ	0.250000
+It	It-1	PRP			-1.000000	is	VBZ	0.250000
 
-is	VBZ	It	PRP	0.250000	always	RB	0.166667
+is	is-2	VBZ	It	PRP	0.250000	always	RB	0.166667
 
-always	RB	is	VBZ	0.250000	said	VBN	0.250000
+always	always-3	RB	is	VBZ	0.250000	said	VBN	0.250000
 
-said	VBN	always	RB	0.250000	that	IN	0.166667
+said	said-4	VBN	always	RB	0.250000	that	IN	0.166667
 
-that	IN	said	VBN	0.250000	competition	NN	0.500000
+that	that-5	IN	said	VBN	0.250000	competition	NN	0.500000
 
-competition	NN	that	IN	0.666667	can	MD	0.250000
+competition	competition-6	NN	that	IN	0.666667	can	MD	0.250000
 
-can	MD	competition	NN	0.250000	effectively	RB	0.166667
+can	can-7	MD	competition	NN	0.250000	effectively	RB	0.166667
 
-effectively	RB	can	MD	0.250000	promote	VB	0.250000
+effectively	effectively-8	RB	can	MD	0.250000	promote	VB	0.250000
 
-promote	VB	effectively	RB	0.250000	the	DT	0.750000
+promote	promote-9	VB	effectively	RB	0.250000	the	DT	0.750000
 
-the	DT	promote	VB	0.916667	development	NN	0.166667
+the	the-10	DT	promote	VB	0.916667	development	NN	0.166667
 
-development	NN	the	DT	0.166667	of	IN	0.250000
+development	development-11	NN	the	DT	0.166667	of	IN	0.250000
 
-of	IN	development	NN	0.250000	economy	NN	0.166667
+of	of-12	IN	development	NN	0.250000	economy	NN	0.166667
 
-economy	NN	of	IN	0.250000	.	.	1.000000
+economy	economy-13	NN	of	IN	0.250000	.	.	1.000000
 
-.	.	economy	NN	0.250000			-1.000000
+.	.-14	.	economy	NN	0.250000			-1.000000
 
-In	IN			-1.000000	order	NN	0.200000
+In	In-1	IN			-1.000000	order	NN	0.200000
 
-order	NN	In	IN	0.300000	to	TO	0.500000
+order	order-2	NN	In	IN	0.300000	to	TO	0.500000
 
-to	TO	order	NN	0.700000	survive	VB	0.200000
+to	to-3	TO	order	NN	0.700000	survive	VB	0.200000
 
-survive	VB	to	TO	0.300000	in	IN	0.200000
+survive	survive-4	VB	to	TO	0.300000	in	IN	0.200000
 
-in	IN	survive	VB	0.300000	the	DT	0.200000
+in	in-5	IN	survive	VB	0.300000	the	DT	0.200000
 
-the	DT	in	IN	0.300000	competition	NN	0.200000
+the	the-6	DT	in	IN	0.300000	competition	NN	0.200000
 
-competition	NN	the	DT	0.200000	,	,	1.000000
+competition	competition-7	NN	the	DT	0.200000	,	,	1.000000
 
-,	,	competition	NN	0.300000	companies	NNS	0.300000
+,	,-8	,	competition	NN	0.300000	companies	NNS	0.300000
 
-companies	NNS	,	,	0.500000	continue	VBP	0.300000
+companies	companies-9	NNS	,	,	0.500000	continue	VBP	0.300000
 
-continue	VBP	companies	NNS	0.300000	to	TO	0.500000
+continue	continue-10	VBP	companies	NNS	0.300000	to	TO	0.500000
 
-to	TO	continue	VBP	0.700000	improve	VB	0.200000
+to	to-11	TO	continue	VBP	0.700000	improve	VB	0.200000
 
-improve	VB	to	TO	0.300000	their	PRP$	0.200000
+improve	improve-12	VB	to	TO	0.300000	their	PRP$	0.200000
 
-their	PRP$	improve	VB	0.300000	products	NNS	0.200000
+their	their-13	PRP$	improve	VB	0.300000	products	NNS	0.200000
 
-products	NNS	their	PRP$	0.200000	and	CC	0.200000
+products	products-14	NNS	their	PRP$	0.200000	and	CC	0.200000
 
-and	CC	products	NNS	0.200000	service	NN	0.200000
+and	and-15	CC	products	NNS	0.200000	service	NN	0.200000
 
-service	NN	and	CC	0.200000	,	,	0.900000
+service	service-16	NN	and	CC	0.200000	,	,	0.900000
 
-,	,	service	NN	0.300000	and	CC	0.200000
+,	,-17	,	service	NN	0.300000	and	CC	0.200000
 
-and	CC	,	,	0.200000	as	IN	0.300000
+and	and-18	CC	,	,	0.200000	as	IN	0.300000
 
-as	IN	and	CC	0.500000	a	DT	0.200000
+as	as-19	IN	and	CC	0.500000	a	DT	0.200000
 
-a	DT	as	IN	0.300000	result	NN	0.200000
+a	a-20	DT	as	IN	0.300000	result	NN	0.200000
 
-result	NN	a	DT	0.200000	,	,	0.600000
+result	result-21	NN	a	DT	0.200000	,	,	0.600000
 
-,	,	result	NN	0.400000	the	DT	0.200000
+,	,-22	,	result	NN	0.400000	the	DT	0.200000
 
-the	DT	,	,	0.300000	whole	JJ	0.200000
+the	the-23	DT	,	,	0.300000	whole	JJ	0.200000
 
-whole	JJ	the	DT	0.200000	society	NN	0.200000
+whole	whole-24	JJ	the	DT	0.200000	society	NN	0.200000
 
-society	NN	whole	JJ	0.200000	prospers	VBZ	0.300000
+society	society-25	NN	whole	JJ	0.200000	prospers	VBZ	0.300000
 
-prospers	VBZ	society	NN	0.300000	.	.	0.500000
+prospers	prospers-26	VBZ	society	NN	0.300000	.	.	0.500000
 
-.	.	prospers	VBZ	0.300000			-1.000000
+.	.-27	.	prospers	VBZ	0.300000			-1.000000
 
-However	RB			-1.000000	,	,	0.250000
+However	However-1	RB			-1.000000	,	,	0.250000
 
-,	,	However	RB	0.166667	when	WRB	0.250000
+,	,-2	,	However	RB	0.166667	when	WRB	0.250000
 
-when	WRB	,	,	0.416667	we	PRP	0.250000
+when	when-3	WRB	,	,	0.416667	we	PRP	0.250000
 
-we	PRP	when	WRB	0.333333	discuss	VBP	0.250000
+we	we-4	PRP	when	WRB	0.333333	discuss	VBP	0.250000
 
-discuss	VBP	we	PRP	0.250000	the	DT	0.500000
+discuss	discuss-5	VBP	we	PRP	0.250000	the	DT	0.500000
 
-the	DT	discuss	VBP	0.750000	issue	NN	0.166667
+the	the-6	DT	discuss	VBP	0.750000	issue	NN	0.166667
 
-issue	NN	the	DT	0.166667	of	IN	0.250000
+issue	issue-7	NN	the	DT	0.166667	of	IN	0.250000
 
-of	IN	issue	NN	0.250000	competition	NN	0.166667
+of	of-8	IN	issue	NN	0.250000	competition	NN	0.166667
 
-competition	NN	of	IN	0.250000	or	CC	0.166667
+competition	competition-9	NN	of	IN	0.250000	or	CC	0.166667
 
-or	CC	competition	NN	0.166667	cooperation	NN	0.166667
+or	or-10	CC	competition	NN	0.166667	cooperation	NN	0.166667
 
-cooperation	NN	or	CC	0.166667	,	,	0.833333
+cooperation	cooperation-11	NN	or	CC	0.166667	,	,	0.833333
 
-,	,	cooperation	NN	0.583333	what	WP	0.583333
+,	,-12	,	cooperation	NN	0.583333	what	WP	0.583333
 
-what	WP	,	,	0.750000	we	PRP	0.250000
+what	what-13	WP	,	,	0.750000	we	PRP	0.250000
 
-we	PRP	what	WP	0.333333	are	VBP	0.250000
+we	we-14	PRP	what	WP	0.333333	are	VBP	0.250000
 
-are	VBP	we	PRP	0.250000	concerned	JJ	0.166667
+are	are-15	VBP	we	PRP	0.250000	concerned	JJ	0.166667
 
-concerned	JJ	are	VBP	0.250000	about	IN	0.166667
+concerned	concerned-16	JJ	are	VBP	0.250000	about	IN	0.166667
 
-about	IN	concerned	JJ	0.250000	is	VBZ	1.000000
+about	about-17	IN	concerned	JJ	0.250000	is	VBZ	1.000000
 
-is	VBZ	about	IN	0.333333	not	RB	0.166667
+is	is-18	VBZ	about	IN	0.333333	not	RB	0.166667
 
-not	RB	is	VBZ	0.166667	the	DT	0.333333
+not	not-19	RB	is	VBZ	0.166667	the	DT	0.333333
 
-the	DT	not	RB	0.500000	whole	JJ	0.166667
+the	the-20	DT	not	RB	0.500000	whole	JJ	0.166667
 
-whole	JJ	the	DT	0.166667	society	NN	0.166667
+whole	whole-21	JJ	the	DT	0.166667	society	NN	0.166667
 
-society	NN	whole	JJ	0.166667	,	,	0.250000
+society	society-22	NN	whole	JJ	0.166667	,	,	0.250000
 
-,	,	society	NN	0.166667	but	CC	0.166667
+,	,-23	,	society	NN	0.166667	but	CC	0.166667
 
-but	CC	,	,	0.166667	the	DT	0.416667
+but	but-24	CC	,	,	0.166667	the	DT	0.416667
 
-the	DT	but	CC	0.583333	development	NN	0.166667
+the	the-25	DT	but	CC	0.583333	development	NN	0.166667
 
-development	NN	the	DT	0.166667	of	IN	0.250000
+development	development-26	NN	the	DT	0.166667	of	IN	0.250000
 
-of	IN	development	NN	0.250000	an	DT	0.583333
+of	of-27	IN	development	NN	0.250000	an	DT	0.583333
 
-an	DT	of	IN	0.750000	individual	NN	0.166667
+an	an-28	DT	of	IN	0.750000	individual	NN	0.166667
 
-individual	NN	an	DT	0.166667	's	POS	0.166667
+individual	individual-29	NN	an	DT	0.166667	's	POS	0.166667
 
-'s	POS	individual	NN	0.166667	whole	JJ	0.250000
+'s	's-30	POS	individual	NN	0.166667	whole	JJ	0.250000
 
-whole	JJ	's	POS	0.166667	life	NN	0.166667
+whole	whole-31	JJ	's	POS	0.166667	life	NN	0.166667
 
-life	NN	whole	JJ	0.166667	.	.	0.666667
+life	life-32	NN	whole	JJ	0.166667	.	.	0.666667
 
-.	.	life	NN	0.250000			-1.000000
+.	.-33	.	life	NN	0.250000			-1.000000
 
-From	IN			-1.000000	this	DT	0.400000
+From	From-1	IN			-1.000000	this	DT	0.400000
 
-this	DT	From	IN	0.600000	point	NN	0.200000
+this	this-2	DT	From	IN	0.600000	point	NN	0.200000
 
-point	NN	this	DT	0.200000	of	IN	0.300000
+point	point-3	NN	this	DT	0.200000	of	IN	0.300000
 
-of	IN	point	NN	0.300000	view	NN	0.200000
+of	of-4	IN	point	NN	0.300000	view	NN	0.200000
 
-view	NN	of	IN	0.300000	,	,	0.700000
+view	view-5	NN	of	IN	0.300000	,	,	0.700000
 
-,	,	view	NN	0.300000	I	PRP	0.200000
+,	,-6	,	view	NN	0.300000	I	PRP	0.200000
 
-I	PRP	,	,	0.300000	firmly	RB	0.300000
+I	I-7	PRP	,	,	0.300000	firmly	RB	0.300000
 
-firmly	RB	I	PRP	0.300000	believe	VBP	0.300000
+firmly	firmly-8	RB	I	PRP	0.300000	believe	VBP	0.300000
 
-believe	VBP	firmly	RB	0.300000	that	IN	0.200000
+believe	believe-9	VBP	firmly	RB	0.300000	that	IN	0.200000
 
-that	IN	believe	VBP	0.300000	we	PRP	0.500000
+that	that-10	IN	believe	VBP	0.300000	we	PRP	0.500000
 
-we	PRP	that	IN	0.700000	should	MD	0.300000
+we	we-11	PRP	that	IN	0.700000	should	MD	0.300000
 
-should	MD	we	PRP	0.300000	attach	VB	0.200000
+should	should-12	MD	we	PRP	0.300000	attach	VB	0.200000
 
-attach	VB	should	MD	0.300000	more	JJR	0.200000
+attach	attach-13	VB	should	MD	0.300000	more	JJR	0.200000
 
-more	JJR	attach	VB	0.300000	importance	NN	0.200000
+more	more-14	JJR	attach	VB	0.300000	importance	NN	0.200000
 
-importance	NN	more	JJR	0.200000	to	IN	0.300000
+importance	importance-15	NN	more	JJR	0.200000	to	IN	0.300000
 
-to	IN	importance	NN	0.300000	cooperation	NN	0.200000
+to	to-16	IN	importance	NN	0.300000	cooperation	NN	0.200000
 
-cooperation	NN	to	IN	0.300000	during	IN	0.400000
+cooperation	cooperation-17	NN	to	IN	0.300000	during	IN	0.400000
 
-during	IN	cooperation	NN	0.300000	primary	JJ	0.200000
+during	during-18	IN	cooperation	NN	0.300000	primary	JJ	0.200000
 
-primary	JJ	during	IN	0.300000	education	NN	0.200000
+primary	primary-19	JJ	during	IN	0.300000	education	NN	0.200000
 
-education	NN	primary	JJ	0.200000	.	.	1.000000
+education	education-20	NN	primary	JJ	0.200000	.	.	1.000000
 
-.	.	education	NN	0.300000			-1.000000
+.	.-21	.	education	NN	0.300000			-1.000000
 
-First	NNP			-1.000000	of	IN	0.200000
+First	First-1	NNP			-1.000000	of	IN	0.200000
 
-of	IN	First	NNP	0.200000	all	DT	0.133333
+of	of-2	IN	First	NNP	0.200000	all	DT	0.133333
 
-all	DT	of	IN	0.200000	,	,	0.400000
+all	all-3	DT	of	IN	0.200000	,	,	0.400000
 
-,	,	all	DT	0.200000	through	IN	0.133333
+,	,-4	,	all	DT	0.200000	through	IN	0.133333
 
-through	IN	,	,	0.200000	cooperation	NN	0.133333
+through	through-5	IN	,	,	0.200000	cooperation	NN	0.133333
 
-cooperation	NN	through	IN	0.200000	,	,	0.333333
+cooperation	cooperation-6	NN	through	IN	0.200000	,	,	0.333333
 
-,	,	cooperation	NN	0.200000	children	NNS	0.133333
+,	,-7	,	cooperation	NN	0.200000	children	NNS	0.133333
 
-children	NNS	,	,	0.200000	can	MD	0.200000
+children	children-8	NNS	,	,	0.200000	can	MD	0.200000
 
-can	MD	children	NNS	0.200000	learn	VB	0.133333
+can	can-9	MD	children	NNS	0.200000	learn	VB	0.133333
 
-learn	VB	can	MD	0.200000	about	IN	0.133333
+learn	learn-10	VB	can	MD	0.200000	about	IN	0.133333
 
-about	IN	learn	VB	0.200000	interpersonal	JJ	0.400000
+about	about-11	IN	learn	VB	0.200000	interpersonal	JJ	0.400000
 
-interpersonal	JJ	about	IN	0.533333	skills	NNS	0.133333
+interpersonal	interpersonal-12	JJ	about	IN	0.533333	skills	NNS	0.133333
 
-skills	NNS	interpersonal	JJ	0.133333	which	WDT	0.200000
+skills	skills-13	NNS	interpersonal	JJ	0.133333	which	WDT	0.200000
 
-which	WDT	skills	NNS	0.266667	are	VBP	0.200000
+which	which-14	WDT	skills	NNS	0.266667	are	VBP	0.200000
 
-are	VBP	which	WDT	0.266667	significant	JJ	0.133333
+are	are-15	VBP	which	WDT	0.266667	significant	JJ	0.133333
 
-significant	JJ	are	VBP	0.200000	in	IN	0.133333
+significant	significant-16	JJ	are	VBP	0.200000	in	IN	0.133333
 
-in	IN	significant	JJ	0.200000	the	DT	0.800000
+in	in-17	IN	significant	JJ	0.200000	the	DT	0.800000
 
-the	DT	in	IN	0.933333	future	JJ	0.133333
+the	the-18	DT	in	IN	0.933333	future	JJ	0.133333
 
-future	JJ	the	DT	0.133333	life	NN	0.133333
+future	future-19	JJ	the	DT	0.133333	life	NN	0.133333
 
-life	NN	future	JJ	0.133333	of	IN	0.200000
+life	life-20	NN	future	JJ	0.133333	of	IN	0.200000
 
-of	IN	life	NN	0.200000	all	DT	0.133333
+of	of-21	IN	life	NN	0.200000	all	DT	0.133333
 
-all	DT	of	IN	0.200000	students	NNS	0.133333
+all	all-22	DT	of	IN	0.200000	students	NNS	0.133333
 
-students	NNS	all	DT	0.133333	.	.	1.000000
+students	students-23	NNS	all	DT	0.133333	.	.	1.000000
 
-.	.	students	NNS	0.200000			-1.000000
+.	.-24	.	students	NNS	0.200000			-1.000000
 
-What	WP			-1.000000	we	PRP	0.300000
+What	What-1	WP			-1.000000	we	PRP	0.300000
 
-we	PRP	What	WP	0.400000	acquired	VBD	0.300000
+we	we-2	PRP	What	WP	0.400000	acquired	VBD	0.300000
 
-acquired	VBD	we	PRP	0.300000	from	IN	0.200000
+acquired	acquired-3	VBD	we	PRP	0.300000	from	IN	0.200000
 
-from	IN	acquired	VBD	0.300000	team	NN	0.200000
+from	from-4	IN	acquired	VBD	0.300000	team	NN	0.200000
 
-team	NN	from	IN	0.300000	work	NN	0.200000
+team	team-5	NN	from	IN	0.300000	work	NN	0.200000
 
-work	NN	team	NN	0.200000	is	VBZ	0.800000
+work	work-6	NN	team	NN	0.200000	is	VBZ	0.800000
 
-is	VBZ	work	NN	0.400000	not	RB	0.200000
+is	is-7	VBZ	work	NN	0.400000	not	RB	0.200000
 
-not	RB	is	VBZ	0.200000	only	RB	0.200000
+not	not-8	RB	is	VBZ	0.200000	only	RB	0.200000
 
-only	RB	not	RB	0.300000	how	WRB	0.300000
+only	only-9	RB	not	RB	0.300000	how	WRB	0.300000
 
-how	WRB	only	RB	0.400000	to	TO	0.300000
+how	how-10	WRB	only	RB	0.400000	to	TO	0.300000
 
-to	TO	how	WRB	0.400000	achieve	VB	0.200000
+to	to-11	TO	how	WRB	0.400000	achieve	VB	0.200000
 
-achieve	VB	to	TO	0.300000	the	DT	0.200000
+achieve	achieve-12	VB	to	TO	0.300000	the	DT	0.200000
 
-the	DT	achieve	VB	0.300000	same	JJ	0.200000
+the	the-13	DT	achieve	VB	0.300000	same	JJ	0.200000
 
-same	JJ	the	DT	0.200000	goal	NN	0.200000
+same	same-14	JJ	the	DT	0.200000	goal	NN	0.200000
 
-goal	NN	same	JJ	0.200000	with	IN	0.300000
+goal	goal-15	NN	same	JJ	0.200000	with	IN	0.300000
 
-with	IN	goal	NN	0.300000	others	NNS	0.200000
+with	with-16	IN	goal	NN	0.300000	others	NNS	0.200000
 
-others	NNS	with	IN	0.300000	but	RB	0.400000
+others	others-17	NNS	with	IN	0.300000	but	RB	0.400000
 
-but	RB	others	NNS	0.300000	more	RBR	0.200000
+but	but-18	RB	others	NNS	0.300000	more	RBR	0.200000
 
-more	RBR	but	RB	0.200000	importantly	RB	0.200000
+more	more-19	RBR	but	RB	0.200000	importantly	RB	0.200000
 
-importantly	RB	more	RBR	0.200000	,	,	0.900000
+importantly	importantly-20	RB	more	RBR	0.200000	,	,	0.900000
 
-,	,	importantly	RB	0.400000	how	WRB	0.400000
+,	,-21	,	importantly	RB	0.400000	how	WRB	0.400000
 
-how	WRB	,	,	0.600000	to	TO	0.300000
+how	how-22	WRB	,	,	0.600000	to	TO	0.300000
 
-to	TO	how	WRB	0.400000	get	VB	0.200000
+to	to-23	TO	how	WRB	0.400000	get	VB	0.200000
 
-get	VB	to	TO	0.300000	along	RP	0.200000
+get	get-24	VB	to	TO	0.300000	along	RP	0.200000
 
-along	RP	get	VB	0.300000	with	IN	0.300000
+along	along-25	RP	get	VB	0.300000	with	IN	0.300000
 
-with	IN	along	RP	0.300000	others	NNS	0.200000
+with	with-26	IN	along	RP	0.300000	others	NNS	0.200000
 
-others	NNS	with	IN	0.300000	.	.	1.000000
+others	others-27	NNS	with	IN	0.300000	.	.	1.000000
 
-.	.	others	NNS	0.300000			-1.000000
+.	.-28	.	others	NNS	0.300000			-1.000000
 
-During	IN			-1.000000	the	DT	0.285714
+During	During-1	IN			-1.000000	the	DT	0.285714
 
-the	DT	During	IN	0.428571	process	NN	0.142857
+the	the-2	DT	During	IN	0.428571	process	NN	0.142857
 
-process	NN	the	DT	0.142857	of	IN	0.214286
+process	process-3	NN	the	DT	0.142857	of	IN	0.214286
 
-of	IN	process	NN	0.214286	cooperation	NN	0.142857
+of	of-4	IN	process	NN	0.214286	cooperation	NN	0.142857
 
-cooperation	NN	of	IN	0.214286	,	,	0.500000
+cooperation	cooperation-5	NN	of	IN	0.214286	,	,	0.500000
 
-,	,	cooperation	NN	0.214286	children	NNS	0.142857
+,	,-6	,	cooperation	NN	0.214286	children	NNS	0.142857
 
-children	NNS	,	,	0.214286	can	MD	0.214286
+children	children-7	NNS	,	,	0.214286	can	MD	0.214286
 
-can	MD	children	NNS	0.214286	learn	VB	0.142857
+can	can-8	MD	children	NNS	0.214286	learn	VB	0.142857
 
-learn	VB	can	MD	0.214286	about	IN	0.142857
+learn	learn-9	VB	can	MD	0.214286	about	IN	0.142857
 
-about	IN	learn	VB	0.214286	how	WRB	0.428571
+about	about-10	IN	learn	VB	0.214286	how	WRB	0.428571
 
-how	WRB	about	IN	0.571429	to	TO	0.214286
+how	how-11	WRB	about	IN	0.571429	to	TO	0.214286
 
-to	TO	how	WRB	0.285714	listen	VB	0.142857
+to	to-12	TO	how	WRB	0.285714	listen	VB	0.142857
 
-listen	VB	to	TO	0.214286	to	IN	0.142857
+listen	listen-13	VB	to	TO	0.214286	to	IN	0.142857
 
-to	IN	listen	VB	0.214286	opinions	NNS	0.785714
+to	to-14	IN	listen	VB	0.214286	opinions	NNS	0.785714
 
-opinions	NNS	to	IN	0.928571	of	IN	0.214286
+opinions	opinions-15	NNS	to	IN	0.928571	of	IN	0.214286
 
-of	IN	opinions	NNS	0.214286	others	NNS	0.142857
+of	of-16	IN	opinions	NNS	0.214286	others	NNS	0.142857
 
-others	NNS	of	IN	0.214286	,	,	1.000000
+others	others-17	NNS	of	IN	0.214286	,	,	1.000000
 
-,	,	others	NNS	0.357143	how	WRB	0.357143
+,	,-18	,	others	NNS	0.357143	how	WRB	0.357143
 
-how	WRB	,	,	0.571429	to	TO	0.214286
+how	how-19	WRB	,	,	0.571429	to	TO	0.214286
 
-to	TO	how	WRB	0.285714	communicate	VB	0.142857
+to	to-20	TO	how	WRB	0.285714	communicate	VB	0.142857
 
-communicate	VB	to	TO	0.214286	with	IN	0.142857
+communicate	communicate-21	VB	to	TO	0.214286	with	IN	0.142857
 
-with	IN	communicate	VB	0.214286	others	NNS	0.142857
+with	with-22	IN	communicate	VB	0.214286	others	NNS	0.142857
 
-others	NNS	with	IN	0.214286	,	,	0.857143
+others	others-23	NNS	with	IN	0.214286	,	,	0.857143
 
-,	,	others	NNS	0.428571	how	WRB	0.428571
+,	,-24	,	others	NNS	0.428571	how	WRB	0.428571
 
-how	WRB	,	,	0.571429	to	TO	0.214286
+how	how-25	WRB	,	,	0.571429	to	TO	0.214286
 
-to	TO	how	WRB	0.285714	think	VB	0.142857
+to	to-26	TO	how	WRB	0.285714	think	VB	0.142857
 
-think	VB	to	TO	0.214286	comprehensively	RB	0.142857
+think	think-27	VB	to	TO	0.214286	comprehensively	RB	0.142857
 
-comprehensively	RB	think	VB	0.214286	,	,	0.785714
+comprehensively	comprehensively-28	RB	think	VB	0.214286	,	,	0.785714
 
-,	,	comprehensively	RB	0.428571	and	CC	0.142857
+,	,-29	,	comprehensively	RB	0.428571	and	CC	0.142857
 
-and	CC	,	,	0.142857	even	RB	0.428571
+and	and-30	CC	,	,	0.142857	even	RB	0.428571
 
-even	RB	and	CC	0.571429	how	WRB	0.142857
+even	even-31	RB	and	CC	0.571429	how	WRB	0.142857
 
-how	WRB	even	RB	0.142857	to	TO	0.214286
+how	how-32	WRB	even	RB	0.142857	to	TO	0.214286
 
-to	TO	how	WRB	0.285714	compromise	VB	0.142857
+to	to-33	TO	how	WRB	0.285714	compromise	VB	0.142857
 
-compromise	VB	to	TO	0.214286	with	IN	0.142857
+compromise	compromise-34	VB	to	TO	0.214286	with	IN	0.142857
 
-with	IN	compromise	VB	0.214286	other	JJ	0.142857
+with	with-35	IN	compromise	VB	0.214286	other	JJ	0.142857
 
-other	JJ	with	IN	0.214286	team	NN	0.142857
+other	other-36	JJ	with	IN	0.214286	team	NN	0.142857
 
-team	NN	other	JJ	0.142857	members	NNS	0.142857
+team	team-37	NN	other	JJ	0.142857	members	NNS	0.142857
 
-members	NNS	team	NN	0.142857	when	WRB	0.285714
+members	members-38	NNS	team	NN	0.142857	when	WRB	0.285714
 
-when	WRB	members	NNS	0.285714	conflicts	NNS	0.214286
+when	when-39	WRB	members	NNS	0.285714	conflicts	NNS	0.214286
 
-conflicts	NNS	when	WRB	0.285714	occurred	VBD	0.214286
+conflicts	conflicts-40	NNS	when	WRB	0.285714	occurred	VBD	0.214286
 
-occurred	VBD	conflicts	NNS	0.214286	.	.	0.928571
+occurred	occurred-41	VBD	conflicts	NNS	0.214286	.	.	0.928571
 
-.	.	occurred	VBD	0.214286			-1.000000
+.	.-42	.	occurred	VBD	0.214286			-1.000000
 
-All	DT			-1.000000	of	IN	0.300000
+All	All-1	DT			-1.000000	of	IN	0.300000
 
-of	IN	All	DT	0.300000	these	DT	0.200000
+of	of-2	IN	All	DT	0.300000	these	DT	0.200000
 
-these	DT	of	IN	0.300000	skills	NNS	0.200000
+these	these-3	DT	of	IN	0.300000	skills	NNS	0.200000
 
-skills	NNS	these	DT	0.200000	help	VBP	0.500000
+skills	skills-4	NNS	these	DT	0.200000	help	VBP	0.500000
 
-help	VBP	skills	NNS	0.400000	them	PRP	0.200000
+help	help-5	VBP	skills	NNS	0.400000	them	PRP	0.200000
 
-them	PRP	help	VBP	0.300000	to	TO	0.300000
+them	them-6	PRP	help	VBP	0.300000	to	TO	0.300000
 
-to	TO	them	PRP	0.400000	get	VB	0.200000
+to	to-7	TO	them	PRP	0.400000	get	VB	0.200000
 
-get	VB	to	TO	0.300000	on	RB	0.200000
+get	get-8	VB	to	TO	0.300000	on	RB	0.200000
 
-on	RB	get	VB	0.300000	well	RB	0.200000
+on	on-9	RB	get	VB	0.300000	well	RB	0.200000
 
-well	RB	on	RB	0.200000	with	IN	0.300000
+well	well-10	RB	on	RB	0.200000	with	IN	0.300000
 
-with	IN	well	RB	0.300000	other	JJ	0.200000
+with	with-11	IN	well	RB	0.300000	other	JJ	0.200000
 
-other	JJ	with	IN	0.300000	people	NNS	0.200000
+other	other-12	JJ	with	IN	0.300000	people	NNS	0.200000
 
-people	NNS	other	JJ	0.200000	and	CC	1.000000
+people	people-13	NNS	other	JJ	0.200000	and	CC	1.000000
 
-and	CC	people	NNS	0.400000	will	MD	0.200000
+and	and-14	CC	people	NNS	0.400000	will	MD	0.200000
 
-will	MD	and	CC	0.300000	benefit	VB	0.200000
+will	will-15	MD	and	CC	0.300000	benefit	VB	0.200000
 
-benefit	VB	will	MD	0.300000	them	PRP	0.200000
+benefit	benefit-16	VB	will	MD	0.300000	them	PRP	0.200000
 
-them	PRP	benefit	VB	0.300000	for	IN	0.300000
+them	them-17	PRP	benefit	VB	0.300000	for	IN	0.300000
 
-for	IN	them	PRP	0.300000	the	DT	0.200000
+for	for-18	IN	them	PRP	0.300000	the	DT	0.200000
 
-the	DT	for	IN	0.300000	whole	JJ	0.200000
+the	the-19	DT	for	IN	0.300000	whole	JJ	0.200000
 
-whole	JJ	the	DT	0.200000	life	NN	0.200000
+whole	whole-20	JJ	the	DT	0.200000	life	NN	0.200000
 
-life	NN	whole	JJ	0.200000	.	.	0.800000
+life	life-21	NN	whole	JJ	0.200000	.	.	0.800000
 
-.	.	life	NN	0.300000			-1.000000
+.	.-22	.	life	NN	0.300000			-1.000000
 
-On	IN			-1.000000	the	DT	0.166667
+On	On-1	IN			-1.000000	the	DT	0.166667
 
-the	DT	On	IN	0.250000	other	JJ	0.166667
+the	the-2	DT	On	IN	0.250000	other	JJ	0.166667
 
-other	JJ	the	DT	0.166667	hand	NN	0.166667
+other	other-3	JJ	the	DT	0.166667	hand	NN	0.166667
 
-hand	NN	other	JJ	0.166667	,	,	0.416667
+hand	hand-4	NN	other	JJ	0.166667	,	,	0.416667
 
-,	,	hand	NN	0.250000	the	DT	0.250000
+,	,-5	,	hand	NN	0.250000	the	DT	0.250000
 
-the	DT	,	,	0.416667	significance	NN	0.166667
+the	the-6	DT	,	,	0.416667	significance	NN	0.166667
 
-significance	NN	the	DT	0.166667	of	IN	0.250000
+significance	significance-7	NN	the	DT	0.166667	of	IN	0.250000
 
-of	IN	significance	NN	0.250000	competition	NN	0.166667
+of	of-8	IN	significance	NN	0.250000	competition	NN	0.166667
 
-competition	NN	of	IN	0.250000	is	VBZ	0.500000
+competition	competition-9	NN	of	IN	0.250000	is	VBZ	0.500000
 
-is	VBZ	competition	NN	0.333333	that	DT	0.166667
+is	is-10	VBZ	competition	NN	0.333333	that	DT	0.166667
 
-that	DT	is	VBZ	0.250000	how	WRB	0.250000
+that	that-11	DT	is	VBZ	0.250000	how	WRB	0.250000
 
-how	WRB	that	DT	0.333333	to	TO	0.250000
+how	how-12	WRB	that	DT	0.333333	to	TO	0.250000
 
-to	TO	how	WRB	0.333333	become	VB	0.166667
+to	to-13	TO	how	WRB	0.333333	become	VB	0.166667
 
-become	VB	to	TO	0.250000	more	JJR	0.166667
+become	become-14	VB	to	TO	0.250000	more	JJR	0.166667
 
-more	JJR	become	VB	0.250000	excellence	NN	0.166667
+more	more-15	JJR	become	VB	0.250000	excellence	NN	0.166667
 
-excellence	NN	more	JJR	0.166667	to	TO	0.250000
+excellence	excellence-16	NN	more	JJR	0.166667	to	TO	0.250000
 
-to	TO	excellence	NN	0.333333	gain	VB	0.166667
+to	to-17	TO	excellence	NN	0.333333	gain	VB	0.166667
 
-gain	VB	to	TO	0.250000	the	DT	0.166667
+gain	gain-18	VB	to	TO	0.250000	the	DT	0.166667
 
-the	DT	gain	VB	0.250000	victory	NN	0.166667
+the	the-19	DT	gain	VB	0.250000	victory	NN	0.166667
 
-victory	NN	the	DT	0.166667	.	.	1.000000
+victory	victory-20	NN	the	DT	0.166667	.	.	1.000000
 
-.	.	victory	NN	0.250000			-1.000000
+.	.-21	.	victory	NN	0.250000			-1.000000
 
-Hence	RB			-1.000000	it	PRP	0.300000
+Hence	Hence-1	RB			-1.000000	it	PRP	0.300000
 
-it	PRP	Hence	RB	0.300000	is	VBZ	0.300000
+it	it-2	PRP	Hence	RB	0.300000	is	VBZ	0.300000
 
-is	VBZ	it	PRP	0.300000	always	RB	0.200000
+is	is-3	VBZ	it	PRP	0.300000	always	RB	0.200000
 
-always	RB	is	VBZ	0.300000	said	VBN	0.300000
+always	always-4	RB	is	VBZ	0.300000	said	VBN	0.300000
 
-said	VBN	always	RB	0.300000	that	IN	0.200000
+said	said-5	VBN	always	RB	0.300000	that	IN	0.200000
 
-that	IN	said	VBN	0.300000	competition	NN	0.600000
+that	that-6	IN	said	VBN	0.300000	competition	NN	0.600000
 
-competition	NN	that	IN	0.800000	makes	VBZ	0.300000
+competition	competition-7	NN	that	IN	0.800000	makes	VBZ	0.300000
 
-makes	VBZ	competition	NN	0.300000	the	DT	0.800000
+makes	makes-8	VBZ	competition	NN	0.300000	the	DT	0.800000
 
-the	DT	makes	VBZ	1.000000	society	NN	0.200000
+the	the-9	DT	makes	VBZ	1.000000	society	NN	0.200000
 
-society	NN	the	DT	0.200000	more	RBR	0.300000
+society	society-10	NN	the	DT	0.200000	more	RBR	0.300000
 
-more	RBR	society	NN	0.300000	effective	JJ	0.200000
+more	more-11	RBR	society	NN	0.300000	effective	JJ	0.200000
 
-effective	JJ	more	RBR	0.200000	.	.	1.000000
+effective	effective-12	JJ	more	RBR	0.200000	.	.	1.000000
 
-.	.	effective	JJ	0.300000			-1.000000
+.	.-13	.	effective	JJ	0.300000			-1.000000
 
-However	RB			-1.000000	,	,	0.250000
+However	However-1	RB			-1.000000	,	,	0.250000
 
-,	,	However	RB	0.166667	when	WRB	0.250000
+,	,-2	,	However	RB	0.166667	when	WRB	0.250000
 
-when	WRB	,	,	0.416667	we	PRP	0.250000
+when	when-3	WRB	,	,	0.416667	we	PRP	0.250000
 
-we	PRP	when	WRB	0.333333	consider	VBP	0.250000
+we	we-4	PRP	when	WRB	0.333333	consider	VBP	0.250000
 
-consider	VBP	we	PRP	0.250000	about	IN	0.166667
+consider	consider-5	VBP	we	PRP	0.250000	about	IN	0.166667
 
-about	IN	consider	VBP	0.250000	the	DT	0.166667
+about	about-6	IN	consider	VBP	0.250000	the	DT	0.166667
 
-the	DT	about	IN	0.250000	question	NN	0.166667
+the	the-7	DT	about	IN	0.250000	question	NN	0.166667
 
-question	NN	the	DT	0.166667	that	IN	0.333333
+question	question-8	NN	the	DT	0.166667	that	IN	0.333333
 
-that	IN	question	NN	0.250000	how	WRB	0.583333
+that	that-9	IN	question	NN	0.250000	how	WRB	0.583333
 
-how	WRB	that	IN	0.750000	to	TO	0.250000
+how	how-10	WRB	that	IN	0.750000	to	TO	0.250000
 
-to	TO	how	WRB	0.333333	win	VB	0.166667
+to	to-11	TO	how	WRB	0.333333	win	VB	0.166667
 
-win	VB	to	TO	0.250000	the	DT	0.166667
+win	win-12	VB	to	TO	0.250000	the	DT	0.166667
 
-the	DT	win	VB	0.250000	game	NN	0.166667
+the	the-13	DT	win	VB	0.250000	game	NN	0.166667
 
-game	NN	the	DT	0.166667	,	,	1.000000
+game	game-14	NN	the	DT	0.166667	,	,	1.000000
 
-,	,	game	NN	0.250000	we	PRP	0.166667
+,	,-15	,	game	NN	0.250000	we	PRP	0.166667
 
-we	PRP	,	,	0.250000	always	RB	0.250000
+we	we-16	PRP	,	,	0.250000	always	RB	0.250000
 
-always	RB	we	PRP	0.250000	find	VBP	0.250000
+always	always-17	RB	we	PRP	0.250000	find	VBP	0.250000
 
-find	VBP	always	RB	0.250000	that	IN	0.166667
+find	find-18	VBP	always	RB	0.250000	that	IN	0.166667
 
-that	IN	find	VBP	0.250000	we	PRP	0.416667
+that	that-19	IN	find	VBP	0.250000	we	PRP	0.416667
 
-we	PRP	that	IN	0.583333	need	VBP	0.250000
+we	we-20	PRP	that	IN	0.583333	need	VBP	0.250000
 
-need	VBP	we	PRP	0.250000	the	DT	0.166667
+need	need-21	VBP	we	PRP	0.250000	the	DT	0.166667
 
-the	DT	need	VBP	0.250000	cooperation	NN	0.166667
+the	the-22	DT	need	VBP	0.250000	cooperation	NN	0.166667
 
-cooperation	NN	the	DT	0.166667	.	.	0.666667
+cooperation	cooperation-23	NN	the	DT	0.166667	.	.	0.666667
 
-.	.	cooperation	NN	0.250000			-1.000000
+.	.-24	.	cooperation	NN	0.250000			-1.000000
 
-The	DT			-1.000000	greater	JJR	0.250000
+The	The-1	DT			-1.000000	greater	JJR	0.250000
 
-greater	JJR	The	DT	0.250000	our	PRP$	0.500000
+greater	greater-2	JJR	The	DT	0.250000	our	PRP$	0.500000
 
-our	PRP$	greater	JJR	0.875000	goal	NN	0.250000
+our	our-3	PRP$	greater	JJR	0.875000	goal	NN	0.250000
 
-goal	NN	our	PRP$	0.250000	is	VBZ	0.375000
+goal	goal-4	NN	our	PRP$	0.250000	is	VBZ	0.375000
 
-is	VBZ	goal	NN	0.375000	,	,	0.250000
+is	is-5	VBZ	goal	NN	0.375000	,	,	0.250000
 
-,	,	is	VBZ	0.250000	the	DT	0.250000
+,	,-6	,	is	VBZ	0.250000	the	DT	0.250000
 
-the	DT	,	,	0.375000	more	JJR	0.250000
+the	the-7	DT	,	,	0.375000	more	JJR	0.250000
 
-more	JJR	the	DT	0.250000	competition	NN	0.250000
+more	more-8	JJR	the	DT	0.250000	competition	NN	0.250000
 
-competition	NN	more	JJR	0.250000	we	PRP	1.000000
+competition	competition-9	NN	more	JJR	0.250000	we	PRP	1.000000
 
-we	PRP	competition	NN	0.625000	need	VBP	0.375000
+we	we-10	PRP	competition	NN	0.625000	need	VBP	0.375000
 
-need	VBP	we	PRP	0.375000	.	.	0.625000
+need	need-11	VBP	we	PRP	0.375000	.	.	0.625000
 
-.	.	need	VBP	0.375000			-1.000000
+.	.-12	.	need	VBP	0.375000			-1.000000
 
-Take	VB			-1.000000	Olympic	JJ	0.192308
+Take	Take-1	VB			-1.000000	Olympic	JJ	0.192308
 
-Olympic	JJ	Take	VB	0.269231	games	NNS	0.076923
+Olympic	Olympic-2	JJ	Take	VB	0.269231	games	NNS	0.076923
 
-games	NNS	Olympic	JJ	0.076923	which	WDT	0.115385
+games	games-3	NNS	Olympic	JJ	0.076923	which	WDT	0.115385
 
-which	WDT	games	NNS	0.153846	is	VBZ	0.115385
+which	which-4	WDT	games	NNS	0.153846	is	VBZ	0.115385
 
-is	VBZ	which	WDT	0.153846	a	DT	0.346154
+is	is-5	VBZ	which	WDT	0.153846	a	DT	0.346154
 
-a	DT	is	VBZ	0.423077	form	NN	0.076923
+a	a-6	DT	is	VBZ	0.423077	form	NN	0.076923
 
-form	NN	a	DT	0.076923	of	IN	0.115385
+form	form-7	NN	a	DT	0.076923	of	IN	0.115385
 
-of	IN	form	NN	0.115385	competition	NN	0.423077
+of	of-8	IN	form	NN	0.115385	competition	NN	0.423077
 
-competition	NN	of	IN	0.500000	for	IN	0.115385
+competition	competition-9	NN	of	IN	0.500000	for	IN	0.115385
 
-for	IN	competition	NN	0.115385	instance	NN	0.076923
+for	for-10	IN	competition	NN	0.115385	instance	NN	0.076923
 
-instance	NN	for	IN	0.115385	,	,	0.538462
+instance	instance-11	NN	for	IN	0.115385	,	,	0.538462
 
-,	,	instance	NN	0.115385	it	PRP	0.076923
+,	,-12	,	instance	NN	0.115385	it	PRP	0.076923
 
-it	PRP	,	,	0.115385	is	VBZ	0.115385
+it	it-13	PRP	,	,	0.115385	is	VBZ	0.115385
 
-is	VBZ	it	PRP	0.115385	hard	JJ	0.076923
+is	is-14	VBZ	it	PRP	0.115385	hard	JJ	0.076923
 
-hard	JJ	is	VBZ	0.115385	to	TO	0.192308
+hard	hard-15	JJ	is	VBZ	0.115385	to	TO	0.192308
 
-to	TO	hard	JJ	0.269231	imagine	VB	0.076923
+to	to-16	TO	hard	JJ	0.269231	imagine	VB	0.076923
 
-imagine	VB	to	TO	0.115385	how	WRB	0.307692
+imagine	imagine-17	VB	to	TO	0.115385	how	WRB	0.307692
 
-how	WRB	imagine	VB	0.384615	an	DT	0.115385
+how	how-18	WRB	imagine	VB	0.384615	an	DT	0.115385
 
-an	DT	how	WRB	0.153846	athlete	NN	0.076923
+an	an-19	DT	how	WRB	0.153846	athlete	NN	0.076923
 
-athlete	NN	an	DT	0.076923	could	MD	0.115385
+athlete	athlete-20	NN	an	DT	0.076923	could	MD	0.115385
 
-could	MD	athlete	NN	0.115385	win	VB	0.076923
+could	could-21	MD	athlete	NN	0.115385	win	VB	0.076923
 
-win	VB	could	MD	0.115385	the	DT	0.076923
+win	win-22	VB	could	MD	0.115385	the	DT	0.076923
 
-the	DT	win	VB	0.115385	game	NN	0.076923
+the	the-23	DT	win	VB	0.115385	game	NN	0.076923
 
-game	NN	the	DT	0.076923	without	IN	0.115385
+game	game-24	NN	the	DT	0.076923	without	IN	0.115385
 
-without	IN	game	NN	0.115385	the	DT	0.500000
+without	without-25	IN	game	NN	0.115385	the	DT	0.500000
 
-the	DT	without	IN	0.615385	training	NN	0.076923
+the	the-26	DT	without	IN	0.615385	training	NN	0.076923
 
-training	NN	the	DT	0.076923	of	IN	0.115385
+training	training-27	NN	the	DT	0.076923	of	IN	0.115385
 
-of	IN	training	NN	0.115385	his	PRP$	0.076923
+of	of-28	IN	training	NN	0.115385	his	PRP$	0.076923
 
-his	PRP$	of	IN	0.115385	or	CC	0.076923
+his	his-29	PRP$	of	IN	0.115385	or	CC	0.076923
 
-or	CC	his	PRP$	0.076923	her	PRP$	0.076923
+or	or-30	CC	his	PRP$	0.076923	her	PRP$	0.076923
 
-her	PRP$	or	CC	0.076923	coach	NN	0.076923
+her	her-31	PRP$	or	CC	0.076923	coach	NN	0.076923
 
-coach	NN	her	PRP$	0.076923	,	,	0.653846
+coach	coach-32	NN	her	PRP$	0.076923	,	,	0.653846
 
-,	,	coach	NN	0.538462	and	CC	0.076923
+,	,-33	,	coach	NN	0.538462	and	CC	0.076923
 
-and	CC	,	,	0.076923	the	DT	0.538462
+and	and-34	CC	,	,	0.076923	the	DT	0.538462
 
-the	DT	and	CC	0.653846	help	NN	0.076923
+the	the-35	DT	and	CC	0.653846	help	NN	0.076923
 
-help	NN	the	DT	0.076923	of	IN	0.115385
+help	help-36	NN	the	DT	0.076923	of	IN	0.115385
 
-of	IN	help	NN	0.115385	other	JJ	0.653846
+of	of-37	IN	help	NN	0.115385	other	JJ	0.653846
 
-other	JJ	of	IN	0.730769	professional	JJ	0.076923
+other	other-38	JJ	of	IN	0.730769	professional	JJ	0.076923
 
-professional	JJ	other	JJ	0.076923	staffs	NNS	0.076923
+professional	professional-39	JJ	other	JJ	0.076923	staffs	NNS	0.076923
 
-staffs	NNS	professional	JJ	0.076923	such	JJ	0.115385
+staffs	staffs-40	NNS	professional	JJ	0.076923	such	JJ	0.115385
 
-such	JJ	staffs	NNS	0.115385	as	IN	0.076923
+such	such-41	JJ	staffs	NNS	0.115385	as	IN	0.076923
 
-as	IN	such	JJ	0.076923	the	DT	0.730769
+as	as-42	IN	such	JJ	0.076923	the	DT	0.730769
 
-the	DT	as	IN	0.807692	people	NNS	0.076923
+the	the-43	DT	as	IN	0.807692	people	NNS	0.076923
 
-people	NNS	the	DT	0.076923	who	WP	0.115385
+people	people-44	NNS	the	DT	0.076923	who	WP	0.115385
 
-who	WP	people	NNS	0.153846	take	VBP	0.115385
+who	who-45	WP	people	NNS	0.153846	take	VBP	0.115385
 
-take	VBP	who	WP	0.153846	care	NN	0.884615
+take	take-46	VBP	who	WP	0.153846	care	NN	0.884615
 
-care	NN	take	VBP	0.961538	of	IN	0.115385
+care	care-47	NN	take	VBP	0.961538	of	IN	0.115385
 
-of	IN	care	NN	0.115385	his	PRP$	0.076923
+of	of-48	IN	care	NN	0.115385	his	PRP$	0.076923
 
-his	PRP$	of	IN	0.115385	diet	NN	0.076923
+his	his-49	PRP$	of	IN	0.115385	diet	NN	0.076923
 
-diet	NN	his	PRP$	0.076923	,	,	1.000000
+diet	diet-50	NN	his	PRP$	0.076923	,	,	1.000000
 
-,	,	diet	NN	0.576923	and	CC	0.076923
+,	,-51	,	diet	NN	0.576923	and	CC	0.076923
 
-and	CC	,	,	0.076923	those	DT	0.576923
+and	and-52	CC	,	,	0.076923	those	DT	0.576923
 
-those	DT	and	CC	0.653846	who	WP	0.115385
+those	those-53	DT	and	CC	0.653846	who	WP	0.115385
 
-who	WP	those	DT	0.153846	are	VBP	0.115385
+who	who-54	WP	those	DT	0.153846	are	VBP	0.115385
 
-are	VBP	who	WP	0.153846	in	IN	0.076923
+are	are-55	VBP	who	WP	0.153846	in	IN	0.076923
 
-in	IN	are	VBP	0.115385	charge	NN	0.769231
+in	in-56	IN	are	VBP	0.115385	charge	NN	0.769231
 
-charge	NN	in	IN	0.846154	of	IN	0.115385
+charge	charge-57	NN	in	IN	0.846154	of	IN	0.115385
 
-of	IN	charge	NN	0.115385	the	DT	0.076923
+of	of-58	IN	charge	NN	0.115385	the	DT	0.076923
 
-the	DT	of	IN	0.115385	medical	JJ	0.076923
+the	the-59	DT	of	IN	0.115385	medical	JJ	0.076923
 
-medical	JJ	the	DT	0.076923	care	NN	0.076923
+medical	medical-60	JJ	the	DT	0.076923	care	NN	0.076923
 
-care	NN	medical	JJ	0.076923	.	.	0.884615
+care	care-61	NN	medical	JJ	0.076923	.	.	0.884615
 
-.	.	care	NN	0.115385			-1.000000
+.	.-62	.	care	NN	0.115385			-1.000000
 
-The	DT			-1.000000	winner	NN	0.285714
+The	The-1	DT			-1.000000	winner	NN	0.285714
 
-winner	NN	The	DT	0.285714	is	VBZ	0.428571
+winner	winner-2	NN	The	DT	0.285714	is	VBZ	0.428571
 
-is	VBZ	winner	NN	0.428571	the	DT	0.285714
+is	is-3	VBZ	winner	NN	0.428571	the	DT	0.285714
 
-the	DT	is	VBZ	0.428571	athlete	NN	0.285714
+the	the-4	DT	is	VBZ	0.428571	athlete	NN	0.285714
 
-athlete	NN	the	DT	0.285714	but	CC	0.857143
+athlete	athlete-5	NN	the	DT	0.285714	but	CC	0.857143
 
-but	CC	athlete	NN	0.428571	the	DT	0.428571
+but	but-6	CC	athlete	NN	0.428571	the	DT	0.428571
 
-the	DT	but	CC	0.714286	success	NN	0.285714
+the	the-7	DT	but	CC	0.714286	success	NN	0.285714
 
-success	NN	the	DT	0.285714	belongs	VBZ	0.428571
+success	success-8	NN	the	DT	0.285714	belongs	VBZ	0.428571
 
-belongs	VBZ	success	NN	0.428571	to	IN	0.285714
+belongs	belongs-9	VBZ	success	NN	0.428571	to	IN	0.285714
 
-to	IN	belongs	VBZ	0.428571	the	DT	0.285714
+to	to-10	IN	belongs	VBZ	0.428571	the	DT	0.285714
 
-the	DT	to	IN	0.428571	whole	JJ	0.285714
+the	the-11	DT	to	IN	0.428571	whole	JJ	0.285714
 
-whole	JJ	the	DT	0.285714	team	NN	0.285714
+whole	whole-12	JJ	the	DT	0.285714	team	NN	0.285714
 
-team	NN	whole	JJ	0.285714	.	.	1.000000
+team	team-13	NN	whole	JJ	0.285714	.	.	1.000000
 
-.	.	team	NN	0.428571			-1.000000
+.	.-14	.	team	NN	0.428571			-1.000000
 
-Therefore	RB			-1.000000	without	IN	0.375000
+Therefore	Therefore-1	RB			-1.000000	without	IN	0.375000
 
-without	IN	Therefore	RB	0.250000	the	DT	0.250000
+without	without-2	IN	Therefore	RB	0.250000	the	DT	0.250000
 
-the	DT	without	IN	0.375000	cooperation	NN	0.250000
+the	the-3	DT	without	IN	0.375000	cooperation	NN	0.250000
 
-cooperation	NN	the	DT	0.250000	,	,	0.625000
+cooperation	cooperation-4	NN	the	DT	0.250000	,	,	0.625000
 
-,	,	cooperation	NN	0.375000	there	EX	0.250000
+,	,-5	,	cooperation	NN	0.375000	there	EX	0.250000
 
-there	EX	,	,	0.375000	would	MD	0.375000
+there	there-6	EX	,	,	0.375000	would	MD	0.375000
 
-would	MD	there	EX	0.375000	be	VB	0.250000
+would	would-7	MD	there	EX	0.375000	be	VB	0.250000
 
-be	VB	would	MD	0.375000	no	DT	0.625000
+be	be-8	VB	would	MD	0.375000	no	DT	0.625000
 
-no	DT	be	VB	0.875000	victory	NN	0.250000
+no	no-9	DT	be	VB	0.875000	victory	NN	0.250000
 
-victory	NN	no	DT	0.250000	of	IN	0.375000
+victory	victory-10	NN	no	DT	0.250000	of	IN	0.375000
 
-of	IN	victory	NN	0.375000	competition	NN	0.250000
+of	of-11	IN	victory	NN	0.375000	competition	NN	0.250000
 
-competition	NN	of	IN	0.375000	.	.	1.000000
+competition	competition-12	NN	of	IN	0.375000	.	.	1.000000
 
-.	.	competition	NN	0.375000			-1.000000
+.	.-13	.	competition	NN	0.375000			-1.000000
 
-Consequently	RB			-1.000000	,	,	0.250000
+Consequently	Consequently-1	RB			-1.000000	,	,	0.250000
 
-,	,	Consequently	RB	0.166667	no	DT	0.250000
+,	,-2	,	Consequently	RB	0.166667	no	DT	0.250000
 
-no	DT	,	,	0.500000	matter	NN	0.166667
+no	no-3	DT	,	,	0.500000	matter	NN	0.166667
 
-matter	NN	no	DT	0.166667	from	IN	0.250000
+matter	matter-4	NN	no	DT	0.166667	from	IN	0.250000
 
-from	IN	matter	NN	0.250000	the	DT	0.500000
+from	from-5	IN	matter	NN	0.250000	the	DT	0.500000
 
-the	DT	from	IN	0.666667	view	NN	0.166667
+the	the-6	DT	from	IN	0.666667	view	NN	0.166667
 
-view	NN	the	DT	0.166667	of	IN	0.250000
+view	view-7	NN	the	DT	0.166667	of	IN	0.250000
 
-of	IN	view	NN	0.250000	individual	JJ	0.166667
+of	of-8	IN	view	NN	0.250000	individual	JJ	0.166667
 
-individual	JJ	of	IN	0.250000	development	NN	0.166667
+individual	individual-9	JJ	of	IN	0.250000	development	NN	0.166667
 
-development	NN	individual	JJ	0.166667	or	CC	0.750000
+development	development-10	NN	individual	JJ	0.166667	or	CC	0.750000
 
-or	CC	development	NN	0.333333	the	DT	0.333333
+or	or-11	CC	development	NN	0.333333	the	DT	0.333333
 
-the	DT	or	CC	0.500000	relationship	NN	0.166667
+the	the-12	DT	or	CC	0.500000	relationship	NN	0.166667
 
-relationship	NN	the	DT	0.166667	between	IN	0.250000
+relationship	relationship-13	NN	the	DT	0.166667	between	IN	0.250000
 
-between	IN	relationship	NN	0.250000	competition	NN	0.166667
+between	between-14	IN	relationship	NN	0.250000	competition	NN	0.166667
 
-competition	NN	between	IN	0.250000	and	CC	0.166667
+competition	competition-15	NN	between	IN	0.250000	and	CC	0.166667
 
-and	CC	competition	NN	0.166667	cooperation	NN	0.166667
+and	and-16	CC	competition	NN	0.166667	cooperation	NN	0.166667
 
-cooperation	NN	and	CC	0.166667	we	PRP	0.583333
+cooperation	cooperation-17	NN	and	CC	0.166667	we	PRP	0.583333
 
-we	PRP	cooperation	NN	0.333333	can	MD	0.250000
+we	we-18	PRP	cooperation	NN	0.333333	can	MD	0.250000
 
-can	MD	we	PRP	0.250000	receive	VB	0.166667
+can	can-19	MD	we	PRP	0.250000	receive	VB	0.166667
 
-receive	VB	can	MD	0.250000	the	DT	0.166667
+receive	receive-20	VB	can	MD	0.250000	the	DT	0.166667
 
-the	DT	receive	VB	0.250000	same	JJ	0.166667
+the	the-21	DT	receive	VB	0.250000	same	JJ	0.166667
 
-same	JJ	the	DT	0.166667	conclusion	NN	0.166667
+same	same-22	JJ	the	DT	0.166667	conclusion	NN	0.166667
 
-conclusion	NN	same	JJ	0.166667	that	IN	0.250000
+conclusion	conclusion-23	NN	same	JJ	0.166667	that	IN	0.250000
 
-that	IN	conclusion	NN	0.250000	a	DT	0.500000
+that	that-24	IN	conclusion	NN	0.250000	a	DT	0.500000
 
-a	DT	that	IN	0.750000	more	JJR	0.166667
+a	a-25	DT	that	IN	0.750000	more	JJR	0.166667
 
-more	JJR	a	DT	0.166667	cooperative	JJ	0.166667
+more	more-26	JJR	a	DT	0.166667	cooperative	JJ	0.166667
 
-cooperative	JJ	more	JJR	0.166667	attitudes	NNS	0.166667
+cooperative	cooperative-27	JJ	more	JJR	0.166667	attitudes	NNS	0.166667
 
-attitudes	NNS	cooperative	JJ	0.166667	towards	IN	0.250000
+attitudes	attitudes-28	NNS	cooperative	JJ	0.166667	towards	IN	0.250000
 
-towards	IN	attitudes	NNS	0.250000	life	NN	0.166667
+towards	towards-29	IN	attitudes	NNS	0.250000	life	NN	0.166667
 
-life	NN	towards	IN	0.250000	is	VBZ	0.833333
+life	life-30	NN	towards	IN	0.250000	is	VBZ	0.833333
 
-is	VBZ	life	NN	0.666667	more	RBR	0.666667
+is	is-31	VBZ	life	NN	0.666667	more	RBR	0.666667
 
-more	RBR	is	VBZ	0.833333	profitable	JJ	0.166667
+more	more-32	RBR	is	VBZ	0.833333	profitable	JJ	0.166667
 
-profitable	JJ	more	RBR	0.166667	in	IN	0.250000
+profitable	profitable-33	JJ	more	RBR	0.166667	in	IN	0.250000
 
-in	IN	profitable	JJ	0.250000	one	CD	0.833333
+in	in-34	IN	profitable	JJ	0.250000	one	CD	0.833333
 
-one	CD	in	IN	1.000000	's	POS	0.166667
+one	one-35	CD	in	IN	1.000000	's	POS	0.166667
 
-'s	POS	one	CD	0.166667	success	NN	0.250000
+'s	's-36	POS	one	CD	0.166667	success	NN	0.250000
 
-success	NN	's	POS	0.166667	.	.	0.916667
+success	success-37	NN	's	POS	0.166667	.	.	0.916667
 
-.	.	success	NN	0.250000			-1.000000
+.	.-38	.	success	NN	0.250000			-1.000000
 
