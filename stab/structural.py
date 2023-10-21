@@ -1,4 +1,4 @@
-import os,re,csv
+import re,csv
 
 class Structural():
 
