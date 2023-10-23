@@ -285,7 +285,8 @@ class Structural():
                 c1name = c1["name"]
                 self.pairwise_tokens[p_id][c1name] = {}
                 self.pairwise_components[p_id][c1name] = {}
-                for c2name in paragraph_components[p_id]: 
+                for c2name in paragraph_components[p_id]:
+                    # c1 is source, c2 is target  
                     if c1name == c2name: continue 
                     self.pairwise_tokens[p_id][c1name][c2name] = (self.token_info[c1name]["within"], self.token_info[c2name]["within"])
                     
@@ -304,7 +305,8 @@ class Structural():
                     c1idx,c2idx = self.component_info[c1name]["num_preceding"],self.component_info[c2name]["num_preceding"]
                     if c1idx < c2idx: 
                         self.pairwise_components[p_id][c1name][c2name]["num_between"] = c2idx - c1idx - 1
-                        self.pairwise_components[p_id][c1name][c2name]["targetBeforeSource"] = True
                     else: 
                         self.pairwise_components[p_id][c1name][c2name]["num_between"] = c1idx - c2idx - 1
+                        self.pairwise_components[p_id][c1name][c2name]["targetBeforeSource"] = True
+
 
