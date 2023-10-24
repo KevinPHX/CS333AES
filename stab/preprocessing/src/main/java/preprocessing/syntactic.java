@@ -62,9 +62,8 @@ public static StanfordCoreNLP pipeline;
 		return syntactic.get_LCA(tree, uAncestor, vAncestor);
 	} 
 	
-	public static void LCA(String text, String filename)
+	public static void LCA(Annotation annotation, String filename)
     {
-    	Annotation annotation = syntactic.annotate(text);
 
 		File lca_file = new File("src/main/resources/LCA_info/"+filename);
 		PrintWriter lca_output = null;
@@ -122,6 +121,8 @@ public static StanfordCoreNLP pipeline;
     	System.out.println("Finished processing " + filename);
     }
 	
+
+	
 	 public static void main(String[] args) throws IOException {
 		 syntactic.init();
 		 String dirname = "src/main/resources/essays";
@@ -131,7 +132,8 @@ public static StanfordCoreNLP pipeline;
 	    	String filename = f_name.toString();
 	    	String essay_name = filename.replace(dirname + "/","");
 	    	String essay = new String(Files.readAllBytes(Paths.get(filename)));
-	    	syntactic.LCA(essay, essay_name);
+	    	Annotation annotation = syntactic.annotate(essay);
+	    	syntactic.LCA(annotation, essay_name);
 		    }		
 	 } 
 

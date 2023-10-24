@@ -72,7 +72,7 @@ public class lexico_syntactic {
 		
 	}
 	
-	public static void run_parser(String text, String filename) {
+	public static void run_parser(Annotation annotation, String filename) {
 		File lex_file = new File("src/main/resources/lexico_syntactic/"+filename);
 		lex_output = null;
 		try {
@@ -81,18 +81,17 @@ public class lexico_syntactic {
 			e.printStackTrace();
 		}
 		
-		Annotation annotation = syntactic.annotate(text);
 		for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
 	    {
 			heads = new HashMap<Integer, String>(); 
 			Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
-			
+
 			// find the lexical head of each node in the tree 
 			List<Tree> nodes = tree.postOrderNodeList();
 			List<String> node_labels = new ArrayList<String>();
 			for (Tree node : nodes) {
 				node_labels.add(String.format("%s\t%s", node.label().toString(), node.nodeNumber(tree)));
-				String lex_head = find_head(node, tree);
+				String lex_head = lexico_syntactic.find_head(node, tree);
 			}
 			
 			HashMap<Tree,Tree> uppermost_nodes = new HashMap<Tree,Tree>();
@@ -106,17 +105,28 @@ public class lexico_syntactic {
 			for (Tree token : tree.getLeaves()) { 
 				// write output and get children of uppermost node n and their lexical heads 
 				Tree n = uppermost_nodes.get(token);
+				Tree child;
+				int child_idx = Integer.MAX_VALUE; 
+				
 				lex_output.println(token.label() + "\t" + n.label());
-				List<Tree> pathNodes = tree.pathNodeToNode(token,n);				
-				int length = pathNodes.size();
-				if (length > 2) {
-					List<Tree> children = n.getChildrenAsList();
-					for (Tree c : children) {
-						int c_idx = c.nodeNumber(tree);
-						String c_label = c.label().toString();
-						lex_output.println(token.label() + "\t" + c_label + "\t" + heads.get(c_idx));
+				for (Tree c: n.getChildrenAsList()) {
+					String label = c.label().toString();
+					if (label.equals(token.label().toString())) {
+						continue;
 					}
+					int c_idx = c.nodeNumber(tree);
+					String lex_head = heads.get(c_idx);
+					if (lex_head.equals(token.label().toString())) {
+						child_idx = c_idx; 
+						lex_output.println("child_of_uppermost" + "\t" + label + "\t" + lex_head);
+					}
+					if (c_idx > child_idx) {
+						// right sibling 
+						lex_output.println("right_sibling_of_child " + "\t" + label + "\t" + lex_head);
+						break;
+					} 
 				}
+									
 			}
 			lex_output.println(node_labels);
 			lex_output.println(heads);
@@ -127,9 +137,51 @@ public class lexico_syntactic {
 		
 	}
 	
+//	public static void main_verb(Tree tree) {
+//		for (Tree node : tree.preOrderNodeList()) {
+//			if (node.label().toString().contains("VB")) {
+//				
+//			}
+//		}
+//		
+//	}
+	public static void subclauses(Annotation annotation) {
+		 
+		 for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
+		    {
+				Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
+				//Get depth of parse tree 
+				int depth = tree.depth(); 
+				//Get number of subordinate clauses and main verb 
+				int num_subclauses = 0;
+				for (Tree node : tree.preOrderNodeList()) {
+					if (node.label().toString().equals("S")) {
+						for (Tree child : node.getChildrenAsList()) {
+							if (child.label().toString().contains("P")) {
+								num_subclauses ++;
+							}
+							// now get main verb of this S component  
+//							if (child.label().toString().equals("VP")) {
+//								lexico_syntactic.main_verb(child);
+//							}
+						}
+					}
+					
+				}
+				System.out.println(num_subclauses);
+				
+				//The main verb is the rightmost verb of the VP 
+				
+		    }
+	 }
+	
 	
     public static void main(String[] args) throws IOException {
 		 lexico_syntactic.init();
+//		 String essay = "through cooperation, children can learn about interpersonal skills which are significant in the future life of all students";
+//		 Annotation annotation = syntactic.annotate(essay);
+//		 lexico_syntactic.subclauses(annotation);
+		 
 		 String dirname = "src/main/resources/essays";
 	     File dir = new File(dirname);
 	     File[] files = dir.listFiles();
@@ -137,9 +189,10 @@ public class lexico_syntactic {
 	    	String filename = f_name.toString();
 	    	String essay_name = filename.replace(dirname + "/","");
 	    	String essay = new String(Files.readAllBytes(Paths.get(filename)));
-	    	lexico_syntactic.run_parser(essay,essay_name);
+		 	Annotation annotation = syntactic.annotate(essay);
+	    	lexico_syntactic.run_parser(annotation,essay_name);
 		    }		
-    	 
+
 	 } 
 
 }
