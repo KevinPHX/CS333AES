@@ -12,6 +12,7 @@ os.environ["CORENLP_HOME"] = corenlp_dir
 
 from stanza.server import CoreNLPClient
 
+# Structural
 
 def annotate_punc(token, data):
     # check if punc
@@ -60,6 +61,9 @@ def preprocess_components(components):
         augmented.append(info)
     return augmented
 
+# Labelling
+
+
 def iob(start, components):
     for c in components: 
         if c["start"] == start: # token that begins a component
@@ -68,6 +72,8 @@ def iob(start, components):
             return "Arg-I"
     return "O"    
 
+
+# Syntactical
 
 def tree_depth(parse_tree, depth):
     if len(parse_tree.child) == 0:
@@ -79,22 +85,15 @@ def tree_depth(parse_tree, depth):
             max_depth = temp_depth
     return max_depth
 
-def is_LCA(parse_tree, target, path):
-    
-    # path.append(parse_tree.value)
-    
-    if parse_tree.value == target:
-        
-        # print(parse_tree.value)
+def tree_path(parse_tree, target, path):
+    if parse_tree.value == target:        
         path.append(parse_tree.value)
-        # print(f"Tree Value: {parse_tree.value} Target: {target}")
         return True
     if len(parse_tree.child) == 0:
         return False
     for child in parse_tree.child:
-        temp_check = is_LCA(child, target, path)
+        temp_check = tree_path(child, target, path)
         if temp_check:
-            # print(parse_tree.value)
             path.append(parse_tree.value)
             return True
     return False
@@ -102,18 +101,15 @@ def is_LCA(parse_tree, target, path):
 def preceding_LCA(parse_tree, token, preceding):
     preceding_path = []
     token_path = []
-    if is_LCA(parse_tree, token, token_path) and is_LCA(parse_tree, preceding, preceding_path):
-        # print("IS TRUE")
+    if tree_path(parse_tree, token, token_path) and tree_path(parse_tree, preceding, preceding_path):
         preceding_path = preceding_path[::-1]
         token_path = token_path[::-1]
-        # print(preceding_path)
-        # print(token_path)
         for i in range(min(len(preceding_path), len(token_path))):
             if preceding_path[i] != token_path[i]:
                 
-                return i, token_path[i]
+                return i-1, token_path[i-1]
         if preceding_path[i-1] == token_path[i-1]:
-            return i, token_path[i]
+            return i-1, token_path[i-1]
     else:
         return 0, None
 
@@ -121,15 +117,14 @@ def preceding_LCA(parse_tree, token, preceding):
 def following_LCA(parse_tree, token, following):
     following_path = []
     token_path = []
-    if is_LCA(parse_tree, token, token_path) and is_LCA(parse_tree, following, following_path):
-        # print(token_path)
+    if tree_path(parse_tree, token, token_path) and tree_path(parse_tree, following, following_path):
         following_path = following_path[::-1]
         token_path = token_path[::-1]
         for i in range(min(len(following_path), len(token_path))):
             if following_path[i] != token_path[i]:
-                return i, token_path[i]
-        if following_path[i] == token_path[i]:
-            return i, token_path[i]
+                return i-1, token_path[i-1]
+        if following_path[i-1] == token_path[i-1]:
+            return i-1, token_path[i-1]
         else:
             return 0, None
     else:
@@ -142,14 +137,40 @@ def LCA(parse_tree, token, preceding, following, depth):
         lca_path_prec_path, lca_path_prec  = preceding_LCA(parse_tree, token, preceding)
         if (lca_path_prec_path > depth):
             print(lca_path_prec_path)
-            # print(depth)
         ret.append((lca_path_prec_path/depth, lca_path_prec))
     if following:
         lca_path_fol_path, lca_path_fol = following_LCA(parse_tree, token, following)
         ret.append((lca_path_fol_path/depth, lca_path_fol))
     return ret
 
+# LEXICO-SYNTACTIC
+def get_head(tree, index):
+    if index == tree.ListFields()[2][1][0]:
+        return index
+    for each in tree.ListFields()[1][1]:
+        if each.target == index:
+            return each.source
+    return 0
+def uppermost(parse_tree, head, token):
+    if head == token:
+        return 'ROOT'
+    head_path = []
+    token_path = []
+    if tree_path(parse_tree, token, token_path) and tree_path(parse_tree, head, head_path):
+        head_path = head_path[::-1]
+        token_path = token_path[::-1]
+        for i in range(min(len(head_path), len(token_path))):
+            if head_path[i] != token_path[i]:
+                return token_path[i]
+        if head_path[i-1] == token_path[i-1]:
+            return token_path[i]
+        else:
+            return 'S'
+    else:
+        return 'S'
 
+
+# PROBABILITY
 
 def train(train_set, target, n):
     # increment by 2 to get the targeted tag value (y)
@@ -163,7 +184,7 @@ def train(train_set, target, n):
             # creates sliding window of the desired size
             for window in np.lib.stride_tricks.sliding_window_view(data, size):
                 if len(window) == size:
-                    x = window[:size-1].tolist()
+                    x = window[:size-1][::-1].tolist()
                     # makes the target a binary of whether the y value is the target (Arg-B) or not - this is what we are ultimately trying to predict
                     y = (window[-1]==target).astype(int).tolist()
                     X[index].append(x)  
@@ -179,7 +200,7 @@ def predict(models, X):
         else:
             probabilities.append(np.array([0]))
     # Find the max probability for any window size and return it
-    print(probabilities)
+    # print(probabilities)
     index = np.argmax(probabilities)
     return probabilities[index][0]
     
@@ -187,11 +208,12 @@ def predict(models, X):
 
 if __name__ == '__main__':
     client = CoreNLPClient(
-        annotators=['tokenize','ssplit', 'pos', 'lemma', 'ner', 'sentiment'], 
+        annotators=['tokenize','ssplit', 'pos', 'lemma', 'ner', 'sentiment', 'depparse'], 
         memory='4G', 
         endpoint='http://localhost:9002',
         be_quiet=True)
     client.start()
+    
     essayDir = 'data/ArgumentAnnotatedEssays-2.0 2/data/brat-project-final'
     for file in sorted(os.listdir(essayDir)):
         if ".ann" in file: 
@@ -218,7 +240,6 @@ if __name__ == '__main__':
     adjust_sen = 0
     for k, para in enumerate(paragraphs):
         document = client.annotate(para)   
-        # sentence_data = []
         for i, sent in enumerate(document.sentence):
             component_i = preprocess_components(components)
             for j, token in enumerate(sent.token):
@@ -242,7 +263,8 @@ if __name__ == '__main__':
                     'precedesLCA':None,
                     'followsLCAPath':None,
                     'precedesLCAPath':None,
-                    'lexsyn':None,
+                    'head':get_head(sent.basicDependencies, j+1),
+                    'uppermost':None,
                     'probability':None,
                     'IOB':iob(start, component_i)
                 }
@@ -251,18 +273,20 @@ if __name__ == '__main__':
             depth = tree_depth(sent.parseTree, 0)
             # print(depth)
             for index, t in enumerate(sentence_data):
+                t['uppermost'] = uppermost(sent.parseTree, sentence_data[t['head']-1]['token'], t['token'])
+                t['head'] = '-'.join([sentence_data[t['head']-1]['token'], str(t['head'])])
                 if index == 0:
                     t["precedesLCAPath"] = -1
-                    lca_output = LCA(sent.parseTree, sentence_data[index]['pos'], None, sentence_data[index+1]['pos'], depth)
+                    lca_output = LCA(sent.parseTree, sentence_data[index]['token'], None, sentence_data[index+1]['token'], depth)
                     t['followsLCAPath'] = lca_output[0][0]
                     t["followsLCA"] = lca_output[0][1]
                 elif index == len(sentence_data) - 1:
                     t["followsLCAPath"] = -1
-                    lca_output = LCA(sent.parseTree, sentence_data[index]['pos'], sentence_data[index-1]['pos'], None, depth)
+                    lca_output = LCA(sent.parseTree, sentence_data[index]['token'], sentence_data[index-1]['token'], None, depth)
                     t['precedesLCAPath'] = lca_output[0][0]
                     t["precedesLCA"] = lca_output[0][1]
                 else:
-                    lca_output = LCA(sent.parseTree, sentence_data[index]['pos'], sentence_data[index-1]['pos'], sentence_data[index+1]['pos'], depth)
+                    lca_output = LCA(sent.parseTree, sentence_data[index]['token'], sentence_data[index-1]['token'], sentence_data[index+1]['token'], depth)
                     t['precedesLCAPath'] = lca_output[0][0]
                     t["precedesLCA"] = lca_output[0][1]
                     t['followsLCAPath'] = lca_output[1][0]
@@ -276,12 +300,12 @@ if __name__ == '__main__':
         if i == 0:
             d['probability'] = 0.5
         elif i == 1:
-            d['probability'] = predict(models, [convert[d['IOB']], None, None])
+            d['probability'] = predict(models, [convert[data[i-1]['IOB']], None, None])
         elif i == 2:
-            d['probability'] = predict(models, [convert[d['IOB']], convert[data[i-1]['IOB']], None])
+            d['probability'] = predict(models, [convert[data[i-1]['IOB']], convert[data[i-2]['IOB']], None])
         else:
-            d['probability'] = predict(models, [convert[d['IOB']], convert[data[i-1]['IOB']], convert[data[i-2]['IOB']]])
-    pd.DataFrame(data).to_csv("test.csv", index=False)
+            d['probability'] = predict(models, [convert[data[i-1]['IOB']], convert[data[i-2]['IOB']], convert[data[i-3]['IOB']]])
+    pd.DataFrame(data).to_csv("identification.csv", index=False)
 
 
 
