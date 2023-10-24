@@ -107,9 +107,9 @@ def preceding_LCA(parse_tree, token, preceding):
         for i in range(min(len(preceding_path), len(token_path))):
             if preceding_path[i] != token_path[i]:
                 
-                return i-1, token_path[i-1]
+                return i, token_path[i-1]
         if preceding_path[i-1] == token_path[i-1]:
-            return i-1, token_path[i-1]
+            return i, token_path[i-1]
     else:
         return 0, None
 
@@ -122,9 +122,9 @@ def following_LCA(parse_tree, token, following):
         token_path = token_path[::-1]
         for i in range(min(len(following_path), len(token_path))):
             if following_path[i] != token_path[i]:
-                return i-1, token_path[i-1]
+                return i, token_path[i-1]
         if following_path[i-1] == token_path[i-1]:
-            return i-1, token_path[i-1]
+            return i, token_path[i-1]
         else:
             return 0, None
     else:
