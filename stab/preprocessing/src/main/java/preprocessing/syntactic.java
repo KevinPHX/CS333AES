@@ -65,7 +65,7 @@ public static StanfordCoreNLP pipeline;
 	public static void LCA(Annotation annotation, String filename)
     {
 
-		File lca_file = new File("src/main/resources/LCA_info/"+filename);
+		File lca_file = new File("src/main/resources/syntactic/LCA_info/"+filename);
 		PrintWriter lca_output = null;
 		try {
 			lca_output = new PrintWriter(lca_file);
@@ -121,10 +121,86 @@ public static StanfordCoreNLP pipeline;
     	System.out.println("Finished processing " + filename);
     }
 	
-
+	
+	public static List<Tree> get_verbs(Tree tree) {
+		List<Tree> verbs = new ArrayList<Tree>();
+		for (Tree token : tree.getLeaves()) {
+			// given two verbs with indices i and j with i < j in the list tree.getLeaves(), 
+			// the verb at index j is to the right of the verb at index i
+			if (token.ancestor(1,tree).label().toString().contains("VB")) {
+				verbs.add(token);
+			}
+		}
+		return verbs;
+	} 
+		
+	
+	public static void subclauses(Annotation annotation, String filename) {
+		PrintWriter verb_file = null;
+		PrintWriter tree_file = null;
+		try {
+			verb_file = new PrintWriter(new File("src/main/resources/syntactic/main_verbs/"+filename));
+			tree_file = new PrintWriter(new File("src/main/resources/syntactic/parse_tree_info/"+filename));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		int sentIdx = 0;
+		for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
+	    {
+			Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
+			//Get depth of parse tree 
+			int depth = tree.depth(); 
+			//Get number of subordinate clauses and main verb 
+			int num_subclauses = 0;
+			HashMap<Integer,List<Tree>> verbs = new HashMap<Integer,List<Tree>>();
+			for (Tree node : tree.preOrderNodeList()) {
+				if (node.label().toString().equals("S")) {
+					for (Tree child : node.getChildrenAsList()) {
+						if (child.label().toString().contains("P")) {
+							num_subclauses ++;
+						}
+						if (child.label().toString().contains("VP")) {
+							verbs.put(child.nodeNumber(tree), syntactic.get_verbs(child));
+						}
+					}
+				}
+			}
+			for (int idx : verbs.keySet()) {
+				for (int S_idx : verbs.keySet()) {
+					if (verbs.get(S_idx).size() == 1) {continue;}
+					if (S_idx < idx) {
+						for (Tree verb : verbs.get(idx)) {
+							verbs.get(S_idx).remove(verb);
+						}
+					}
+				}
+			}
+			for (int idx : verbs.keySet()) {
+				int last_idx = verbs.get(idx).size()-1;
+				Tree main_verb; 
+				if(last_idx >= 0) {
+					 main_verb = verbs.get(idx).get(last_idx);
+					verb_file.println(sentIdx + "\t" + main_verb.label()); 
+//					System.out.println(sentIdx + "\t" + main_verb.label());
+				}
+			}
+			tree_file.println(sentIdx + "\t" + "tree_depth: " + depth);
+			tree_file.println(sentIdx + "\t" + "num_subclauses: " + num_subclauses);
+			sentIdx ++;				
+	    }
+		verb_file.close();
+		tree_file.close();
+		System.out.println("Finished processing " + filename);
+	 }
+	
 	
 	 public static void main(String[] args) throws IOException {
 		 syntactic.init();
+//		 String essay = "It has been claimed that through cooperation, children can learn about interpersonal skills which are significant in the future life of all students.";
+//		 essay = "In order to survive in the competition, companies continue to improve their products and service, and as a result, the whole society prospers.";
+//		 Annotation annotation = syntactic.annotate(essay);
+//		 syntactic.subclauses(annotation,"sample.txt");
 		 String dirname = "src/main/resources/essays";
 	     File dir = new File(dirname);
 	     File[] files = dir.listFiles();
@@ -133,7 +209,8 @@ public static StanfordCoreNLP pipeline;
 	    	String essay_name = filename.replace(dirname + "/","");
 	    	String essay = new String(Files.readAllBytes(Paths.get(filename)));
 	    	Annotation annotation = syntactic.annotate(essay);
-	    	syntactic.LCA(annotation, essay_name);
+//	    	syntactic.LCA(annotation, essay_name);
+	    	syntactic.subclauses(annotation,essay_name);
 		    }		
 	 } 
 

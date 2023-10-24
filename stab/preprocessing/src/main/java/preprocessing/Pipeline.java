@@ -34,16 +34,6 @@ public class Pipeline {
 		return pipeline.process(text);
 	}
 	
-	public static ArrayList<Tree> run_parser(Annotation annotation)
-    {
-		ArrayList<Tree> trees = new ArrayList<Tree>();
-    	for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
-	    {
-			Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
-			trees.add(tree);
-	    } 
-    	return trees;
-    }
 	
     public static List<List>[] run_sentiment_analysis(Annotation annotation, Boolean getDetails)
     {
@@ -99,7 +89,6 @@ public class Pipeline {
 
     public static void run_pipeline(String text, String filename){
         File token_file = new File("src/main/resources/token_level/"+filename);
-        File parse_file = new File("src/main/resources/parse_trees/"+filename);
 		File sent_file = new File("src/main/resources/sentence_sentiment/"+filename);
 
 		Annotation annotation = Pipeline.annotate(text);
@@ -168,28 +157,16 @@ public class Pipeline {
 			e.printStackTrace();
 		}
 
-		PrintWriter parse_output = null;
-		try {
-			parse_output = new PrintWriter(parse_file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
 
 		List<List>[] sent_analysis = Pipeline.run_sentiment_analysis(annotation,true);
     	List<List> score_info = sent_analysis[1];
-    	ArrayList<Tree> parse_trees = Pipeline.run_parser(annotation);
     	sentIdx = 0;
     	for(List sent_info : score_info) {
     		sent_output.println(sent_info);
-    		parse_output.println(parse_trees.get(sentIdx).toString());
         	sentIdx++;
     	}
     	sent_output.close();
-    	parse_output.close();
     	System.out.println("Finished processing sentiments of " + filename);
-    	System.out.println("Finished processing parse trees of " + filename);
-
 
     }
     

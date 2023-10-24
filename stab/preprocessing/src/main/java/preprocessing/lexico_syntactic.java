@@ -73,7 +73,7 @@ public class lexico_syntactic {
 	}
 	
 	public static void run_parser(Annotation annotation, String filename) {
-		File lex_file = new File("src/main/resources/lexico_syntactic/"+filename);
+		File lex_file = new File("src/main/resources/syntactic/lexico_syntactic/"+filename);
 		lex_output = null;
 		try {
 			lex_output = new PrintWriter(lex_file);
@@ -137,51 +137,9 @@ public class lexico_syntactic {
 		
 	}
 	
-//	public static void main_verb(Tree tree) {
-//		for (Tree node : tree.preOrderNodeList()) {
-//			if (node.label().toString().contains("VB")) {
-//				
-//			}
-//		}
-//		
-//	}
-	public static void subclauses(Annotation annotation) {
-		 
-		 for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
-		    {
-				Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
-				//Get depth of parse tree 
-				int depth = tree.depth(); 
-				//Get number of subordinate clauses and main verb 
-				int num_subclauses = 0;
-				for (Tree node : tree.preOrderNodeList()) {
-					if (node.label().toString().equals("S")) {
-						for (Tree child : node.getChildrenAsList()) {
-							if (child.label().toString().contains("P")) {
-								num_subclauses ++;
-							}
-							// now get main verb of this S component  
-//							if (child.label().toString().equals("VP")) {
-//								lexico_syntactic.main_verb(child);
-//							}
-						}
-					}
-					
-				}
-				System.out.println(num_subclauses);
-				
-				//The main verb is the rightmost verb of the VP 
-				
-		    }
-	 }
-	
 	
     public static void main(String[] args) throws IOException {
-		 lexico_syntactic.init();
-//		 String essay = "through cooperation, children can learn about interpersonal skills which are significant in the future life of all students";
-//		 Annotation annotation = syntactic.annotate(essay);
-//		 lexico_syntactic.subclauses(annotation);
-		 
+		 lexico_syntactic.init();	 
 		 String dirname = "src/main/resources/essays";
 	     File dir = new File(dirname);
 	     File[] files = dir.listFiles();
