@@ -153,7 +153,7 @@ def get_head(tree, index):
     return 0
 def uppermost(parse_tree, head, token):
     if head == token:
-        return 'ROOT'
+        return 'ROOT', ['ROOT']
     head_path = []
     token_path = []
     if tree_path(parse_tree, token, token_path) and tree_path(parse_tree, head, head_path):
@@ -161,14 +161,47 @@ def uppermost(parse_tree, head, token):
         token_path = token_path[::-1]
         for i in range(min(len(head_path), len(token_path))):
             if head_path[i] != token_path[i]:
-                return token_path[i]
+                return token_path[i], token_path[:i+1]
         if head_path[i-1] == token_path[i-1]:
-            return token_path[i]
+            return token_path[i], token_path[:i+1]
         else:
-            return 'S'
+            return 'S',['ROOT', 'S']
     else:
-        return 'S'
+        return 'S', ['ROOT', 'S']
 
+def uppermost_child(parse_tree, true_path):
+    if len(true_path) == 1 :
+        if parse_tree.child:
+            return parse_tree.child[0].value
+    if parse_tree.value ==true_path[0]:
+        for child in parse_tree.child:
+            if child.value == true_path[1]:
+                return uppermost_child(child, true_path[1:])
+
+def uppermost_right(parse_tree, true_path):
+    if len(true_path) == 1 :
+        if parse_tree.child:
+            return parse_tree.child[-1].value
+    if parse_tree.value ==true_path[0]:
+        for child in parse_tree.child:
+            if child.value == true_path[1]:
+                return uppermost_right(child, true_path[1:])
+    
+
+#     if parse_tree.value == true_path[0]:        
+#         path.append(parse_tree.value)
+#     if len(true_path) == 0:
+#         return False
+#     for child in parse_tree.child:
+#         temp_check = tree_path(child, true_path[1:], path)
+#         if temp_check:
+#             path.append(parse_tree.value)
+#             return True
+#     return False
+
+# def uppermost_child():
+
+#     return
 
 # PROBABILITY
 
@@ -210,7 +243,7 @@ if __name__ == '__main__':
     client = CoreNLPClient(
         annotators=['tokenize','ssplit', 'pos', 'lemma', 'ner', 'sentiment', 'depparse'], 
         memory='4G', 
-        endpoint='http://localhost:9002',
+        endpoint='http://localhost:9005',
         be_quiet=True)
     client.start()
     
@@ -265,6 +298,9 @@ if __name__ == '__main__':
                     'precedesLCAPath':None,
                     'head':get_head(sent.basicDependencies, j+1),
                     'uppermost':None,
+                    'uppermost_child':None,
+                    'right_sibling':None,
+                    'right_sibling_head':None,
                     'probability':None,
                     'IOB':iob(start, component_i)
                 }
@@ -273,7 +309,12 @@ if __name__ == '__main__':
             depth = tree_depth(sent.parseTree, 0)
             # print(depth)
             for index, t in enumerate(sentence_data):
-                t['uppermost'] = uppermost(sent.parseTree, sentence_data[t['head']-1]['token'], t['token'])
+                upper_path = uppermost(sent.parseTree, sentence_data[t['head']-1]['token'], t['token'])
+                t['uppermost'] = upper_path[0]
+                t['uppermost_child'] = uppermost_child(sent.parseTree, upper_path[1])
+                right_sib = uppermost_right(sent.parseTree, upper_path[1])
+                if right_sib != upper_path[0] or right_sib != t['token']:
+                    t['right_sibling'] = uppermost_right(sent.parseTree, upper_path[1])
                 t['head'] = '-'.join([sentence_data[t['head']-1]['token'], str(t['head'])])
                 if index == 0:
                     t["precedesLCAPath"] = -1
