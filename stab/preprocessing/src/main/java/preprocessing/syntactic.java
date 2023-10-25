@@ -138,9 +138,11 @@ public static StanfordCoreNLP pipeline;
 	public static void subclauses(Annotation annotation, String filename) {
 		PrintWriter verb_file = null;
 		PrintWriter tree_file = null;
+		PrintWriter prod_file = null;
 		try {
 			verb_file = new PrintWriter(new File("src/main/resources/syntactic/main_verbs/"+filename));
 			tree_file = new PrintWriter(new File("src/main/resources/syntactic/parse_tree_info/"+filename));
+			prod_file = new PrintWriter(new File("src/main/resources/syntactic/production_rules/"+filename));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -155,16 +157,18 @@ public static StanfordCoreNLP pipeline;
 			int num_subclauses = 0;
 			HashMap<Integer,List<Tree>> verbs = new HashMap<Integer,List<Tree>>();
 			for (Tree node : tree.preOrderNodeList()) {
-				if (node.label().toString().equals("S")) {
-					for (Tree child : node.getChildrenAsList()) {
-						if (child.label().toString().contains("P")) {
-							num_subclauses ++;
-						}
-						if (child.label().toString().contains("VP")) {
-							verbs.put(child.nodeNumber(tree), syntactic.get_verbs(child));
-						}
+				if (node.isLeaf()) {continue;}
+				for (Tree child : node.getChildrenAsList()){
+					if (child.isLeaf()) {continue;}
+					if (node.label().toString().equals("S")) {
+						num_subclauses ++;
+					} 
+					else if (child.label().toString().contains("VP")) {
+						verbs.put(child.nodeNumber(tree), syntactic.get_verbs(child));
 					}
+					prod_file.println(sentIdx + "\t" + node.label() + "-->" + child.label());
 				}
+					
 			}
 			for (int idx : verbs.keySet()) {
 				for (int S_idx : verbs.keySet()) {
@@ -191,6 +195,7 @@ public static StanfordCoreNLP pipeline;
 	    }
 		verb_file.close();
 		tree_file.close();
+		prod_file.close();
 		System.out.println("Finished processing " + filename);
 	 }
 	
@@ -210,6 +215,7 @@ public static StanfordCoreNLP pipeline;
 	    	String essay = new String(Files.readAllBytes(Paths.get(filename)));
 	    	Annotation annotation = syntactic.annotate(essay);
 //	    	syntactic.LCA(annotation, essay_name);
+//	    	lexico_syntactic.run_parser(annotation,essay_name);
 	    	syntactic.subclauses(annotation,essay_name);
 		    }		
 	 } 

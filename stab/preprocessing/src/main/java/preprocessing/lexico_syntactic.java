@@ -118,11 +118,11 @@ public class lexico_syntactic {
 					String lex_head = heads.get(c_idx);
 					if (lex_head.equals(token.label().toString())) {
 						child_idx = c_idx; 
-						lex_output.println("child_of_uppermost" + "\t" + label + "\t" + lex_head);
+						lex_output.println(token.label() + "\t" + "child_of_uppermost" + "\t" + label);
 					}
 					if (c_idx > child_idx) {
 						// right sibling 
-						lex_output.println("right_sibling_of_child " + "\t" + label + "\t" + lex_head);
+						lex_output.println(token.label() + "\t"+ "right_sibling_of_child " + "\t" + label + "\t" + lex_head);
 						break;
 					} 
 				}
@@ -136,22 +136,6 @@ public class lexico_syntactic {
 		System.out.println("Finished processing " + filename);
 		
 	}
-	
-	
-    public static void main(String[] args) throws IOException {
-		 lexico_syntactic.init();	 
-		 String dirname = "src/main/resources/essays";
-	     File dir = new File(dirname);
-	     File[] files = dir.listFiles();
-	     for (File f_name : files) {
-	    	String filename = f_name.toString();
-	    	String essay_name = filename.replace(dirname + "/","");
-	    	String essay = new String(Files.readAllBytes(Paths.get(filename)));
-		 	Annotation annotation = syntactic.annotate(essay);
-	    	lexico_syntactic.run_parser(annotation,essay_name);
-		    }		
-
-	 } 
 
 }
 

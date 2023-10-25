@@ -1,51 +1,51 @@
 It-1	NP
-child_of_uppermost	PRP	It-1
+It-1	child_of_uppermost	PRP
 is-2	VBZ
 always-3	ADVP
-child_of_uppermost	RB	always-3
+always-3	child_of_uppermost	RB
 said-4	ROOT
-child_of_uppermost	S	said-4
+said-4	child_of_uppermost	S
 that-5	IN
 competition-6	NP
-child_of_uppermost	NN	competition-6
+competition-6	child_of_uppermost	NN
 can-7	MD
 effectively-8	ADVP
-child_of_uppermost	RB	effectively-8
+effectively-8	child_of_uppermost	RB
 promote-9	SBAR
-child_of_uppermost	S	promote-9
+promote-9	child_of_uppermost	S
 the-10	DT
 development-11	NP
-child_of_uppermost	NP	development-11
-right_sibling_of_child 	PP	economy-13
+development-11	child_of_uppermost	NP
+development-11	right_sibling_of_child 	PP	economy-13
 of-12	IN
 economy-13	PP
-child_of_uppermost	NP	economy-13
+economy-13	child_of_uppermost	NP
 .-14	.
 [It-1	5, PRP	4, NP	3, is-2	8, VBZ	7, always-3	11, RB	10, ADVP	9, said-4	14, VBN	13, that-5	17, IN	16, competition-6	21, NN	20, NP	19, can-7	24, MD	23, effectively-8	27, RB	26, ADVP	25, promote-9	30, VB	29, the-10	34, DT	33, development-11	36, NN	35, NP	32, of-12	39, IN	38, economy-13	42, NN	41, NP	40, PP	37, NP	31, VP	28, VP	22, S	18, SBAR	15, VP	12, VP	6, .-14	44, .	43, S	2, ROOT	1]
 {1=said-4, 2=said-4, 3=It-1, 4=It-1, 5=It-1, 6=said-4, 7=is-2, 8=is-2, 9=always-3, 10=always-3, 11=always-3, 12=said-4, 13=said-4, 14=said-4, 15=promote-9, 16=that-5, 17=that-5, 18=promote-9, 19=competition-6, 20=competition-6, 21=competition-6, 22=promote-9, 23=can-7, 24=can-7, 25=effectively-8, 26=effectively-8, 27=effectively-8, 28=promote-9, 29=promote-9, 30=promote-9, 31=development-11, 32=development-11, 33=the-10, 34=the-10, 35=development-11, 36=development-11, 37=economy-13, 38=of-12, 39=of-12, 40=economy-13, 41=economy-13, 42=economy-13, 43=.-14, 44=.-14}
 
 In-1	IN
 order-2	PP
-child_of_uppermost	NP	order-2
+order-2	child_of_uppermost	NP
 to-3	TO
 survive-4	S
-child_of_uppermost	VP	survive-4
+survive-4	child_of_uppermost	VP
 in-5	IN
 the-6	DT
 competition-7	PP
-child_of_uppermost	NP	competition-7
+competition-7	child_of_uppermost	NP
 ,-8	,
 companies-9	NP
-child_of_uppermost	NNS	companies-9
+companies-9	child_of_uppermost	NNS
 continue-10	ROOT
-child_of_uppermost	S	continue-10
+continue-10	child_of_uppermost	S
 to-11	TO
 improve-12	S
-child_of_uppermost	VP	improve-12
+improve-12	child_of_uppermost	VP
 their-13	PRP$
 products-14	NP
-child_of_uppermost	NNS	products-14
-right_sibling_of_child 	CC	and-15
+products-14	child_of_uppermost	NNS
+products-14	right_sibling_of_child 	CC	and-15
 and-15	CC
 service-16	NN
 ,-17	,
@@ -53,66 +53,66 @@ and-18	CC
 as-19	IN
 a-20	DT
 result-21	PP
-child_of_uppermost	NP	result-21
+result-21	child_of_uppermost	NP
 ,-22	,
 the-23	DT
 whole-24	JJ
 society-25	NP
-child_of_uppermost	NN	society-25
+society-25	child_of_uppermost	NN
 prospers-26	S
-child_of_uppermost	VP	prospers-26
+prospers-26	child_of_uppermost	VP
 .-27	.
 [In-1	5, IN	4, order-2	8, NN	7, to-3	12, TO	11, survive-4	15, VB	14, in-5	18, IN	17, the-6	21, DT	20, competition-7	23, NN	22, NP	19, PP	16, VP	13, VP	10, S	9, NP	6, PP	3, ,-8	25, ,	24, companies-9	29, NNS	28, NP	27, continue-10	32, VBP	31, to-11	36, TO	35, improve-12	39, VB	38, their-13	42, PRP$	41, products-14	44, NNS	43, and-15	46, CC	45, service-16	48, NN	47, NP	40, VP	37, VP	34, S	33, VP	30, S	26, ,-17	50, ,	49, and-18	52, CC	51, as-19	56, IN	55, a-20	59, DT	58, result-21	61, NN	60, NP	57, PP	54, ,-22	63, ,	62, the-23	66, DT	65, whole-24	68, JJ	67, society-25	70, NN	69, NP	64, prospers-26	73, VBZ	72, VP	71, S	53, .-27	75, .	74, S	2, ROOT	1]
 {1=continue-10, 2=continue-10, 3=order-2, 4=In-1, 5=In-1, 6=order-2, 7=order-2, 8=order-2, 9=survive-4, 10=survive-4, 11=to-3, 12=to-3, 13=survive-4, 14=survive-4, 15=survive-4, 16=competition-7, 17=in-5, 18=in-5, 19=competition-7, 20=the-6, 21=the-6, 22=competition-7, 23=competition-7, 24=,-8, 25=,-8, 26=continue-10, 27=companies-9, 28=companies-9, 29=companies-9, 30=continue-10, 31=continue-10, 32=continue-10, 33=improve-12, 34=improve-12, 35=to-11, 36=to-11, 37=improve-12, 38=improve-12, 39=improve-12, 40=products-14, 41=their-13, 42=their-13, 43=products-14, 44=products-14, 45=and-15, 46=and-15, 47=service-16, 48=service-16, 49=,-17, 50=,-17, 51=and-18, 52=and-18, 53=prospers-26, 54=result-21, 55=as-19, 56=as-19, 57=result-21, 58=a-20, 59=a-20, 60=result-21, 61=result-21, 62=,-22, 63=,-22, 64=society-25, 65=the-23, 66=the-23, 67=whole-24, 68=whole-24, 69=society-25, 70=society-25, 71=prospers-26, 72=prospers-26, 73=prospers-26, 74=.-27, 75=.-27}
 
 However-1	ADVP
-child_of_uppermost	RB	However-1
+However-1	child_of_uppermost	RB
 ,-2	,
 when-3	WHADVP
-child_of_uppermost	WRB	when-3
+when-3	child_of_uppermost	WRB
 we-4	NP
 discuss-5	SBAR
-child_of_uppermost	S	discuss-5
+discuss-5	child_of_uppermost	S
 the-6	DT
 issue-7	NP
-child_of_uppermost	NP	issue-7
-right_sibling_of_child 	,	,-12
+issue-7	child_of_uppermost	NP
+issue-7	right_sibling_of_child 	,	,-12
 of-8	IN
 competition-9	PP
-child_of_uppermost	NP	competition-9
+competition-9	child_of_uppermost	NP
 or-10	CC
 cooperation-11	NN
 ,-12	,
 what-13	WHNP
-child_of_uppermost	WP	what-13
+what-13	child_of_uppermost	WP
 we-14	NP
-child_of_uppermost	PRP	we-14
+we-14	child_of_uppermost	PRP
 are-15	VBP
 concerned-16	SBAR
-child_of_uppermost	S	concerned-16
+concerned-16	child_of_uppermost	S
 about-17	PP
-child_of_uppermost	IN	about-17
+about-17	child_of_uppermost	IN
 is-18	VBZ
 not-19	RB
 the-20	DT
 whole-21	JJ
 society-22	ROOT
-child_of_uppermost	S	society-22
+society-22	child_of_uppermost	S
 ,-23	,
 but-24	CC
 the-25	DT
 development-26	NP
-child_of_uppermost	NP	development-26
-right_sibling_of_child 	PP	life-32
+development-26	child_of_uppermost	NP
+development-26	right_sibling_of_child 	PP	life-32
 of-27	IN
 an-28	DT
 individual-29	NP
-child_of_uppermost	NN	individual-29
-right_sibling_of_child 	POS	's-30
+individual-29	child_of_uppermost	NN
+individual-29	right_sibling_of_child 	POS	's-30
 's-30	POS
 whole-31	JJ
 life-32	PP
-child_of_uppermost	NP	life-32
+life-32	child_of_uppermost	NP
 .-33	.
 [However-1	5, RB	4, ADVP	3, ,-2	7, ,	6, when-3	11, WRB	10, WHADVP	9, we-4	15, PRP	14, NP	13, discuss-5	18, VBP	17, the-6	23, DT	22, issue-7	25, NN	24, NP	21, of-8	28, IN	27, competition-9	31, NN	30, or-10	33, CC	32, cooperation-11	35, NN	34, NP	29, PP	26, NP	20, ,-12	37, ,	36, what-13	41, WP	40, WHNP	39, we-14	45, PRP	44, NP	43, are-15	48, VBP	47, concerned-16	51, JJ	50, about-17	54, IN	53, PP	52, ADJP	49, VP	46, S	42, SBAR	38, NP	19, VP	16, S	12, SBAR	8, is-18	57, VBZ	56, not-19	59, RB	58, the-20	63, DT	62, whole-21	65, JJ	64, society-22	67, NN	66, NP	61, ,-23	69, ,	68, but-24	71, CC	70, the-25	75, DT	74, development-26	77, NN	76, NP	73, of-27	80, IN	79, an-28	84, DT	83, individual-29	86, NN	85, 's-30	88, POS	87, NP	82, whole-31	90, JJ	89, life-32	92, NN	91, NP	81, PP	78, NP	72, NP	60, VP	55, .-33	94, .	93, S	2, ROOT	1]
 {1=society-22, 2=society-22, 3=However-1, 4=However-1, 5=However-1, 6=,-2, 7=,-2, 8=discuss-5, 9=when-3, 10=when-3, 11=when-3, 12=discuss-5, 13=we-4, 14=we-4, 15=we-4, 16=discuss-5, 17=discuss-5, 18=discuss-5, 19=issue-7, 20=issue-7, 21=issue-7, 22=the-6, 23=the-6, 24=issue-7, 25=issue-7, 26=competition-9, 27=of-8, 28=of-8, 29=competition-9, 30=competition-9, 31=competition-9, 32=or-10, 33=or-10, 34=cooperation-11, 35=cooperation-11, 36=,-12, 37=,-12, 38=concerned-16, 39=what-13, 40=what-13, 41=what-13, 42=concerned-16, 43=we-14, 44=we-14, 45=we-14, 46=concerned-16, 47=are-15, 48=are-15, 49=concerned-16, 50=concerned-16, 51=concerned-16, 52=about-17, 53=about-17, 54=about-17, 55=society-22, 56=is-18, 57=is-18, 58=not-19, 59=not-19, 60=society-22, 61=society-22, 62=the-20, 63=the-20, 64=whole-21, 65=whole-21, 66=society-22, 67=society-22, 68=,-23, 69=,-23, 70=but-24, 71=but-24, 72=development-26, 73=development-26, 74=the-25, 75=the-25, 76=development-26, 77=development-26, 78=life-32, 79=of-27, 80=of-27, 81=life-32, 82=individual-29, 83=an-28, 84=an-28, 85=individual-29, 86=individual-29, 87='s-30, 88='s-30, 89=whole-31, 90=whole-31, 91=life-32, 92=life-32, 93=.-33, 94=.-33}
@@ -120,114 +120,114 @@ child_of_uppermost	NP	life-32
 From-1	IN
 this-2	DT
 point-3	PP
-child_of_uppermost	NP	point-3
+point-3	child_of_uppermost	NP
 of-4	IN
 view-5	PP
-child_of_uppermost	NP	view-5
+view-5	child_of_uppermost	NP
 ,-6	,
 I-7	NP
-child_of_uppermost	PRP	I-7
+I-7	child_of_uppermost	PRP
 firmly-8	ADVP
-child_of_uppermost	RB	firmly-8
+firmly-8	child_of_uppermost	RB
 believe-9	ROOT
-child_of_uppermost	S	believe-9
+believe-9	child_of_uppermost	S
 that-10	IN
 we-11	NP
-child_of_uppermost	PRP	we-11
+we-11	child_of_uppermost	PRP
 should-12	MD
 attach-13	SBAR
-child_of_uppermost	S	attach-13
+attach-13	child_of_uppermost	S
 more-14	JJR
 importance-15	NP
-child_of_uppermost	NN	importance-15
+importance-15	child_of_uppermost	NN
 to-16	IN
 cooperation-17	PP
-child_of_uppermost	NP	cooperation-17
+cooperation-17	child_of_uppermost	NP
 during-18	IN
 primary-19	JJ
 education-20	PP
-child_of_uppermost	NP	education-20
+education-20	child_of_uppermost	NP
 .-21	.
 [From-1	5, IN	4, this-2	9, DT	8, point-3	11, NN	10, NP	7, of-4	14, IN	13, view-5	17, NN	16, NP	15, PP	12, NP	6, PP	3, ,-6	19, ,	18, I-7	22, PRP	21, NP	20, firmly-8	25, RB	24, ADVP	23, believe-9	28, VBP	27, that-10	31, IN	30, we-11	35, PRP	34, NP	33, should-12	38, MD	37, attach-13	41, VB	40, more-14	44, JJR	43, importance-15	46, NN	45, NP	42, to-16	49, IN	48, cooperation-17	52, NN	51, NP	50, PP	47, during-18	55, IN	54, primary-19	58, JJ	57, education-20	60, NN	59, NP	56, PP	53, VP	39, VP	36, S	32, SBAR	29, VP	26, .-21	62, .	61, S	2, ROOT	1]
 {1=believe-9, 2=believe-9, 3=point-3, 4=From-1, 5=From-1, 6=point-3, 7=point-3, 8=this-2, 9=this-2, 10=point-3, 11=point-3, 12=view-5, 13=of-4, 14=of-4, 15=view-5, 16=view-5, 17=view-5, 18=,-6, 19=,-6, 20=I-7, 21=I-7, 22=I-7, 23=firmly-8, 24=firmly-8, 25=firmly-8, 26=believe-9, 27=believe-9, 28=believe-9, 29=attach-13, 30=that-10, 31=that-10, 32=attach-13, 33=we-11, 34=we-11, 35=we-11, 36=attach-13, 37=should-12, 38=should-12, 39=attach-13, 40=attach-13, 41=attach-13, 42=importance-15, 43=more-14, 44=more-14, 45=importance-15, 46=importance-15, 47=cooperation-17, 48=to-16, 49=to-16, 50=cooperation-17, 51=cooperation-17, 52=cooperation-17, 53=education-20, 54=during-18, 55=during-18, 56=education-20, 57=primary-19, 58=primary-19, 59=education-20, 60=education-20, 61=.-21, 62=.-21}
 
 First-1	NP
-child_of_uppermost	NP	First-1
-right_sibling_of_child 	PP	all-3
+First-1	child_of_uppermost	NP
+First-1	right_sibling_of_child 	PP	all-3
 of-2	IN
 all-3	DT
 ,-4	,
 through-5	IN
 cooperation-6	PP
-child_of_uppermost	NP	cooperation-6
+cooperation-6	child_of_uppermost	NP
 ,-7	,
 children-8	NP
-child_of_uppermost	NNS	children-8
+children-8	child_of_uppermost	NNS
 can-9	MD
 learn-10	ROOT
-child_of_uppermost	S	learn-10
+learn-10	child_of_uppermost	S
 about-11	IN
 interpersonal-12	JJ
 skills-13	PP
-child_of_uppermost	NP	skills-13
+skills-13	child_of_uppermost	NP
 which-14	WHNP
-child_of_uppermost	WDT	which-14
+which-14	child_of_uppermost	WDT
 are-15	VBP
 significant-16	SBAR
-child_of_uppermost	S	significant-16
+significant-16	child_of_uppermost	S
 in-17	IN
 the-18	DT
 future-19	JJ
 life-20	PP
-child_of_uppermost	NP	life-20
+life-20	child_of_uppermost	NP
 of-21	IN
 all-22	DT
 students-23	PP
-child_of_uppermost	NP	students-23
+students-23	child_of_uppermost	NP
 .-24	.
 [First-1	6, NNP	5, NP	4, of-2	9, IN	8, all-3	12, DT	11, NP	10, PP	7, NP	3, ,-4	14, ,	13, through-5	17, IN	16, cooperation-6	20, NN	19, NP	18, PP	15, ,-7	22, ,	21, children-8	25, NNS	24, NP	23, can-9	28, MD	27, learn-10	31, VB	30, about-11	34, IN	33, interpersonal-12	38, JJ	37, skills-13	40, NNS	39, NP	36, which-14	44, WDT	43, WHNP	42, are-15	48, VBP	47, significant-16	51, JJ	50, in-17	54, IN	53, the-18	58, DT	57, future-19	60, JJ	59, life-20	62, NN	61, NP	56, of-21	65, IN	64, all-22	68, DT	67, students-23	70, NNS	69, NP	66, PP	63, NP	55, PP	52, ADJP	49, VP	46, S	45, SBAR	41, NP	35, PP	32, VP	29, VP	26, .-24	72, .	71, S	2, ROOT	1]
 {1=learn-10, 2=learn-10, 3=First-1, 4=First-1, 5=First-1, 6=First-1, 7=all-3, 8=of-2, 9=of-2, 10=all-3, 11=all-3, 12=all-3, 13=,-4, 14=,-4, 15=cooperation-6, 16=through-5, 17=through-5, 18=cooperation-6, 19=cooperation-6, 20=cooperation-6, 21=,-7, 22=,-7, 23=children-8, 24=children-8, 25=children-8, 26=learn-10, 27=can-9, 28=can-9, 29=learn-10, 30=learn-10, 31=learn-10, 32=skills-13, 33=about-11, 34=about-11, 35=skills-13, 36=skills-13, 37=interpersonal-12, 38=interpersonal-12, 39=skills-13, 40=skills-13, 41=significant-16, 42=which-14, 43=which-14, 44=which-14, 45=significant-16, 46=significant-16, 47=are-15, 48=are-15, 49=significant-16, 50=significant-16, 51=significant-16, 52=life-20, 53=in-17, 54=in-17, 55=life-20, 56=life-20, 57=the-18, 58=the-18, 59=future-19, 60=future-19, 61=life-20, 62=life-20, 63=students-23, 64=of-21, 65=of-21, 66=students-23, 67=all-22, 68=all-22, 69=students-23, 70=students-23, 71=.-24, 72=.-24}
 
 What-1	WHNP
-child_of_uppermost	WP	What-1
+What-1	child_of_uppermost	WP
 we-2	NP
-child_of_uppermost	PRP	we-2
+we-2	child_of_uppermost	PRP
 acquired-3	SBAR
-child_of_uppermost	S	acquired-3
+acquired-3	child_of_uppermost	S
 from-4	IN
 team-5	NN
 work-6	PP
-child_of_uppermost	NP	work-6
+work-6	child_of_uppermost	NP
 is-7	ROOT
-child_of_uppermost	S	is-7
+is-7	child_of_uppermost	S
 not-8	RB
 only-9	ADVP
-child_of_uppermost	RB	only-9
+only-9	child_of_uppermost	RB
 how-10	WHADVP
 to-11	TO
 achieve-12	SBAR
-child_of_uppermost	S	achieve-12
+achieve-12	child_of_uppermost	S
 the-13	DT
 same-14	JJ
 goal-15	NP
-child_of_uppermost	NN	goal-15
+goal-15	child_of_uppermost	NN
 with-16	IN
 others-17	PP
 but-18	RB
 more-19	RBR
 importantly-20	ADVP
-child_of_uppermost	RB	importantly-20
+importantly-20	child_of_uppermost	RB
 ,-21	,
 how-22	WHADVP
-child_of_uppermost	WRB	how-22
+how-22	child_of_uppermost	WRB
 to-23	TO
 get-24	SBAR
-child_of_uppermost	S	get-24
+get-24	child_of_uppermost	S
 along-25	PRT
-child_of_uppermost	RP	along-25
+along-25	child_of_uppermost	RP
 with-26	IN
 others-27	PP
-child_of_uppermost	NP	others-27
+others-27	child_of_uppermost	NP
 .-28	.
 [What-1	6, WP	5, WHNP	4, we-2	10, PRP	9, NP	8, acquired-3	13, VBD	12, from-4	16, IN	15, team-5	19, NN	18, work-6	21, NN	20, NP	17, PP	14, VP	11, S	7, SBAR	3, is-7	24, VBZ	23, not-8	26, RB	25, only-9	29, RB	28, ADVP	27, how-10	33, WRB	32, WHADVP	31, to-11	37, TO	36, achieve-12	40, VB	39, the-13	43, DT	42, same-14	45, JJ	44, goal-15	47, NN	46, NP	41, with-16	50, IN	49, others-17	53, NNS	52, NP	51, PP	48, but-18	56, RB	55, more-19	58, RBR	57, importantly-20	60, RB	59, ADVP	54, VP	38, VP	35, S	34, SBAR	30, ,-21	62, ,	61, how-22	66, WRB	65, WHADVP	64, to-23	70, TO	69, get-24	73, VB	72, along-25	76, RP	75, PRT	74, with-26	79, IN	78, others-27	82, NNS	81, NP	80, PP	77, VP	71, VP	68, S	67, SBAR	63, VP	22, .-28	84, .	83, S	2, ROOT	1]
 {1=is-7, 2=is-7, 3=acquired-3, 4=What-1, 5=What-1, 6=What-1, 7=acquired-3, 8=we-2, 9=we-2, 10=we-2, 11=acquired-3, 12=acquired-3, 13=acquired-3, 14=work-6, 15=from-4, 16=from-4, 17=work-6, 18=team-5, 19=team-5, 20=work-6, 21=work-6, 22=is-7, 23=is-7, 24=is-7, 25=not-8, 26=not-8, 27=only-9, 28=only-9, 29=only-9, 30=achieve-12, 31=how-10, 32=how-10, 33=how-10, 34=achieve-12, 35=achieve-12, 36=to-11, 37=to-11, 38=achieve-12, 39=achieve-12, 40=achieve-12, 41=goal-15, 42=the-13, 43=the-13, 44=same-14, 45=same-14, 46=goal-15, 47=goal-15, 48=others-17, 49=with-16, 50=with-16, 51=others-17, 52=others-17, 53=others-17, 54=importantly-20, 55=but-18, 56=but-18, 57=more-19, 58=more-19, 59=importantly-20, 60=importantly-20, 61=,-21, 62=,-21, 63=get-24, 64=how-22, 65=how-22, 66=how-22, 67=get-24, 68=get-24, 69=to-23, 70=to-23, 71=get-24, 72=get-24, 73=get-24, 74=along-25, 75=along-25, 76=along-25, 77=others-27, 78=with-26, 79=with-26, 80=others-27, 81=others-27, 82=others-27, 83=.-28, 84=.-28}
@@ -235,96 +235,96 @@ child_of_uppermost	NP	others-27
 During-1	IN
 the-2	DT
 process-3	PP
-child_of_uppermost	NP	process-3
+process-3	child_of_uppermost	NP
 of-4	IN
 cooperation-5	PP
-child_of_uppermost	NP	cooperation-5
+cooperation-5	child_of_uppermost	NP
 ,-6	,
 children-7	NP
-child_of_uppermost	NNS	children-7
+children-7	child_of_uppermost	NNS
 can-8	MD
 learn-9	ROOT
-child_of_uppermost	S	learn-9
+learn-9	child_of_uppermost	S
 about-10	IN
 how-11	WHADVP
 to-12	TO
 listen-13	PP
-child_of_uppermost	SBAR	listen-13
+listen-13	child_of_uppermost	SBAR
 to-14	TO
 opinions-15	PP
-child_of_uppermost	NP	opinions-15
+opinions-15	child_of_uppermost	NP
 of-16	IN
 others-17	PP
 ,-18	,
 how-19	WHADVP
 to-20	TO
 communicate-21	SBAR
-child_of_uppermost	SBAR	communicate-21
-right_sibling_of_child 	,	,-24
+communicate-21	child_of_uppermost	SBAR
+communicate-21	right_sibling_of_child 	,	,-24
 with-22	IN
 others-23	PP
-child_of_uppermost	NP	others-23
+others-23	child_of_uppermost	NP
 ,-24	,
 how-25	WHADVP
 to-26	TO
 think-27	SBAR
-child_of_uppermost	S	think-27
+think-27	child_of_uppermost	S
 comprehensively-28	ADVP
-child_of_uppermost	RB	comprehensively-28
+comprehensively-28	child_of_uppermost	RB
 ,-29	,
 and-30	CC
 even-31	RB
 how-32	WHADVP
-child_of_uppermost	WRB	how-32
+how-32	child_of_uppermost	WRB
 to-33	TO
 compromise-34	SBAR
-child_of_uppermost	S	compromise-34
+compromise-34	child_of_uppermost	S
 with-35	IN
 other-36	JJ
 team-37	NN
 members-38	PP
-child_of_uppermost	NP	members-38
+members-38	child_of_uppermost	NP
 when-39	WHADVP
-child_of_uppermost	WRB	when-39
+when-39	child_of_uppermost	WRB
 conflicts-40	NP
-child_of_uppermost	NNS	conflicts-40
+conflicts-40	child_of_uppermost	NNS
 occurred-41	SBAR
-child_of_uppermost	S	occurred-41
+occurred-41	child_of_uppermost	S
 .-42	.
 [During-1	5, IN	4, the-2	9, DT	8, process-3	11, NN	10, NP	7, of-4	14, IN	13, cooperation-5	17, NN	16, NP	15, PP	12, NP	6, PP	3, ,-6	19, ,	18, children-7	22, NNS	21, NP	20, can-8	25, MD	24, learn-9	28, VB	27, about-10	31, IN	30, how-11	35, WRB	34, WHADVP	33, to-12	39, TO	38, listen-13	42, VB	41, to-14	45, IN	44, opinions-15	49, NNS	48, NP	47, of-16	52, IN	51, others-17	55, NNS	54, NP	53, PP	50, NP	46, PP	43, VP	40, VP	37, S	36, SBAR	32, PP	29, ,-18	57, ,	56, how-19	62, WRB	61, WHADVP	60, to-20	66, TO	65, communicate-21	69, VB	68, with-22	72, IN	71, others-23	75, NNS	74, NP	73, PP	70, VP	67, VP	64, S	63, SBAR	59, ,-24	77, ,	76, how-25	81, WRB	80, WHADVP	79, to-26	85, TO	84, think-27	88, VB	87, comprehensively-28	91, RB	90, ADVP	89, VP	86, VP	83, S	82, SBAR	78, ,-29	93, ,	92, and-30	95, CC	94, even-31	99, RB	98, how-32	101, WRB	100, WHADVP	97, to-33	105, TO	104, compromise-34	108, VB	107, with-35	111, IN	110, other-36	114, JJ	113, team-37	116, NN	115, members-38	118, NNS	117, NP	112, PP	109, when-39	122, WRB	121, WHADVP	120, conflicts-40	126, NNS	125, NP	124, occurred-41	129, VBD	128, VP	127, S	123, SBAR	119, VP	106, VP	103, S	102, SBAR	96, SBAR	58, VP	26, VP	23, .-42	131, .	130, S	2, ROOT	1]
 {1=learn-9, 2=learn-9, 3=process-3, 4=During-1, 5=During-1, 6=process-3, 7=process-3, 8=the-2, 9=the-2, 10=process-3, 11=process-3, 12=cooperation-5, 13=of-4, 14=of-4, 15=cooperation-5, 16=cooperation-5, 17=cooperation-5, 18=,-6, 19=,-6, 20=children-7, 21=children-7, 22=children-7, 23=learn-9, 24=can-8, 25=can-8, 26=learn-9, 27=learn-9, 28=learn-9, 29=listen-13, 30=about-10, 31=about-10, 32=listen-13, 33=how-11, 34=how-11, 35=how-11, 36=listen-13, 37=listen-13, 38=to-12, 39=to-12, 40=listen-13, 41=listen-13, 42=listen-13, 43=opinions-15, 44=to-14, 45=to-14, 46=opinions-15, 47=opinions-15, 48=opinions-15, 49=opinions-15, 50=others-17, 51=of-16, 52=of-16, 53=others-17, 54=others-17, 55=others-17, 56=,-18, 57=,-18, 58=communicate-21, 59=communicate-21, 60=how-19, 61=how-19, 62=how-19, 63=communicate-21, 64=communicate-21, 65=to-20, 66=to-20, 67=communicate-21, 68=communicate-21, 69=communicate-21, 70=others-23, 71=with-22, 72=with-22, 73=others-23, 74=others-23, 75=others-23, 76=,-24, 77=,-24, 78=think-27, 79=how-25, 80=how-25, 81=how-25, 82=think-27, 83=think-27, 84=to-26, 85=to-26, 86=think-27, 87=think-27, 88=think-27, 89=comprehensively-28, 90=comprehensively-28, 91=comprehensively-28, 92=,-29, 93=,-29, 94=and-30, 95=and-30, 96=compromise-34, 97=how-32, 98=even-31, 99=even-31, 100=how-32, 101=how-32, 102=compromise-34, 103=compromise-34, 104=to-33, 105=to-33, 106=compromise-34, 107=compromise-34, 108=compromise-34, 109=members-38, 110=with-35, 111=with-35, 112=members-38, 113=other-36, 114=other-36, 115=team-37, 116=team-37, 117=members-38, 118=members-38, 119=occurred-41, 120=when-39, 121=when-39, 122=when-39, 123=occurred-41, 124=conflicts-40, 125=conflicts-40, 126=conflicts-40, 127=occurred-41, 128=occurred-41, 129=occurred-41, 130=.-42, 131=.-42}
 
 All-1	NP
-child_of_uppermost	NP	All-1
-right_sibling_of_child 	PP	skills-4
+All-1	child_of_uppermost	NP
+All-1	right_sibling_of_child 	PP	skills-4
 of-2	IN
 these-3	DT
 skills-4	PP
-child_of_uppermost	NP	skills-4
+skills-4	child_of_uppermost	NP
 help-5	ROOT
-child_of_uppermost	S	help-5
+help-5	child_of_uppermost	S
 them-6	NP
 to-7	TO
 get-8	S
-child_of_uppermost	VP	get-8
+get-8	child_of_uppermost	VP
 on-9	RB
 well-10	ADVP
-child_of_uppermost	RB	well-10
+well-10	child_of_uppermost	RB
 with-11	IN
 other-12	JJ
 people-13	PP
-child_of_uppermost	NP	people-13
+people-13	child_of_uppermost	NP
 and-14	CC
 will-15	MD
 benefit-16	VP
-child_of_uppermost	VP	benefit-16
+benefit-16	child_of_uppermost	VP
 them-17	NP
-child_of_uppermost	PRP	them-17
+them-17	child_of_uppermost	PRP
 for-18	IN
 the-19	DT
 whole-20	JJ
 life-21	PP
-child_of_uppermost	NP	life-21
+life-21	child_of_uppermost	NP
 .-22	.
 [All-1	6, DT	5, NP	4, of-2	9, IN	8, these-3	12, DT	11, skills-4	14, NNS	13, NP	10, PP	7, NP	3, help-5	18, VBP	17, them-6	21, PRP	20, NP	19, to-7	25, TO	24, get-8	28, VB	27, on-9	31, RB	30, well-10	33, RB	32, ADVP	29, with-11	36, IN	35, other-12	39, JJ	38, people-13	41, NNS	40, NP	37, PP	34, VP	26, VP	23, S	22, VP	16, and-14	43, CC	42, will-15	46, MD	45, benefit-16	49, VB	48, them-17	52, PRP	51, NP	50, for-18	55, IN	54, the-19	58, DT	57, whole-20	60, JJ	59, life-21	62, NN	61, NP	56, PP	53, VP	47, VP	44, VP	15, .-22	64, .	63, S	2, ROOT	1]
 {1=help-5, 2=help-5, 3=All-1, 4=All-1, 5=All-1, 6=All-1, 7=skills-4, 8=of-2, 9=of-2, 10=skills-4, 11=these-3, 12=these-3, 13=skills-4, 14=skills-4, 15=help-5, 16=help-5, 17=help-5, 18=help-5, 19=them-6, 20=them-6, 21=them-6, 22=get-8, 23=get-8, 24=to-7, 25=to-7, 26=get-8, 27=get-8, 28=get-8, 29=well-10, 30=on-9, 31=on-9, 32=well-10, 33=well-10, 34=people-13, 35=with-11, 36=with-11, 37=people-13, 38=other-12, 39=other-12, 40=people-13, 41=people-13, 42=and-14, 43=and-14, 44=benefit-16, 45=will-15, 46=will-15, 47=benefit-16, 48=benefit-16, 49=benefit-16, 50=them-17, 51=them-17, 52=them-17, 53=life-21, 54=for-18, 55=for-18, 56=life-21, 57=the-19, 58=the-19, 59=whole-20, 60=whole-20, 61=life-21, 62=life-21, 63=.-22, 64=.-22}
@@ -333,309 +333,309 @@ On-1	IN
 the-2	DT
 other-3	JJ
 hand-4	PP
-child_of_uppermost	NP	hand-4
+hand-4	child_of_uppermost	NP
 ,-5	,
 the-6	DT
 significance-7	NP
-child_of_uppermost	NP	significance-7
-right_sibling_of_child 	PP	competition-9
+significance-7	child_of_uppermost	NP
+significance-7	right_sibling_of_child 	PP	competition-9
 of-8	IN
 competition-9	PP
-child_of_uppermost	NP	competition-9
+competition-9	child_of_uppermost	NP
 is-10	VBZ
 that-11	ROOT
-child_of_uppermost	S	that-11
+that-11	child_of_uppermost	S
 how-12	WHADVP
-child_of_uppermost	WRB	how-12
+how-12	child_of_uppermost	WRB
 to-13	TO
 become-14	SBAR
-child_of_uppermost	S	become-14
+become-14	child_of_uppermost	S
 more-15	JJR
 excellence-16	NP
-child_of_uppermost	NN	excellence-16
+excellence-16	child_of_uppermost	NN
 to-17	TO
 gain-18	S
-child_of_uppermost	VP	gain-18
+gain-18	child_of_uppermost	VP
 the-19	DT
 victory-20	NP
-child_of_uppermost	NN	victory-20
+victory-20	child_of_uppermost	NN
 .-21	.
 [On-1	5, IN	4, the-2	8, DT	7, other-3	10, JJ	9, hand-4	12, NN	11, NP	6, PP	3, ,-5	14, ,	13, the-6	18, DT	17, significance-7	20, NN	19, NP	16, of-8	23, IN	22, competition-9	26, NN	25, NP	24, PP	21, NP	15, is-10	29, VBZ	28, that-11	32, DT	31, NP	30, how-12	36, WRB	35, WHADVP	34, to-13	40, TO	39, become-14	43, VB	42, more-15	46, JJR	45, excellence-16	48, NN	47, NP	44, to-17	52, TO	51, gain-18	55, VB	54, the-19	58, DT	57, victory-20	60, NN	59, NP	56, VP	53, VP	50, S	49, VP	41, VP	38, S	37, SBAR	33, VP	27, .-21	62, .	61, S	2, ROOT	1]
 {1=that-11, 2=that-11, 3=hand-4, 4=On-1, 5=On-1, 6=hand-4, 7=the-2, 8=the-2, 9=other-3, 10=other-3, 11=hand-4, 12=hand-4, 13=,-5, 14=,-5, 15=significance-7, 16=significance-7, 17=the-6, 18=the-6, 19=significance-7, 20=significance-7, 21=competition-9, 22=of-8, 23=of-8, 24=competition-9, 25=competition-9, 26=competition-9, 27=that-11, 28=is-10, 29=is-10, 30=that-11, 31=that-11, 32=that-11, 33=become-14, 34=how-12, 35=how-12, 36=how-12, 37=become-14, 38=become-14, 39=to-13, 40=to-13, 41=become-14, 42=become-14, 43=become-14, 44=excellence-16, 45=more-15, 46=more-15, 47=excellence-16, 48=excellence-16, 49=gain-18, 50=gain-18, 51=to-17, 52=to-17, 53=gain-18, 54=gain-18, 55=gain-18, 56=victory-20, 57=the-19, 58=the-19, 59=victory-20, 60=victory-20, 61=.-21, 62=.-21}
 
 Hence-1	ADVP
-child_of_uppermost	RB	Hence-1
+Hence-1	child_of_uppermost	RB
 it-2	NP
-child_of_uppermost	PRP	it-2
+it-2	child_of_uppermost	PRP
 is-3	VBZ
 always-4	ADVP
-child_of_uppermost	RB	always-4
+always-4	child_of_uppermost	RB
 said-5	ROOT
-child_of_uppermost	S	said-5
+said-5	child_of_uppermost	S
 that-6	IN
 competition-7	NP
-child_of_uppermost	NN	competition-7
+competition-7	child_of_uppermost	NN
 makes-8	SBAR
-child_of_uppermost	S	makes-8
+makes-8	child_of_uppermost	S
 the-9	DT
 society-10	NP
-child_of_uppermost	NN	society-10
+society-10	child_of_uppermost	NN
 more-11	RBR
 effective-12	S
-child_of_uppermost	ADJP	effective-12
+effective-12	child_of_uppermost	ADJP
 .-13	.
 [Hence-1	5, RB	4, ADVP	3, it-2	8, PRP	7, NP	6, is-3	11, VBZ	10, always-4	14, RB	13, ADVP	12, said-5	17, VBN	16, that-6	20, IN	19, competition-7	24, NN	23, NP	22, makes-8	27, VBZ	26, the-9	31, DT	30, society-10	33, NN	32, NP	29, more-11	36, RBR	35, effective-12	38, JJ	37, ADJP	34, S	28, VP	25, S	21, SBAR	18, VP	15, VP	9, .-13	40, .	39, S	2, ROOT	1]
 {1=said-5, 2=said-5, 3=Hence-1, 4=Hence-1, 5=Hence-1, 6=it-2, 7=it-2, 8=it-2, 9=said-5, 10=is-3, 11=is-3, 12=always-4, 13=always-4, 14=always-4, 15=said-5, 16=said-5, 17=said-5, 18=makes-8, 19=that-6, 20=that-6, 21=makes-8, 22=competition-7, 23=competition-7, 24=competition-7, 25=makes-8, 26=makes-8, 27=makes-8, 28=effective-12, 29=society-10, 30=the-9, 31=the-9, 32=society-10, 33=society-10, 34=effective-12, 35=more-11, 36=more-11, 37=effective-12, 38=effective-12, 39=.-13, 40=.-13}
 
 However-1	ADVP
-child_of_uppermost	RB	However-1
+However-1	child_of_uppermost	RB
 ,-2	,
 when-3	WHADVP
-child_of_uppermost	WRB	when-3
+when-3	child_of_uppermost	WRB
 we-4	NP
 consider-5	SBAR
-child_of_uppermost	S	consider-5
+consider-5	child_of_uppermost	S
 about-6	IN
 the-7	DT
 question-8	PP
-child_of_uppermost	NP	question-8
+question-8	child_of_uppermost	NP
 that-9	IN
 how-10	WHADVP
-child_of_uppermost	WRB	how-10
+how-10	child_of_uppermost	WRB
 to-11	TO
 win-12	SBAR
-child_of_uppermost	SBAR	win-12
+win-12	child_of_uppermost	SBAR
 the-13	DT
 game-14	NP
-child_of_uppermost	NN	game-14
+game-14	child_of_uppermost	NN
 ,-15	,
 we-16	NP
 always-17	ADVP
-child_of_uppermost	RB	always-17
+always-17	child_of_uppermost	RB
 find-18	ROOT
-child_of_uppermost	S	find-18
+find-18	child_of_uppermost	S
 that-19	IN
 we-20	NP
-child_of_uppermost	PRP	we-20
+we-20	child_of_uppermost	PRP
 need-21	SBAR
-child_of_uppermost	S	need-21
+need-21	child_of_uppermost	S
 the-22	DT
 cooperation-23	NP
-child_of_uppermost	NN	cooperation-23
+cooperation-23	child_of_uppermost	NN
 .-24	.
 [However-1	5, RB	4, ADVP	3, ,-2	7, ,	6, when-3	11, WRB	10, WHADVP	9, we-4	15, PRP	14, NP	13, consider-5	18, VBP	17, about-6	21, IN	20, the-7	24, DT	23, question-8	26, NN	25, NP	22, PP	19, that-9	29, IN	28, how-10	33, WRB	32, WHADVP	31, to-11	37, TO	36, win-12	40, VB	39, the-13	43, DT	42, game-14	45, NN	44, NP	41, VP	38, VP	35, S	34, SBAR	30, SBAR	27, VP	16, S	12, SBAR	8, ,-15	47, ,	46, we-16	50, PRP	49, NP	48, always-17	53, RB	52, ADVP	51, find-18	56, VBP	55, that-19	59, IN	58, we-20	63, PRP	62, NP	61, need-21	66, VBP	65, the-22	69, DT	68, cooperation-23	71, NN	70, NP	67, VP	64, S	60, SBAR	57, VP	54, .-24	73, .	72, S	2, ROOT	1]
 {1=find-18, 2=find-18, 3=However-1, 4=However-1, 5=However-1, 6=,-2, 7=,-2, 8=consider-5, 9=when-3, 10=when-3, 11=when-3, 12=consider-5, 13=we-4, 14=we-4, 15=we-4, 16=consider-5, 17=consider-5, 18=consider-5, 19=question-8, 20=about-6, 21=about-6, 22=question-8, 23=the-7, 24=the-7, 25=question-8, 26=question-8, 27=win-12, 28=that-9, 29=that-9, 30=win-12, 31=how-10, 32=how-10, 33=how-10, 34=win-12, 35=win-12, 36=to-11, 37=to-11, 38=win-12, 39=win-12, 40=win-12, 41=game-14, 42=the-13, 43=the-13, 44=game-14, 45=game-14, 46=,-15, 47=,-15, 48=we-16, 49=we-16, 50=we-16, 51=always-17, 52=always-17, 53=always-17, 54=find-18, 55=find-18, 56=find-18, 57=need-21, 58=that-19, 59=that-19, 60=need-21, 61=we-20, 62=we-20, 63=we-20, 64=need-21, 65=need-21, 66=need-21, 67=cooperation-23, 68=the-22, 69=the-22, 70=cooperation-23, 71=cooperation-23, 72=.-24, 73=.-24}
 
 The-1	DT
 greater-2	ROOT
-child_of_uppermost	FRAG	greater-2
+greater-2	child_of_uppermost	FRAG
 our-3	PRP$
 goal-4	NP
-child_of_uppermost	NN	goal-4
+goal-4	child_of_uppermost	NN
 is-5	VBZ
 ,-6	,
 the-7	DT
 more-8	JJR
 competition-9	SBAR
-child_of_uppermost	S	competition-9
+competition-9	child_of_uppermost	S
 we-10	NP
-child_of_uppermost	PRP	we-10
+we-10	child_of_uppermost	PRP
 need-11	S
-child_of_uppermost	VP	need-11
+need-11	child_of_uppermost	VP
 .-12	.
 [The-1	5, DT	4, greater-2	7, JJR	6, our-3	12, PRP$	11, goal-4	14, NN	13, NP	10, is-5	17, VBZ	16, ,-6	19, ,	18, the-7	22, DT	21, more-8	24, JJR	23, competition-9	26, NN	25, NP	20, VP	15, S	9, SBAR	8, ADJP	3, we-10	30, PRP	29, NP	28, need-11	33, VBP	32, VP	31, S	27, .-12	35, .	34, FRAG	2, ROOT	1]
 {1=greater-2, 2=greater-2, 3=greater-2, 4=The-1, 5=The-1, 6=greater-2, 7=greater-2, 8=competition-9, 9=competition-9, 10=goal-4, 11=our-3, 12=our-3, 13=goal-4, 14=goal-4, 15=competition-9, 16=is-5, 17=is-5, 18=,-6, 19=,-6, 20=competition-9, 21=the-7, 22=the-7, 23=more-8, 24=more-8, 25=competition-9, 26=competition-9, 27=need-11, 28=we-10, 29=we-10, 30=we-10, 31=need-11, 32=need-11, 33=need-11, 34=.-12, 35=.-12}
 
 Take-1	S
-child_of_uppermost	VP	Take-1
+Take-1	child_of_uppermost	VP
 Olympic-2	JJ
 games-3	NP
-child_of_uppermost	NP	games-3
-right_sibling_of_child 	SBAR	form-7
+games-3	child_of_uppermost	NP
+games-3	right_sibling_of_child 	SBAR	form-7
 which-4	WHNP
-child_of_uppermost	WDT	which-4
+which-4	child_of_uppermost	WDT
 is-5	VBZ
 a-6	DT
 form-7	SBAR
-child_of_uppermost	S	form-7
+form-7	child_of_uppermost	S
 of-8	IN
 competition-9	PP
-child_of_uppermost	NP	competition-9
+competition-9	child_of_uppermost	NP
 for-10	IN
 instance-11	PP
-child_of_uppermost	NP	instance-11
+instance-11	child_of_uppermost	NP
 ,-12	,
 it-13	NP
-child_of_uppermost	PRP	it-13
+it-13	child_of_uppermost	PRP
 is-14	VBZ
 hard-15	ROOT
-child_of_uppermost	S	hard-15
+hard-15	child_of_uppermost	S
 to-16	TO
 imagine-17	S
-child_of_uppermost	VP	imagine-17
+imagine-17	child_of_uppermost	VP
 how-18	WHADVP
-child_of_uppermost	WRB	how-18
+how-18	child_of_uppermost	WRB
 an-19	DT
 athlete-20	NP
-child_of_uppermost	NN	athlete-20
+athlete-20	child_of_uppermost	NN
 could-21	MD
 win-22	SBAR
-child_of_uppermost	S	win-22
+win-22	child_of_uppermost	S
 the-23	DT
 game-24	NP
-child_of_uppermost	NN	game-24
+game-24	child_of_uppermost	NN
 without-25	IN
 the-26	DT
 training-27	PP
-child_of_uppermost	NP	training-27
+training-27	child_of_uppermost	NP
 of-28	IN
 his-29	PRP$
 or-30	CC
 her-31	PRP$
 coach-32	PP
-child_of_uppermost	NP	coach-32
+coach-32	child_of_uppermost	NP
 ,-33	,
 and-34	CC
 the-35	DT
 help-36	NP
-child_of_uppermost	NP	help-36
-right_sibling_of_child 	,	,-51
+help-36	child_of_uppermost	NP
+help-36	right_sibling_of_child 	,	,-51
 of-37	IN
 other-38	JJ
 professional-39	JJ
 staffs-40	PP
-child_of_uppermost	NP	staffs-40
+staffs-40	child_of_uppermost	NP
 such-41	JJ
 as-42	IN
 the-43	DT
 people-44	PP
-child_of_uppermost	NP	people-44
+people-44	child_of_uppermost	NP
 who-45	WHNP
 take-46	SBAR
-child_of_uppermost	S	take-46
+take-46	child_of_uppermost	S
 care-47	PP
 of-48	IN
 his-49	PRP$
 diet-50	PP
-child_of_uppermost	NP	diet-50
+diet-50	child_of_uppermost	NP
 ,-51	,
 and-52	CC
 those-53	NP
-child_of_uppermost	NP	those-53
-right_sibling_of_child 	SBAR	charge-57
+those-53	child_of_uppermost	NP
+those-53	right_sibling_of_child 	SBAR	charge-57
 who-54	WHNP
-child_of_uppermost	WP	who-54
+who-54	child_of_uppermost	WP
 are-55	VBP
 in-56	IN
 charge-57	SBAR
-child_of_uppermost	S	charge-57
+charge-57	child_of_uppermost	S
 of-58	IN
 the-59	DT
 medical-60	JJ
 care-61	PP
-child_of_uppermost	NP	care-61
+care-61	child_of_uppermost	NP
 .-62	.
 [Take-1	6, VB	5, Olympic-2	10, JJ	9, games-3	12, NNS	11, NP	8, which-4	16, WDT	15, WHNP	14, is-5	20, VBZ	19, a-6	24, DT	23, form-7	26, NN	25, NP	22, of-8	29, IN	28, competition-9	33, NN	32, NP	31, for-10	36, IN	35, instance-11	39, NN	38, NP	37, PP	34, NP	30, PP	27, NP	21, VP	18, S	17, SBAR	13, NP	7, VP	4, S	3, ,-12	41, ,	40, it-13	44, PRP	43, NP	42, is-14	47, VBZ	46, hard-15	50, JJ	49, to-16	54, TO	53, imagine-17	57, VB	56, how-18	61, WRB	60, WHADVP	59, an-19	65, DT	64, athlete-20	67, NN	66, NP	63, could-21	70, MD	69, win-22	73, VB	72, the-23	76, DT	75, game-24	78, NN	77, NP	74, without-25	81, IN	80, the-26	86, DT	85, training-27	88, NN	87, NP	84, of-28	91, IN	90, his-29	94, PRP$	93, or-30	96, CC	95, her-31	98, PRP$	97, coach-32	100, NN	99, NP	92, PP	89, NP	83, ,-33	102, ,	101, and-34	104, CC	103, the-35	109, DT	108, help-36	111, NN	110, NP	107, of-37	114, IN	113, other-38	118, JJ	117, professional-39	120, JJ	119, staffs-40	122, NNS	121, NP	116, such-41	125, JJ	124, as-42	127, IN	126, the-43	131, DT	130, people-44	133, NNS	132, NP	129, who-45	137, WP	136, WHNP	135, take-46	141, VBP	140, care-47	145, NN	144, NP	143, of-48	148, IN	147, his-49	151, PRP$	150, diet-50	153, NN	152, NP	149, PP	146, NP	142, VP	139, S	138, SBAR	134, NP	128, PP	123, NP	115, PP	112, NP	106, ,-51	155, ,	154, and-52	157, CC	156, those-53	161, DT	160, NP	159, who-54	165, WP	164, WHNP	163, are-55	169, VBP	168, in-56	172, IN	171, charge-57	176, NN	175, NP	174, of-58	179, IN	178, the-59	182, DT	181, medical-60	184, JJ	183, care-61	186, NN	185, NP	180, PP	177, NP	173, PP	170, VP	167, S	166, SBAR	162, NP	158, NP	105, NP	82, PP	79, VP	71, VP	68, S	62, SBAR	58, VP	55, VP	52, S	51, ADJP	48, VP	45, .-62	188, .	187, S	2, ROOT	1]
 {1=hard-15, 2=hard-15, 3=Take-1, 4=Take-1, 5=Take-1, 6=Take-1, 7=games-3, 8=games-3, 9=Olympic-2, 10=Olympic-2, 11=games-3, 12=games-3, 13=form-7, 14=which-4, 15=which-4, 16=which-4, 17=form-7, 18=form-7, 19=is-5, 20=is-5, 21=form-7, 22=form-7, 23=a-6, 24=a-6, 25=form-7, 26=form-7, 27=competition-9, 28=of-8, 29=of-8, 30=competition-9, 31=competition-9, 32=competition-9, 33=competition-9, 34=instance-11, 35=for-10, 36=for-10, 37=instance-11, 38=instance-11, 39=instance-11, 40=,-12, 41=,-12, 42=it-13, 43=it-13, 44=it-13, 45=hard-15, 46=is-14, 47=is-14, 48=hard-15, 49=hard-15, 50=hard-15, 51=imagine-17, 52=imagine-17, 53=to-16, 54=to-16, 55=imagine-17, 56=imagine-17, 57=imagine-17, 58=win-22, 59=how-18, 60=how-18, 61=how-18, 62=win-22, 63=athlete-20, 64=an-19, 65=an-19, 66=athlete-20, 67=athlete-20, 68=win-22, 69=could-21, 70=could-21, 71=win-22, 72=win-22, 73=win-22, 74=game-24, 75=the-23, 76=the-23, 77=game-24, 78=game-24, 79=training-27, 80=without-25, 81=without-25, 82=training-27, 83=training-27, 84=training-27, 85=the-26, 86=the-26, 87=training-27, 88=training-27, 89=coach-32, 90=of-28, 91=of-28, 92=coach-32, 93=his-29, 94=his-29, 95=or-30, 96=or-30, 97=her-31, 98=her-31, 99=coach-32, 100=coach-32, 101=,-33, 102=,-33, 103=and-34, 104=and-34, 105=help-36, 106=help-36, 107=help-36, 108=the-35, 109=the-35, 110=help-36, 111=help-36, 112=staffs-40, 113=of-37, 114=of-37, 115=staffs-40, 116=staffs-40, 117=other-38, 118=other-38, 119=professional-39, 120=professional-39, 121=staffs-40, 122=staffs-40, 123=people-44, 124=such-41, 125=such-41, 126=as-42, 127=as-42, 128=people-44, 129=people-44, 130=the-43, 131=the-43, 132=people-44, 133=people-44, 134=take-46, 135=who-45, 136=who-45, 137=who-45, 138=take-46, 139=take-46, 140=take-46, 141=take-46, 142=care-47, 143=care-47, 144=care-47, 145=care-47, 146=diet-50, 147=of-48, 148=of-48, 149=diet-50, 150=his-49, 151=his-49, 152=diet-50, 153=diet-50, 154=,-51, 155=,-51, 156=and-52, 157=and-52, 158=those-53, 159=those-53, 160=those-53, 161=those-53, 162=charge-57, 163=who-54, 164=who-54, 165=who-54, 166=charge-57, 167=charge-57, 168=are-55, 169=are-55, 170=charge-57, 171=in-56, 172=in-56, 173=charge-57, 174=charge-57, 175=charge-57, 176=charge-57, 177=care-61, 178=of-58, 179=of-58, 180=care-61, 181=the-59, 182=the-59, 183=medical-60, 184=medical-60, 185=care-61, 186=care-61, 187=.-62, 188=.-62}
 
 The-1	DT
 winner-2	NP
-child_of_uppermost	NN	winner-2
+winner-2	child_of_uppermost	NN
 is-3	VBZ
 the-4	DT
 athlete-5	ROOT
-child_of_uppermost	S	athlete-5
+athlete-5	child_of_uppermost	S
 but-6	CC
 the-7	DT
 success-8	NP
-child_of_uppermost	NN	success-8
+success-8	child_of_uppermost	NN
 belongs-9	S
-child_of_uppermost	VP	belongs-9
+belongs-9	child_of_uppermost	VP
 to-10	IN
 the-11	DT
 whole-12	JJ
 team-13	PP
-child_of_uppermost	NP	team-13
+team-13	child_of_uppermost	NP
 .-14	.
 [The-1	6, DT	5, winner-2	8, NN	7, NP	4, is-3	11, VBZ	10, the-4	14, DT	13, athlete-5	16, NN	15, NP	12, VP	9, S	3, but-6	18, CC	17, the-7	22, DT	21, success-8	24, NN	23, NP	20, belongs-9	27, VBZ	26, to-10	30, IN	29, the-11	33, DT	32, whole-12	35, JJ	34, team-13	37, NN	36, NP	31, PP	28, VP	25, S	19, .-14	39, .	38, S	2, ROOT	1]
 {1=athlete-5, 2=athlete-5, 3=athlete-5, 4=winner-2, 5=The-1, 6=The-1, 7=winner-2, 8=winner-2, 9=athlete-5, 10=is-3, 11=is-3, 12=athlete-5, 13=the-4, 14=the-4, 15=athlete-5, 16=athlete-5, 17=but-6, 18=but-6, 19=belongs-9, 20=success-8, 21=the-7, 22=the-7, 23=success-8, 24=success-8, 25=belongs-9, 26=belongs-9, 27=belongs-9, 28=team-13, 29=to-10, 30=to-10, 31=team-13, 32=the-11, 33=the-11, 34=whole-12, 35=whole-12, 36=team-13, 37=team-13, 38=.-14, 39=.-14}
 
 Therefore-1	ADVP
-child_of_uppermost	RB	Therefore-1
+Therefore-1	child_of_uppermost	RB
 without-2	IN
 the-3	DT
 cooperation-4	PP
-child_of_uppermost	NP	cooperation-4
+cooperation-4	child_of_uppermost	NP
 ,-5	,
 there-6	NP
-child_of_uppermost	EX	there-6
+there-6	child_of_uppermost	EX
 would-7	MD
 be-8	VB
 no-9	DT
 victory-10	ROOT
-child_of_uppermost	S	victory-10
+victory-10	child_of_uppermost	S
 of-11	IN
 competition-12	PP
-child_of_uppermost	NP	competition-12
+competition-12	child_of_uppermost	NP
 .-13	.
 [Therefore-1	6, RB	5, ADVP	4, without-2	8, IN	7, the-3	11, DT	10, cooperation-4	13, NN	12, NP	9, PP	3, ,-5	15, ,	14, there-6	18, EX	17, NP	16, would-7	21, MD	20, be-8	24, VB	23, no-9	28, DT	27, victory-10	30, NN	29, NP	26, of-11	33, IN	32, competition-12	36, NN	35, NP	34, PP	31, NP	25, VP	22, VP	19, .-13	38, .	37, S	2, ROOT	1]
 {1=victory-10, 2=victory-10, 3=cooperation-4, 4=Therefore-1, 5=Therefore-1, 6=Therefore-1, 7=without-2, 8=without-2, 9=cooperation-4, 10=the-3, 11=the-3, 12=cooperation-4, 13=cooperation-4, 14=,-5, 15=,-5, 16=there-6, 17=there-6, 18=there-6, 19=victory-10, 20=would-7, 21=would-7, 22=victory-10, 23=be-8, 24=be-8, 25=victory-10, 26=victory-10, 27=no-9, 28=no-9, 29=victory-10, 30=victory-10, 31=competition-12, 32=of-11, 33=of-11, 34=competition-12, 35=competition-12, 36=competition-12, 37=.-13, 38=.-13}
 
 Consequently-1	ADVP
-child_of_uppermost	RB	Consequently-1
+Consequently-1	child_of_uppermost	RB
 ,-2	,
 no-3	DT
 matter-4	NP
-child_of_uppermost	NP	matter-4
-right_sibling_of_child 	CC	or-11
+matter-4	child_of_uppermost	NP
+matter-4	right_sibling_of_child 	CC	or-11
 from-5	IN
 the-6	DT
 view-7	PP
-child_of_uppermost	NP	view-7
+view-7	child_of_uppermost	NP
 of-8	IN
 individual-9	JJ
 development-10	PP
-child_of_uppermost	NP	development-10
+development-10	child_of_uppermost	NP
 or-11	CC
 the-12	DT
 relationship-13	NP
-child_of_uppermost	NP	relationship-13
-right_sibling_of_child 	PP	competition-15
+relationship-13	child_of_uppermost	NP
+relationship-13	right_sibling_of_child 	PP	competition-15
 between-14	IN
 competition-15	PP
-child_of_uppermost	NP	competition-15
+competition-15	child_of_uppermost	NP
 and-16	CC
 cooperation-17	NN
 we-18	NP
-child_of_uppermost	PRP	we-18
+we-18	child_of_uppermost	PRP
 can-19	MD
 receive-20	ROOT
-child_of_uppermost	S	receive-20
+receive-20	child_of_uppermost	S
 the-21	DT
 same-22	JJ
 conclusion-23	NP
-child_of_uppermost	NN	conclusion-23
+conclusion-23	child_of_uppermost	NN
 that-24	IN
 a-25	DT
 more-26	RBR
 cooperative-27	JJ
 attitudes-28	NP
-child_of_uppermost	NP	attitudes-28
-right_sibling_of_child 	PP	life-30
+attitudes-28	child_of_uppermost	NP
+attitudes-28	right_sibling_of_child 	PP	life-30
 towards-29	IN
 life-30	PP
-child_of_uppermost	NP	life-30
+life-30	child_of_uppermost	NP
 is-31	VBZ
 more-32	RBR
 profitable-33	SBAR
-child_of_uppermost	S	profitable-33
+profitable-33	child_of_uppermost	S
 in-34	IN
 one-35	NP
-child_of_uppermost	CD	one-35
-right_sibling_of_child 	POS	's-36
+one-35	child_of_uppermost	CD
+one-35	right_sibling_of_child 	POS	's-36
 's-36	POS
 success-37	PP
-child_of_uppermost	NP	success-37
+success-37	child_of_uppermost	NP
 .-38	.
 [Consequently-1	5, RB	4, ADVP	3, ,-2	7, ,	6, no-3	12, DT	11, matter-4	14, NN	13, NP	10, from-5	17, IN	16, the-6	21, DT	20, view-7	23, NN	22, NP	19, of-8	26, IN	25, individual-9	29, JJ	28, development-10	31, NN	30, NP	27, PP	24, NP	18, PP	15, NP	9, or-11	33, CC	32, the-12	37, DT	36, relationship-13	39, NN	38, NP	35, between-14	42, IN	41, competition-15	45, NN	44, and-16	47, CC	46, cooperation-17	49, NN	48, NP	43, PP	40, NP	34, NP	8, we-18	52, PRP	51, NP	50, can-19	55, MD	54, receive-20	58, VB	57, the-21	61, DT	60, same-22	63, JJ	62, conclusion-23	65, NN	64, NP	59, that-24	68, IN	67, a-25	73, DT	72, more-26	75, JJR	74, cooperative-27	77, JJ	76, attitudes-28	79, NNS	78, NP	71, towards-29	82, IN	81, life-30	85, NN	84, NP	83, PP	80, NP	70, is-31	88, VBZ	87, more-32	92, RBR	91, profitable-33	94, JJ	93, ADJP	90, in-34	97, IN	96, one-35	101, CD	100, 's-36	103, POS	102, NP	99, success-37	105, NN	104, NP	98, PP	95, ADJP	89, VP	86, S	69, SBAR	66, VP	56, VP	53, .-38	107, .	106, S	2, ROOT	1]
 {1=receive-20, 2=receive-20, 3=Consequently-1, 4=Consequently-1, 5=Consequently-1, 6=,-2, 7=,-2, 8=matter-4, 9=matter-4, 10=matter-4, 11=no-3, 12=no-3, 13=matter-4, 14=matter-4, 15=view-7, 16=from-5, 17=from-5, 18=view-7, 19=view-7, 20=the-6, 21=the-6, 22=view-7, 23=view-7, 24=development-10, 25=of-8, 26=of-8, 27=development-10, 28=individual-9, 29=individual-9, 30=development-10, 31=development-10, 32=or-11, 33=or-11, 34=relationship-13, 35=relationship-13, 36=the-12, 37=the-12, 38=relationship-13, 39=relationship-13, 40=competition-15, 41=between-14, 42=between-14, 43=competition-15, 44=competition-15, 45=competition-15, 46=and-16, 47=and-16, 48=cooperation-17, 49=cooperation-17, 50=we-18, 51=we-18, 52=we-18, 53=receive-20, 54=can-19, 55=can-19, 56=receive-20, 57=receive-20, 58=receive-20, 59=conclusion-23, 60=the-21, 61=the-21, 62=same-22, 63=same-22, 64=conclusion-23, 65=conclusion-23, 66=profitable-33, 67=that-24, 68=that-24, 69=profitable-33, 70=attitudes-28, 71=attitudes-28, 72=a-25, 73=a-25, 74=more-26, 75=more-26, 76=cooperative-27, 77=cooperative-27, 78=attitudes-28, 79=attitudes-28, 80=life-30, 81=towards-29, 82=towards-29, 83=life-30, 84=life-30, 85=life-30, 86=profitable-33, 87=is-31, 88=is-31, 89=profitable-33, 90=profitable-33, 91=more-32, 92=more-32, 93=profitable-33, 94=profitable-33, 95=success-37, 96=in-34, 97=in-34, 98=success-37, 99=one-35, 100=one-35, 101=one-35, 102='s-36, 103='s-36, 104=success-37, 105=success-37, 106=.-38, 107=.-38}

@@ -5,6 +5,7 @@ class Structural():
     def __init__(self): 
         self.paragraphs = [] 
         self.components = []
+        self.component_tokens = {}
         self.annotations = {}
             # maps sentence index to token information (represented as a dictionary per token)
         self.sentences = []
@@ -130,9 +131,11 @@ class Structural():
                 for c in components: 
                     if c["start"] == start: # token that begins a component
                         token_dict[tokenIdx]["IOB"] = "Arg-B"
+                        self.component_tokens[c["name"]] = [tokenIdx]
                         break
                     elif c["start"] < start < c["end"]: # token that is covered by an argument component 
                         token_dict[tokenIdx]["IOB"] = "Arg-I"
+                        self.component_tokens[c["name"]].append(tokenIdx)
                         break
 
                 token = info['token']
