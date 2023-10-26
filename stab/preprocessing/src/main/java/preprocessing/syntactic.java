@@ -199,13 +199,32 @@ public static StanfordCoreNLP pipeline;
 		System.out.println("Finished processing " + filename);
 	 }
 	
+	 public static void dependency_tuples(Annotation annotation, String filename) {
+		PrintWriter file = null;
+		try {
+			file = new PrintWriter(new File("src/main/resources/dependency_tuples/"+filename));
+			
+		} catch (FileNotFoundException e) {e.printStackTrace();}
+		
+		int sentIdx = 0;
+		for(CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
+	    {
+			Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
+			tree.percolateHeads(new UniversalSemanticHeadFinder());
+			for (Dependency d : tree.dependencies()) {
+				file.println(d);
+			}
+		}
+		file.close();
+		System.out.println("Finished processing " + filename);
+	 }
 	
 	 public static void main(String[] args) throws IOException {
 		 syntactic.init();
 //		 String essay = "It has been claimed that through cooperation, children can learn about interpersonal skills which are significant in the future life of all students.";
 //		 essay = "In order to survive in the competition, companies continue to improve their products and service, and as a result, the whole society prospers.";
 //		 Annotation annotation = syntactic.annotate(essay);
-//		 syntactic.subclauses(annotation,"sample.txt");
+
 		 String dirname = "src/main/resources/essays";
 	     File dir = new File(dirname);
 	     File[] files = dir.listFiles();
@@ -216,7 +235,8 @@ public static StanfordCoreNLP pipeline;
 	    	Annotation annotation = syntactic.annotate(essay);
 //	    	syntactic.LCA(annotation, essay_name);
 //	    	lexico_syntactic.run_parser(annotation,essay_name);
-	    	syntactic.subclauses(annotation,essay_name);
+//	    	syntactic.subclauses(annotation,essay_name);
+	    	syntactic.dependency_tuples(annotation, essay_name);
 		    }		
 	 } 
 
