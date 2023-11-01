@@ -186,7 +186,38 @@ def uppermost_right(parse_tree, true_path):
         for child in parse_tree.child:
             if child.value == true_path[1]:
                 return uppermost_right(child, true_path[1:])
-    
+
+def get_heads(dep):
+    heads = set()
+    for each in dep.ListFields()[1][1]:
+        heads.add(each.target)
+    return list(heads)
+def get_right_sib_head(tree, dep, right_sib, heads):
+    head = tree
+    children = []
+    target_head = None
+    while head:
+        children.extend(head.child)
+        if head.value == right_sib:
+            target_head = head
+            break
+        else:
+            if len(children) > 0:
+                head = children.pop()
+            else:
+                break
+    children = []
+    while target_head:
+        children.extend(target_head.child)
+        if target_head.value in heads.keys():
+            return get_head(dep, heads[target_head.value])
+        else:
+            if len(children) > 0:
+                target_head = children.pop()
+            else:
+                break
+    return None
+
 
 #     if parse_tree.value == true_path[0]:        
 #         path.append(parse_tree.value)
@@ -308,13 +339,20 @@ if __name__ == '__main__':
             sentence_data = data[-j-1:]
             depth = tree_depth(sent.parseTree, 0)
             # print(depth)
+            lexical_heads = get_heads(sent.basicDependencies)
+            lex_heads_dict = {}
+            for lex in lexical_heads:
+                lex_heads_dict[sentence_data[lex-1]['token']] = lex
             for index, t in enumerate(sentence_data):
                 upper_path = uppermost(sent.parseTree, sentence_data[t['head']-1]['token'], t['token'])
                 t['uppermost'] = upper_path[0]
                 t['uppermost_child'] = uppermost_child(sent.parseTree, upper_path[1])
                 right_sib = uppermost_right(sent.parseTree, upper_path[1])
-                if right_sib != upper_path[0] or right_sib != t['token']:
-                    t['right_sibling'] = uppermost_right(sent.parseTree, upper_path[1])
+                # if right_sib != t['token'] and upper_path[0] != right_sib :
+                t['right_sibling'] = right_sib
+                sib_head = get_right_sib_head(sent.parseTree, sent.basicDependencies, right_sib, lex_heads_dict)
+                if sib_head:
+                    t['right_sibling_head'] = sentence_data[sib_head-1]['token']
                 t['head'] = '-'.join([sentence_data[t['head']-1]['token'], str(t['head'])])
                 if index == 0:
                     t["precedesLCAPath"] = -1
@@ -332,7 +370,6 @@ if __name__ == '__main__':
                     t["precedesLCA"] = lca_output[0][1]
                     t['followsLCAPath'] = lca_output[1][0]
                     t["followsLCA"] = lca_output[1][1]
-        # data.extend(sentence_data)
         adjust_sen += len(para)
     convert = {"Arg-B":0, "Arg-I":1, "O":2}
     train_set = [convert[x["IOB"]] for x in data]
