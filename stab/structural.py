@@ -44,16 +44,17 @@ class Structural():
                 self.paragraphs.append(line)
 
         self.essay = "".join(self.paragraphs)
-        with open(token_file,"r") as f: 
-            for line in f.readlines():
-                info =  line.replace("[","").replace("]","").strip("\n")
-                info = info.split(', ')
-                sentIdx = int(info[0])
-                tokenIdx = int(info[1])
-                info_dict = {"token": info[2], "sentence": sentIdx,"index": tokenIdx,"lemma": info[3], "pos": info[4],"sentiment": info[5]}
-                if sentIdx not in self.annotations: 
-                    self.annotations[sentIdx] = {}
-                self.annotations[sentIdx][tokenIdx] = info_dict
+        if token_file is not None: 
+            with open(token_file,"r") as f: 
+                for line in f.readlines():
+                    info =  line.replace("[","").replace("]","").strip("\n")
+                    info = info.split(', ')
+                    sentIdx = int(info[0])
+                    tokenIdx = int(info[1])
+                    info_dict = {"token": info[2], "sentence": sentIdx,"index": tokenIdx,"lemma": info[3], "pos": info[4],"sentiment": info[5]}
+                    if sentIdx not in self.annotations: 
+                        self.annotations[sentIdx] = {}
+                    self.annotations[sentIdx][tokenIdx] = info_dict
 
         with open(sentence_file,"r") as f: 
             for line in f.readlines():
@@ -89,7 +90,7 @@ class Structural():
         augmented = {k:[] for k in range(len(self.sentence_idx))}
         for component in self.components: 
             name = component[0]
-            claim,start,end = component[1].split(' ')
+            type,start,end = component[1].split(' ')
             phrase = component[2]
             for idx in range(len(self.sentence_idx)): 
                 sent_start = self.sentence_idx[idx][0]
@@ -100,7 +101,7 @@ class Structural():
                 else: 
                     if sent_start <= int(start): 
                         s_idx = idx
-            info = {"name": name, "claim": claim,"start":int(start),"end":int(end),"sentence":s_idx,"phrase": phrase}
+            info = {"name": name, "type": type,"start":int(start),"end":int(end),"sentence":s_idx,"phrase": phrase}
             augmented[s_idx].append(info)
         self.components = augmented 
 
