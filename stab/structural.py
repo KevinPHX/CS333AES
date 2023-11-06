@@ -89,7 +89,7 @@ class Structural():
         augmented = {k:[] for k in range(len(self.sentence_idx))}
         for component in self.components: 
             name = component[0]
-            claim,start,end = component[1].split(' ')
+            type,start,end = component[1].split(' ')
             phrase = component[2]
             for idx in range(len(self.sentence_idx)): 
                 sent_start = self.sentence_idx[idx][0]
@@ -100,7 +100,7 @@ class Structural():
                 else: 
                     if sent_start <= int(start): 
                         s_idx = idx
-            info = {"name": name, "claim": claim,"start":int(start),"end":int(end),"sentence":s_idx,"phrase": phrase}
+            info = {"name": name, "type": type,"start":int(start),"end":int(end),"sentence":s_idx,"phrase": phrase}
             augmented[s_idx].append(info)
         self.components = augmented 
 
