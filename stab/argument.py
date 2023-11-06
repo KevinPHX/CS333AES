@@ -65,8 +65,30 @@ class Argument():
         for s,c2_list in self.outgoing_relations.items(): 
             for t in c2_list: 
                 self.weights[s][t] = (1/2)*self.matrix[s][t] + (1/4)*cr[s][t] + (1/4)*c[s][t]
-        for w_list in self.weights: print(w_list) 
 
+    def path_exists(self,source,target): 
+        visited = [False] * len(self.components)
+        Q = []
+        Q.append(source)
+        visited[source] = True
+        while Q:
+            u = Q.pop(0)
+            if u == target: 
+                return True   
+            for v in self.outgoing_relations[u]:
+                if visited[v] == False:
+                    Q.append(v)
+                    visited[v] = True
+        return False
+
+    def get_auxiliary(self): 
+        # b_ij=1 indicates that there is a directed path from component i to j 
+        self.b = [[0 for _ in range(len(self.components))] for _ in range(len(self.components))] # nxn matrix
+        for s in self.components: 
+            for t in self.components:
+                if s == t: continue 
+                if self.path_exists(s,t):
+                    self.b[s][t] = 1  
     
 
 essayDir = "/Users/amycweng/Downloads/CS333_Project/ArgumentAnnotatedEssays-2.0/brat-project-final"
@@ -80,3 +102,4 @@ sentence_file = f"{sentDir}/{filename}.txt"
 
 argument = Argument(essay_ann_file, essay_txt_file, sentence_file)
 argument.get_weights()
+argument.get_auxiliary()

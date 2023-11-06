@@ -44,16 +44,17 @@ class Structural():
                 self.paragraphs.append(line)
 
         self.essay = "".join(self.paragraphs)
-        with open(token_file,"r") as f: 
-            for line in f.readlines():
-                info =  line.replace("[","").replace("]","").strip("\n")
-                info = info.split(', ')
-                sentIdx = int(info[0])
-                tokenIdx = int(info[1])
-                info_dict = {"token": info[2], "sentence": sentIdx,"index": tokenIdx,"lemma": info[3], "pos": info[4],"sentiment": info[5]}
-                if sentIdx not in self.annotations: 
-                    self.annotations[sentIdx] = {}
-                self.annotations[sentIdx][tokenIdx] = info_dict
+        if token_file is not None: 
+            with open(token_file,"r") as f: 
+                for line in f.readlines():
+                    info =  line.replace("[","").replace("]","").strip("\n")
+                    info = info.split(', ')
+                    sentIdx = int(info[0])
+                    tokenIdx = int(info[1])
+                    info_dict = {"token": info[2], "sentence": sentIdx,"index": tokenIdx,"lemma": info[3], "pos": info[4],"sentiment": info[5]}
+                    if sentIdx not in self.annotations: 
+                        self.annotations[sentIdx] = {}
+                    self.annotations[sentIdx][tokenIdx] = info_dict
 
         with open(sentence_file,"r") as f: 
             for line in f.readlines():
