@@ -4,7 +4,7 @@ import re
 import numpy as np
 from statsmodels.discrete.discrete_model import Poisson
 
-corenlp_dir = './corenlp'
+corenlp_dir = '../corenlp'
 # stanza.install_corenlp(dir=corenlp_dir)
 
 import os
@@ -106,7 +106,6 @@ def preceding_LCA(parse_tree, token, preceding):
         token_path = token_path[::-1]
         for i in range(min(len(preceding_path), len(token_path))):
             if preceding_path[i] != token_path[i]:
-                
                 return i, token_path[i-1]
         if preceding_path[i-1] == token_path[i-1]:
             return i, token_path[i-1]
@@ -218,21 +217,6 @@ def get_right_sib_head(tree, dep, right_sib, heads):
                 break
     return None
 
-
-#     if parse_tree.value == true_path[0]:        
-#         path.append(parse_tree.value)
-#     if len(true_path) == 0:
-#         return False
-#     for child in parse_tree.child:
-#         temp_check = tree_path(child, true_path[1:], path)
-#         if temp_check:
-#             path.append(parse_tree.value)
-#             return True
-#     return False
-
-# def uppermost_child():
-
-#     return
 
 # PROBABILITY
 
