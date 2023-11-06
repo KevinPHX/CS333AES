@@ -14,7 +14,7 @@ class ArgumentIdentification():
         self.ann_file = ann_file
     def annotate_punc(self, token, data):
         # check if punc
-        if not re.search(r'[A-Za-z0-9]',token.originalText): # is punc
+        if not re.search(r'[A-Za-z0-9]',token.originalText) and len(data) > 0: # is punc
             # set precedes punc in last element to true
             data[-1]['precedesPunc'] = True
             return 1
@@ -40,9 +40,9 @@ class ArgumentIdentification():
         else: 
             return "Body"
 
-    def read_data(self): 
+    def read_data(self, ann_file): 
         components = []
-        with open(self.ann_file,"r") as f: 
+        with open(ann_file,"r") as f: 
             for line in f.readlines(): 
                 line = line.strip('\n')
                 line = line.split("\t")
@@ -251,6 +251,7 @@ class ArgumentIdentification():
     def run_annotated(self):
         ret = []
         for i, file in enumerate(self.file):
+            print(f"starting essay {file}")
             paragraphs = []
             data =[]
 
@@ -362,6 +363,7 @@ class ArgumentIdentification():
                 else:
                     d['probability'] = self.predict(self.models, [convert[data[i-1]['IOB']], convert[data[i-2]['IOB']], convert[data[i-3]['IOB']]])
         self.train_data = sum(ret, [])
+        print(f"finishing essay {file}")
     def save_data(self, file_name):
         pd.DataFrame(self.train_data).to_csv(f"{file_name}.csv", index=False)
     def run_predict(self, prob_model, arg_model):
@@ -388,6 +390,7 @@ class ArgumentIdentification():
                         start = len(prompt) + 1 + adjust_sen + token.beginChar
                         punc = self.annotate_punc(token, data)
                         d = {
+                            'essay':file,
                             'token':token.word,
                             'lemma':token.lemma,
                             'sentence':i,
