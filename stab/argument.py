@@ -123,7 +123,7 @@ class ArgumentTrees():
         for k in components: 
             for i in components: 
                 for j in components: 
-                    model.addConstr(b[(i,k)] - b[(i,j)] - b[(j,k)] <= -1, 'path_exists')
+                    model.addConstr(b[(i,k)] - b[(i,j)] - b[(j,k)] <= 0, 'path_exists')
         # now solve for the optimal values of x 
         model.optimize()
         if model.status == GRB.OPTIMAL:
