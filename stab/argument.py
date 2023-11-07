@@ -77,13 +77,17 @@ class ArgumentTrees():
                     for source in self.incoming_relations[name]: 
                         in_neighbors[idx][name_to_idx[source]] = True
                     types[idx] = self.type[name]
+                
+                # TEST w/ ESSAY 001 PARAGRAPH 2 TO SEE IF THE PROGRAM PREVENTS CYCLES 
+                # out_neighbors[0][1] = True 
+                # out_neighbors[0][2] = True 
+                
                 # get weights 
                 w = self.get_weights(list(idx_to_name.keys()),out_neighbors,in_neighbors,types)
                 # print(f"weights")
                 # for w_list in w: print(w_list)
                 
                 self.solve_paragraph(p,list(idx_to_name.keys()),w)
-                break
 
     def solve_paragraph(self,p,components,w): 
         # create model 
@@ -128,19 +132,16 @@ class ArgumentTrees():
         model.optimize()
         if model.status == GRB.OPTIMAL:
             num_relations = 0
-            # write solution out to another csv file 
-            # outfile = open(f'argument_tree_optimal.csv','w+')
-            # w = csv.writer(outfile)
-            print("\nResult:")
+            w = open(f'argument_tree_optimal.txt','a+')
+            w.write(f"\nResult for Paragraph {p} (0-indexed):\n")
             for i in components: 
                 results = []
                 for j in components:
                     num_relations += int(x[(i,j)].X)
                     results.append(int(x[(i,j)].X))
-                print(results)
-                # w.writerow(results)
-            # outfile.close()
-            print(f'\nNumber of Relations in Paragraph {p}: {num_relations}')
+                w.write(f"{results}\n")
+            w.write(f'Number of Relations: {num_relations}\n')
+            w.close()
         print('----------------------------------\n')
 
 essayDir = "/Users/amycweng/Downloads/CS333_Project/ArgumentAnnotatedEssays-2.0/brat-project-final"

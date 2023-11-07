@@ -1,0 +1,14 @@
+Result for Paragraph 1 (0-indexed):
+[0, 0, 0, 0]
+[1, 0, 0, 0]
+[1, 0, 0, 0]
+[1, 0, 0, 0]
+Number of Relations: 3
+
+Result for Paragraph 2 (0-indexed):
+[0, 1, 0, 0, 0]
+[0, 0, 0, 0, 1]
+[0, 0, 0, 0, 1]
+[0, 0, 0, 0, 1]
+[0, 0, 0, 0, 0]
+Number of Relations: 4
