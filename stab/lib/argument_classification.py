@@ -55,6 +55,7 @@ class ArgumentClassification():
                         following_tokens.append(each['token'])
                         component_stats = self.paragraph_stats(each['essay'], paragraph, sentence)
                         preceding_tokens = [x for x in " ".join(preceding_tokens).split('.')[-1].split(' ') if x != '']
+                        text_info = self.read_file(each['essay'])
                         fields = {
                             "essay":each['essay'],
                             "component":component,
@@ -72,6 +73,7 @@ class ArgumentClassification():
                             "sentence_size":component_stats['sentence_size'],
                             "ratio":len(component)/component_stats['sentence_size'],
                             **pos_dist,
+                            **self.annotate_sentence(sentence, text_info, component, each['essay'])
                             **self.embed_component(component+preceding_tokens)
                         }
                         if len(component) > 0:
@@ -225,29 +227,39 @@ class ArgumentClassification():
 
 
     def indicators_context(self, paragraph, component):
-        text = paragraph.replace(component.join(' '))
+        text = paragraph.replace(component.join(' '), '\n')
+        preceding_text = text[0]
+        following_text = text[1]
         ret = {
-            "forward_context":0,
-            "backward_context":0,
-            "rebuttal_context":0,
-            "thesis_context":0
+            "preceding_forward_context":0,
+            "preceding_backward_context":0,
+            "preceding_rebuttal_context":0,
+            "preceding_thesis_context":0,
+            "following_forward_context":0,
+            "following_backward_context":0,
+            "following_rebuttal_context":0,
+            "following_thesis_context":0
         }
         for f in FORWARD_INDICATORS:
-            if f in text:
-                ret['forward_context']=1
-                break
+            if f in preceding_text:
+                ret['preceding_forward_context']=1
+            if f in following_text:
+                ret['following_forward_context']=1
         for f in BACKWARDS_INDICATORS:
-            if f in text:
-                ret['forward_context']=1
-                break
+            if f in preceding_text:
+                ret['preceding_backward_context']=1
+            if f in following_text:
+                ret['following_backward_context']=1
         for f in REBUTTAL_INDICATORS:
-            if f in text:
-                ret['forward_context']=1
-                break
+            if f in preceding_text:
+                ret['preceding_rebuttal_context']=1
+            if f in following_text:
+                ret['following_rebuttal_context']=1
         for f in THESIS_INDICATORS:
-            if f in text:
-                ret['forward_context']=1
-                break
+            if f in preceding_text:
+                ret['preceding_thesis_context']=1
+            if f in following_text:
+                ret['following_thesis_context']=1
         return ret
                 
 
