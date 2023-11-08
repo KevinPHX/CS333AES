@@ -87,11 +87,14 @@ class ArgumentTrees():
                 # print(f"weights")
                 # for w_list in w: print(w_list)
                 
-                self.solve_paragraph(p,list(idx_to_name.keys()),w)
+                self.solve_paragraph(p,idx_to_name,w)
 
-    def solve_paragraph(self,p,components,w): 
+    def solve_paragraph(self,p,idx_to_name,w): 
+        components = list(idx_to_name.keys())
+        
         # create model 
         model = gp.Model(f"argument_in_paragraph")
+        
         # Create variables
         pairs = []
         for i in components: 
@@ -99,49 +102,58 @@ class ArgumentTrees():
                 # i is the source, j the target 
                 pairs.append((i,j))
         # x_ij = 1 means that a directed edge exists from i to j. 0 otherwise  
-        x = model.addVars(pairs, name="x")
+        x = model.addVars(pairs, name="x",vtype=GRB.BINARY)
         # b_ij = 1 means that a directed path exists from i to j. 0 otherwise 
-        # each b_ij is an auxiliary variable 
-        b = model.addVars(pairs, name="b")
+        # each b_ij is a binary auxiliary variable 
+        b = model.addVars(pairs, name="b",vtype=GRB.BINARY)
+        
         # set objective function 
         model.setObjective(sum(w[i][j]*x[(i,j)] for i,j in pairs), GRB.MAXIMIZE)
+        
+        # set constraints 
         for i in components: 
+            
             # make sure each component has at most one outgoing edge 
             model.addConstr(sum(x[(i,j)] for j in components) <= 1, 'at_most_one_outgoing')
+            
             # make sure that the source and target components are not identical 
             model.addConstr(x[(i,i)] == 0, 'no_self_loops') 
-            # enforce integer constraint 
-            for j in components: 
-                model.addConstr(x[(i,j)] <= 1, 'binary_decision') 
+       
         # ensures each paragraph contains at least one root node (a node without an outgoing relation)
         model.addConstr(sum(x[(i,j)] for i,j in pairs) <= (len(components)-1), 'has_root')  
+        
         for i in components: 
+           
             # no directed paths starting and ending with the same node 
             model.addConstr(b[(i,i)]==0, 'avoid_cycles')
+            
             for j in components: 
                 # if a relation exists between i and j (i.e., x_ij is 1), then b_ij is also 1 
-                model.addConstr(x[(i,j)]-b[(i,j)] <= 0, 'direct_relation')
-                # b_ij is either 0 or 1 
-                model.addConstr(b[(i,j)] <= 1, 'binary_auxiliary')
-        # if there is a path from i to j and from j to k, then there is a path from i to k 
-        for k in components: 
-            for i in components: 
-                for j in components: 
-                    model.addConstr(b[(i,k)] - b[(i,j)] - b[(j,k)] <= 0, 'path_exists')
+                model.addConstr(x[(i,j)] - b[(i,j)] == 0, 'direct_relation')
+        
+        for i in components: 
+            for j in components: 
+                for k in components:
+                    # if there is a directed path from i to j and from j to k, then there should be a relation from i to k 
+                    model.addConstr((b[(i,k)] - b[(i,j)] - b[(j,k)] >= -1), 'transitive')
+       
         # now solve for the optimal values of x 
         model.optimize()
+        
+        # write output to another file 
         if model.status == GRB.OPTIMAL:
             num_relations = 0
-            w = open(f'argument_tree_optimal.txt','a+')
-            w.write(f"\nResult for Paragraph {p} (0-indexed):\n")
+            f = open(f'argument_tree_optimal.txt','a+')
+            f.write(f"\nResult for Paragraph {p} (0-indexed):\n")
             for i in components: 
-                results = []
                 for j in components:
                     num_relations += int(x[(i,j)].X)
-                    results.append(int(x[(i,j)].X))
-                w.write(f"{results}\n")
-            w.write(f'Number of Relations: {num_relations}\n')
-            w.close()
+                    decision = int(x[(i,j)].X)
+                    if decision == 1: 
+                        # print(f"Relation from {idx_to_name[i]} to {idx_to_name[j]}")
+                        f.write(f"Relation from {idx_to_name[i]} to {idx_to_name[j]}\n")
+            f.write(f'Number of Relations: {num_relations}\n')
+            f.close()
         print('----------------------------------\n')
 
 essayDir = "/Users/amycweng/Downloads/CS333_Project/ArgumentAnnotatedEssays-2.0/brat-project-final"
