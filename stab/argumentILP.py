@@ -80,12 +80,8 @@ class ArgumentTrees():
                 if i==j: continue 
                 cr[i][j] = cs[j] - cs[i]
                 target_type = types[j]
-                source_type = types[i]
                 if target_type in self.claim_types: 
-                    if source_type not in self.claim_types: 
-                        # my modification because MajorClaims are root nodes 
-                        # and the annotated trees do not seem to allow for claims to point to another claim
-                        c[i][j] = 1  
+                    c[i][j] = 1  
         # w_ij = (1/2)*r_ij + (1/4)*cr_ij + (1/4)*type where r is the relation matrix and type is the dictionary c 
         w = [[0 for _ in range(n)] for _ in range(n)] # nxn matrix  
         for i in components: 
@@ -237,5 +233,3 @@ for num in range(NUM_ESSAYS):
     argument.solve()
     print(f"{filename}")
     argument.evaluate()
-    # print("ILP output", argument.results)
-    # print("True results", argument.outgoing_relations)
