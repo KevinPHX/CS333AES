@@ -139,12 +139,15 @@ class ArgumentIdentification():
         return ret
 
     def get_head(self, tree, index):
-        if index == tree.ListFields()[2][1][0]:
-            return index
-        for each in tree.ListFields()[1][1]:
-            if each.target == index:
-                return each.source
+        # print(tree.ListFields())
+        if len(tree.ListFields()) >=3:
+            if index == tree.ListFields()[2][1][0]:
+                return index
+            for each in tree.ListFields()[1][1]:
+                if each.target == index:
+                    return each.source
         return 0
+        
     def uppermost(self, parse_tree, head, token):
         if head == token:
             return 'ROOT', ['ROOT']
@@ -183,8 +186,9 @@ class ArgumentIdentification():
 
     def get_heads(self,dep):
         heads = set()
-        for each in dep.ListFields()[1][1]:
-            heads.add(each.target)
+        if len(dep.ListFields()) >=3:
+            for each in dep.ListFields()[1][1]:
+                heads.add(each.target)
         return list(heads)
     def get_right_sib_head(self, tree, dep, right_sib, heads):
         head = tree
@@ -218,7 +222,7 @@ class ArgumentIdentification():
         window_sz = np.arange(n)+2
         X= [[] for i in range(n)]
         Y = [[] for i in range(n)]
-        data = []
+        ret = []
         for index, size in enumerate(window_sz):
             # preprocess data per dataset -> this is important when training across multiple docs
             for data in train_set:
@@ -230,11 +234,11 @@ class ArgumentIdentification():
                         y = (window[-1]==target).astype(int).tolist()
                         X[index].append(x)  
                         Y[index].append(y)
-            data.append([Y[index], X[index]])
+            ret.append([Y[index], X[index]])
             # if old_models:
             #     old_models[index] = old_models[index].
             # models.append(Poisson(Y[index], X[index]).fit())
-        return data
+        return ret
     def predict(self, models, X):
         probabilities = []
         # There should be n models, so we iterate across each model and get their respective probabilities
@@ -318,7 +322,7 @@ class ArgumentIdentification():
                         if sib_head:
                             t['right_sibling_head'] = sentence_data[sib_head-1]['token']
                         t['head'] = '-'.join([sentence_data[t['head']-1]['token'], str(t['head'])])
-                        if index == 0:
+                        if index == 0 and len(sentence_data)>1:
                             t["precedesLCAPath"] = -1
                             lca_output = self.LCA(sent.parseTree, sentence_data[index]['token'], None, sentence_data[index+1]['token'], depth)
                             t['followsLCAPath'] = lca_output[0][0]
@@ -433,7 +437,7 @@ class ArgumentIdentification():
                         sib_head = self.get_right_sib_head(sent.parseTree, sent.basicDependencies, right_sib, lex_heads_dict)
                         if sib_head:
                             t['right_sibling_head'] = sentence_data[sib_head-1]['token']
-                        t['head'] = '-'.join([sentence_data[t['head']-1]['token'], str(t['head'])])
+                        # t['head'] = '-'.join([sentence_data[t['head']-1]['token'], str(t['head'])])
                         if index == 0:
                             t["precedesLCAPath"] = -1
                             lca_output = self.LCA(sent.parseTree, sentence_data[index]['token'], None, sentence_data[index+1]['token'], depth)
