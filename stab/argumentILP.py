@@ -5,15 +5,18 @@ from collections import defaultdict
 import csv 
 
 class ArgumentTrees(): 
-    def __init__(self, ann_file, txt_file, sent_file): 
+    def __init__(self, ann_file, txt_file): 
         self.incoming_relations = defaultdict(list)
         self.outgoing_relations = defaultdict(list)
         self.type = {}
+        self.idx = {}
+        self.claim_types = ["Claim","MajorClaim"]
         with open(ann_file,"r") as f: 
             for line in f.readlines(): 
                 info = line.strip('\n').split("\t")
                 name = info[0]
                 if "T" in name: 
+                    self.idx[name] = int(info[1].split(" ")[1])
                     self.type[name] = info[1].split(" ")[0]
                 elif "R" in name:
                     info = info[1].split(' ')
@@ -22,12 +25,35 @@ class ArgumentTrees():
                     self.outgoing_relations[arg1].append(arg2)
                     self.incoming_relations[arg2].append(arg1)
 
-        self.structure = Structural()
-        self.structure.read_data(ann_file,txt_file,None,sent_file)
+        self.get_components_per_paragraph(txt_file)
+
+    def get_components_per_paragraph(self,txt_file): 
         self.components_per_paragraph = defaultdict(list)
-        for p,c_list in self.structure.paragraph_info()[0].items(): 
-            for c in c_list: 
-                self.components_per_paragraph[p].append(c)
+        paragraphs = []
+        self.paragraph_idx = []
+        with open(txt_file,"r") as f: 
+            for idx, line in enumerate(f.readlines()):
+                if idx == 0: # skip prompt 
+                    self.prompt = line
+                    continue
+                if idx == 1: # skip the additional newline after prompt 
+                    continue
+                paragraphs.append(line)
+        self.essay = "".join(paragraphs)
+        start = len(self.prompt)  
+        for paragraph in paragraphs:
+            self.paragraph_idx.append(start)
+            start += len(paragraph) 
+        for c,component_start in self.idx.items():
+            for p_idx, paragraph_start in enumerate(self.paragraph_idx):
+                if p_idx + 1 <= len(self.paragraph_idx)-1: 
+                    if paragraph_start <= component_start < self.paragraph_idx[p_idx+1]: 
+                        self.components_per_paragraph[p_idx].append(c)
+                        break
+                elif p_idx == len(self.paragraph_idx)-1: # final paragraph
+                    if paragraph_start <= component_start: 
+                        self.components_per_paragraph[p_idx].append(c) 
+                
 
     def get_weights(self,components,out_neighbors,in_neighbors,types): 
         n = len(components)
@@ -45,7 +71,7 @@ class ArgumentTrees():
             relin = len(in_neighbors[c])
             relout = len(out_neighbors[c])
             cs[c] =  (relin-relout+n-1) / (rel+n-1)
-        
+
         # cr_ij = cs_j - cs_i 
         cr = [[0 for _ in range(n)] for _ in range(n)] # nxn matrix 
         c = [[0 for _ in range(n)] for _ in range(n)] # nxn matrix  
@@ -54,8 +80,12 @@ class ArgumentTrees():
                 if i==j: continue 
                 cr[i][j] = cs[j] - cs[i]
                 target_type = types[j]
-                if target_type == "Claim" or target_type == "MajorClaim":
-                    c[i][j] = 1  
+                source_type = types[i]
+                if target_type in self.claim_types: 
+                    if source_type not in self.claim_types: 
+                        # my modification because MajorClaims are root nodes 
+                        # and the annotated trees do not seem to allow for claims to point to another claim
+                        c[i][j] = 1  
         # w_ij = (1/2)*r_ij + (1/4)*cr_ij + (1/4)*type where r is the relation matrix and type is the dictionary c 
         w = [[0 for _ in range(n)] for _ in range(n)] # nxn matrix  
         for i in components: 
@@ -64,6 +94,7 @@ class ArgumentTrees():
         return w 
 
     def solve(self): 
+        self.results = defaultdict(list) # paragraph idx to optimized relations
         for p,components in self.components_per_paragraph.items():
             if len(components) > 1:
                 idx_to_name = {idx:name for idx,name in enumerate(components)} 
@@ -91,9 +122,13 @@ class ArgumentTrees():
 
     def solve_paragraph(self,p,idx_to_name,w): 
         components = list(idx_to_name.keys())
-        
+
+        # silence Gurobi output 
+        env = gp.Env(empty=True)
+        env.setParam("OutputFlag",0)
+        env.start()
         # create model 
-        model = gp.Model(f"argument_in_paragraph")
+        model = gp.Model(f"argument_in_paragraph",env=env)
         
         # Create variables
         pairs = []
@@ -129,41 +164,78 @@ class ArgumentTrees():
             
             for j in components: 
                 # if a relation exists between i and j (i.e., x_ij is 1), then b_ij is also 1 
-                model.addConstr(x[(i,j)] - b[(i,j)] == 0, 'direct_relation')
+                model.addConstr(x[(i,j)] - b[(i,j)] <= 0, 'direct_relation')
         
         for i in components: 
             for j in components: 
                 for k in components:
                     # if there is a directed path from i to j and from j to k, then there should be a relation from i to k 
                     model.addConstr((b[(i,k)] - b[(i,j)] - b[(j,k)] >= -1), 'transitive')
-       
         # now solve for the optimal values of x 
         model.optimize()
         
         # write output to another file 
         if model.status == GRB.OPTIMAL:
             num_relations = 0
-            f = open(f'argument_tree_optimal.txt','a+')
-            f.write(f"\nResult for Paragraph {p} (0-indexed):\n")
+            # f = open(f'argument_tree_optimal.txt','a+')
+            # f.write(f"\nResult for Paragraph {p} (0-indexed):\n")
             for i in components: 
                 for j in components:
                     num_relations += int(x[(i,j)].X)
                     decision = int(x[(i,j)].X)
                     if decision == 1: 
-                        # print(f"Relation from {idx_to_name[i]} to {idx_to_name[j]}")
-                        f.write(f"Relation from {idx_to_name[i]} to {idx_to_name[j]}\n")
-            f.write(f'Number of Relations: {num_relations}\n')
-            f.close()
-        print('----------------------------------\n')
+                        # f.write(f"Relation from {idx_to_name[i]} to {idx_to_name[j]}\n")
+                        source = idx_to_name[i]
+                        target = idx_to_name[j]
+
+                        # enforce the constraint within the annotation guidelines that no claims should be linked to each other  
+                        if self.type[source] in self.claim_types and self.type[target] in self.claim_types:
+                            continue 
+                        # only link premises to claims 
+                        self.results[source].append(target) 
+            # f.write(f'Number of Relations: {num_relations}\n')
+            # f.close()
+
+    def evaluate(self):
+        true_pos, true_neg, false_pos, false_neg = 0,0,0,0
+        for i,j_list in self.results.items():
+            if i in self.outgoing_relations: 
+                for j in j_list: 
+                    if j in self.outgoing_relations[i]: 
+                        true_pos += 1 
+                    else: 
+                        false_pos += 1 
+                        print(f"False Positive ({i},{j})")
+            else: 
+                true_neg += 1 
+        for i,j_list in self.outgoing_relations.items(): 
+            if i in self.outgoing_relations:
+                for j in j_list: 
+                    if j not in self.results[i]: 
+                        false_neg += 1
+                        print(f"False Negative ({i},{j})")  
+        if false_neg == 0 and false_pos == 0: 
+            return True 
+        # else: 
+        #     print(f"True positive rate: {true_pos/(true_pos+false_neg)}") 
+        #     print(f"True negative rate: {true_neg/(true_neg+false_pos)}") 
+        #     print(f"False negative rate: {false_pos/(true_neg+false_pos)}") 
+        #     print(f"False positive rate: {false_neg/(true_pos+false_neg)}") 
+        return False
+
 
 essayDir = "/Users/amycweng/Downloads/CS333_Project/ArgumentAnnotatedEssays-2.0/brat-project-final"
-annDir = "/Users/amycweng/Downloads/CS333_Project/CS333AES/stab/preprocessing/src/main/resources/token_level"
-sentDir = "/Users/amycweng/Downloads/CS333_Project/CS333AES/stab/preprocessing/src/main/resources/sentence_sentiment"
+NUM_ESSAYS = 402 #402 
+for num in range(NUM_ESSAYS):
+    if num+1 < 10: filename = f'essay00{num+1}'
+    elif num+ 1 < 100: filename = f'essay0{num+1}'
+    else: filename = f'essay{num+1}'
 
-filename = 'essay001'
-essay_ann_file = f"{essayDir}/{filename}.ann"
-essay_txt_file = f"{essayDir}/{filename}.txt"
-sentence_file = f"{sentDir}/{filename}.txt"
-
-argument = ArgumentTrees(essay_ann_file, essay_txt_file, sentence_file)
-argument.solve()
+    essay_ann_file = f"{essayDir}/{filename}.ann"
+    essay_txt_file = f"{essayDir}/{filename}.txt"
+    argument = ArgumentTrees(essay_ann_file, essay_txt_file)
+    argument.solve()
+    print(f"{filename}")
+    argument.evaluate()
+    # print("ILP output", argument.results)
+    # print("True results", argument.outgoing_relations)
