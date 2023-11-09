@@ -2,16 +2,17 @@ import stanza
 import pandas as pd
 import re
 import numpy as np
-from statsmodels.discrete.discrete_model import Poisson
+# from sklearn.feature_extraction.text import TfidfVectorizer
 from itertools import groupby
 from operator import itemgetter
 import sys
 from gensim import models
 from indicators import FORWARD_INDICATORS, FIRST_PERSON_INDICATORS, THESIS_INDICATORS, BACKWARDS_INDICATORS, REBUTTAL_INDICATORS
 from pos import pos
+import json
 w = models.KeyedVectors.load_word2vec_format(
     './GoogleNews-vectors-negative300.bin', binary=True)
-
+import multiprocessing
 corenlp_dir = '../corenlp'
 import os
 os.environ["CORENLP_HOME"] = corenlp_dir
@@ -19,13 +20,14 @@ os.environ["CORENLP_HOME"] = corenlp_dir
 from stanza.server import CoreNLPClient
  
 class ArgumentClassification():
-    def __init__(self, data, client, text_file, ann_file=None):
+    def __init__(self, data, client, dependency_tuples=None):
         self.data = data
         self.client = client
-        self.file = text_file
-        self.ann_file = ann_file
-        # self.components = self.process_data(data)
-    def process_data(self):
+        if dependency_tuples:
+            self.dependency_tuples = dependency_tuples
+        else:
+            self.dependency_tuples = set()
+    def process_data(self, train=None):
         self.components = []
         component = []
         preceding_tokens = []
@@ -36,14 +38,28 @@ class ArgumentClassification():
         start_index = None
         component_stats = {}
         pos_dist = pos.copy()
-        for each in self.data:
+        essays = set()
+        # vectorizer = TfidfVectorizer()
+
+        if train:
+            dependency_tuples_freq = {}
+            for each in self.data:
+                dep_tuple = (each['head'], each['token'])
+                if dep_tuple in dependency_tuples_freq.keys():
+                    dependency_tuples_freq[dep_tuple] += 1
+                else:
+                    dependency_tuples_freq[dep_tuple] = 0
+
+        for index, each in enumerate(self.data):            
+            print(index)
             if each['IOB'] == 'Arg-B' or each['IOB'] == 'Arg-I':
                 if not encountered_b:
                     paragraph = each['paragraph']
                     sentence = each['sentence']
                     start_index = each['start']
                     encountered_b = True
-                pos_dist[each['pos']]+=1
+                if each['pos'] in pos_dist.keys() :
+                    pos_dist[each['pos']]+=1
                 component.append(each['token'])
             else:
                 if not encountered_b:
@@ -55,7 +71,7 @@ class ArgumentClassification():
                         following_tokens.append(each['token'])
                         component_stats = self.paragraph_stats(each['essay'], paragraph, sentence)
                         preceding_tokens = [x for x in " ".join(preceding_tokens).split('.')[-1].split(' ') if x != '']
-                        text_info = self.read_file(each['essay'])
+                        text_info = self.read_file(each['essay'], paragraph, sentence)
                         fields = {
                             "essay":each['essay'],
                             "component":component,
@@ -72,10 +88,15 @@ class ArgumentClassification():
                             "sentence":sentence,
                             "sentence_size":component_stats['sentence_size'],
                             "ratio":len(component)/component_stats['sentence_size'],
+                            "probability":0,
+                            "modal_present": 1 if pos_dist['MD'] > 0 else 0,
                             **pos_dist,
-                            **self.annotate_sentence(sentence, text_info, component, each['essay'])
-                            **self.embed_component(component+preceding_tokens)
+                            **self.annotate_sentence(sentence, text_info, component, each['essay']),
+                            **self.indicators_context(text_info['paragraph'], component),
+                            **self.embed_component(component+preceding_tokens),
+                            "claim":None
                         }
+                        essays.add(each['essay'])
                         if len(component) > 0:
                             self.components.append(fields)
                         component = []
@@ -84,7 +105,39 @@ class ArgumentClassification():
                         encountered_b = False
                         paragraph = None
                         sentence = None  
-                        pos_dist = pos.copy()              
+                        pos_dist = pos.copy()  
+        labels = {}
+        probability = []
+        if train: 
+            for essay in essays:
+                labels[essay] = self.read_data(essay.replace('.txt', '.ann'))
+            for component in self.components:
+                list_labels = labels[component['essay']]
+                
+                for label in list_labels:
+                    if " ".join(component['component']) == label['phrase']:
+                        component['claim'] = label['claim']
+                probability.append({'claim':component['claim'], 'preceding_tokens':component['preceding_tokens']})
+        with open('classification_probability.json', 'w') as f:
+            json.dump(probability, f)
+        with open('classification_dependency.json', 'w') as f:
+            json.dump(list(self.dependency_tuples), f)
+        
+        for component in self.components:
+            component['probability']=self.probability_calc(probability, component['preceding_tokens'])
+        
+        
+                
+
+
+    def probability_calc(self, probability, preceding):
+        labels = ['MajorClaim','Claim','Premise']
+        ret = {'p_MajorClaim':0, 'p_Claim':0, 'p_Premise':0}
+        for c in labels:
+            label_instance = [label for label in probability if label["claim"] == c]
+            preceding_instance = [e for e in label_instance if e["preceding_tokens"] == preceding]
+            ret["p_"+c] = len(preceding_instance)/len(label_instance)
+        return ret
 
     def paragraph_stats(self, essay, paragraph, sentence):
         grouped = groupby(self.data, itemgetter('essay','paragraph'))
@@ -114,7 +167,10 @@ class ArgumentClassification():
         ret = 0
         
         for word in component:
-            ret += w[word]
+            try:
+                ret += w[word]
+            except:
+                continue
         ret_dict = {}
         for i, each in enumerate(ret):
             ret_dict[f"dim_{i}"] = each
@@ -146,7 +202,8 @@ class ArgumentClassification():
         return 0
     def read_file(self, file, paragraph, sentence):
         f = open(file,"r").read()
-        paragraph_text = f.split('\n\n')[1].split('\n')[paragraph]
+        # print(f.split('\n\n'))
+        paragraph_text = f.split('\n\n')[1].split('\n')[int(paragraph)]
         sentence_text = paragraph_text.split('.')[sentence-1]
         intro = f.split('\n\n')[1].split('\n')[0]
         conclusion = f.split('\n\n')[1].split('\n')[-1]
@@ -154,19 +211,26 @@ class ArgumentClassification():
     def annotate_sentence(self, sent_idx, paragraph, component, file):
         document = self.client.annotate(paragraph['paragraph'])
         sentence = None
+        # print(sent_idx)
         for i, sent in enumerate(document.sentence):
-            if i+1 == sent_idx:
+            if i == sent_idx:
                 # we want this sentence
                 sentence = sent
                 break
-        depth = self.tree_depth(sentence.parseTree, 0)
-        num_subclause = self.subclause(sentence.parseTree)
-        tense = self.verb_tense(sentence.parseTree, component)
-        nps = self.noun_phrases(sentence.parseTree, component)
-        vps = self.verb_phrases(sentence.parseTree, component)        
-        shared_p_values = self.shared_phrase([paragraph['intro'], paragraph['conclusion']], vps, nps)
+        if sentence:
+            depth = self.tree_depth(sentence.parseTree, 0)
+            num_subclause = self.subclause(sentence.parseTree)
+            tense = self.verb_tense(sentence.parseTree, component)
+            nps = self.noun_phrases(sentence.parseTree, component)
+            vps = self.verb_phrases(sentence.parseTree, component)        
+            shared_p_values = self.shared_phrase([paragraph['introduction'], paragraph['conclusion']], vps, nps)
+        
         return {"depth":depth, "num_subclause":num_subclause, "tense":tense, **shared_p_values}
 
+    def dependency(self, tokens, dependency):
+        for dep in dependency:
+            self.dependency_tuples.add((tokens[dep['source']-1], tokens[dep['target']-1]))
+    
 
         
     def verb_tense(self, parse_tree, component):
@@ -219,15 +283,15 @@ class ArgumentClassification():
         vp_count = 0
         for paragraph in paragraphs:
             for phrase in verb_phrases:
-                vp_count += paragraph.count(phrase.join(' '))
+                vp_count += paragraph.count(' '.join(phrase))
             for phrase in noun_phrases:
-                np_count += paragraph.count(phrase.join(' '))
+                np_count += paragraph.count(' '.join(phrase))
         
         return {"noun_phrases": np_count, "verb_phrases": vp_count}
 
 
     def indicators_context(self, paragraph, component):
-        text = paragraph.replace(component.join(' '), '\n')
+        text = paragraph.replace(' '.join(component), '\n')
         preceding_text = text[0]
         following_text = text[1]
         ret = {
@@ -321,19 +385,27 @@ class ArgumentClassification():
                 line = line.split("\t")
                 if "T" in line[0]: 
                     components.append(line)
-        return components
-    def preprocess_components(self, components):
+        # print(components)
+    #     return components
+    # def preprocess_components(self, components):
         augmented = []
         for component in components: 
             name = component[0]
             claim,start,end = component[1].split(' ')
             phrase = component[2]
-            info = {"name": name, "claim": claim,"start":int(start),"end":int(end),"phrase": phrase}
+            info = {"essay":ann_file.replace(".ann",".txt"), "name": name, "claim": claim,"start":int(start),"end":int(end),"phrase": phrase}
             augmented.append(info)
         return augmented
 
 if __name__=='__main__':
-    data = pd.read_csv('../indentification2.csv').to_dict('records')
-    argclass = ArgumentClassification(data)
-    argclass.process_data()
+    client = CoreNLPClient(
+        annotators=['tokenize','ssplit', 'pos', 'lemma', 'ner', 'sentiment', 'depparse'], 
+        memory='4G', 
+        endpoint='http://localhost:9005',
+        be_quiet=True)
+    client.start()
+    data = pd.read_csv('ALL copy.csv').to_dict('records')
+    argclass = ArgumentClassification(data, client)
+    argclass.process_data(True)
     print(argclass.components)
+    client.stop()

@@ -25,5 +25,5 @@ if __name__ == '__main__':
     
     identifier = ArgumentIdentification(client, text, ann)
     identifier.run_annotated()
-    pd.DataFrame(identifier.train_data).to_csv("ALL.csv")
+    pd.DataFrame(identifier.train_data).to_csv("test.csv")
     client.stop()

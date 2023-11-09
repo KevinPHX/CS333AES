@@ -3,6 +3,7 @@ import pandas as pd
 import re
 import numpy as np
 from statsmodels.discrete.discrete_model import Poisson
+from multiprocessing import Pool    
 
 #  per document list
 
@@ -12,6 +13,11 @@ class ArgumentIdentification():
         self.client = client
         self.file  = text_file
         self.ann_file = ann_file
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        print(state)
+        del state['lock']
+        return state
     def annotate_punc(self, token, data):
         # check if punc
         if not re.search(r'[A-Za-z0-9]',token.originalText) and len(data) > 0: # is punc
@@ -251,95 +257,97 @@ class ArgumentIdentification():
         # print(probabilities)
         index = np.argmax(probabilities)
         return probabilities[index][0]
-        
+    def process_file(self, file):
+        print(f"starting essay {file}")
+        paragraphs = []
+        data =[]
+
+        with open(file,"r") as f: 
+            for idx, line in enumerate(f.readlines()):
+                if idx == 0: # skip prompt 
+                    prompt = line
+                    continue
+                if idx == 1: # skip the additional newline after prompt 
+                    just_in_case = line
+                    continue
+                paragraphs.append(line)
+
+        components = self.read_data(file.replace('.txt', '.ann'))
+
+        adjust_sen = 0
+        for k, para in enumerate(paragraphs):
+            document = self.client.annotate(para)   
+            for i, sent in enumerate(document.sentence):
+                component_i = self.preprocess_components(components)
+                for j, token in enumerate(sent.token):
+                    start = len(prompt) + len(just_in_case) + adjust_sen + token.beginChar
+                    punc = self.annotate_punc(token, data)
+                    d = {
+                        'essay':file,
+                        'token':token.word,
+                        'lemma':token.lemma,
+                        'sentence':i,
+                        'index':j+1,
+                        'start':start,
+                        'pos':token.pos,
+                        'sentiment':sent.sentiment,
+                        'paragraph':k,
+                        'docPosition':self.paragraph_pos(k, len(paragraphs)),
+                        'sentPosition':self.sent_pos(token.endIndex, len(sent.token)),
+                        'isPunc':punc==1,
+                        'followsPunc':punc==2,
+                        'precedesPunc':False,
+                        'followsLCA':None,
+                        'precedesLCA':None,
+                        'followsLCAPath':None,
+                        'precedesLCAPath':None,
+                        'head':self.get_head(sent.basicDependencies, j+1),
+                        'uppermost':None,
+                        'uppermost_child':None,
+                        'right_sibling':None,
+                        'right_sibling_head':None,
+                        'probability':None,
+                        'IOB':self.iob(start, component_i)
+                    }
+                    data.append(d)
+                sentence_data = data[-j-1:]
+                depth = self.tree_depth(sent.parseTree, 0)
+                lexical_heads = self.get_heads(sent.basicDependencies)
+                lex_heads_dict = {}
+                for lex in lexical_heads:
+                    lex_heads_dict[sentence_data[lex-1]['token']] = lex
+                for index, t in enumerate(sentence_data):
+                    upper_path = self.uppermost(sent.parseTree, sentence_data[t['head']-1]['token'], t['token'])
+                    t['uppermost'] = upper_path[0]
+                    t['uppermost_child'] = self.uppermost_child(sent.parseTree, upper_path[1])
+                    right_sib = self.uppermost_right(sent.parseTree, upper_path[1])
+                    t['right_sibling'] = right_sib
+                    sib_head = self.get_right_sib_head(sent.parseTree, sent.basicDependencies, right_sib, lex_heads_dict)
+                    if sib_head:
+                        t['right_sibling_head'] = sentence_data[sib_head-1]['token']
+                    t['head'] = '-'.join([sentence_data[t['head']-1]['token'], str(t['head'])])
+                    if index == 0 and len(sentence_data)>1:
+                        t["precedesLCAPath"] = -1
+                        lca_output = self.LCA(sent.parseTree, sentence_data[index]['token'], None, sentence_data[index+1]['token'], depth)
+                        t['followsLCAPath'] = lca_output[0][0]
+                        t["followsLCA"] = lca_output[0][1]
+                    elif index == len(sentence_data) - 1:
+                        t["followsLCAPath"] = -1
+                        lca_output = self.LCA(sent.parseTree, sentence_data[index]['token'], sentence_data[index-1]['token'], None, depth)
+                        t['precedesLCAPath'] = lca_output[0][0]
+                        t["precedesLCA"] = lca_output[0][1]
+                    else:
+                        lca_output = self.LCA(sent.parseTree, sentence_data[index]['token'], sentence_data[index-1]['token'], sentence_data[index+1]['token'], depth)
+                        t['precedesLCAPath'] = lca_output[0][0]
+                        t["precedesLCA"] = lca_output[0][1]
+                        t['followsLCAPath'] = lca_output[1][0]
+                        t["followsLCA"] = lca_output[1][1]
+            adjust_sen += len(para)
+        return data
     def run_annotated(self):
         ret = []
-        for i, file in enumerate(self.file):
-            print(f"starting essay {file}")
-            paragraphs = []
-            data =[]
-
-            with open(file,"r") as f: 
-                for idx, line in enumerate(f.readlines()):
-                    if idx == 0: # skip prompt 
-                        prompt = line
-                        continue
-                    if idx == 1: # skip the additional newline after prompt 
-                        continue
-                    paragraphs.append(line)
-
-            components = self.read_data(self.ann_file[i])
-
-            adjust_sen = 0
-            for k, para in enumerate(paragraphs):
-                document = self.client.annotate(para)   
-                for i, sent in enumerate(document.sentence):
-                    component_i = self.preprocess_components(components)
-                    for j, token in enumerate(sent.token):
-                        start = len(prompt) + 1 + adjust_sen + token.beginChar
-                        punc = self.annotate_punc(token, data)
-                        d = {
-                            'essay':file,
-                            'token':token.word,
-                            'lemma':token.lemma,
-                            'sentence':i,
-                            'index':j+1,
-                            'start':start,
-                            'pos':token.pos,
-                            'sentiment':sent.sentiment,
-                            'paragraph':k,
-                            'docPosition':self.paragraph_pos(k, len(paragraphs)),
-                            'sentPosition':self.sent_pos(token.endIndex, len(sent.token)),
-                            'isPunc':punc==1,
-                            'followsPunc':punc==2,
-                            'precedesPunc':False,
-                            'followsLCA':None,
-                            'precedesLCA':None,
-                            'followsLCAPath':None,
-                            'precedesLCAPath':None,
-                            'head':self.get_head(sent.basicDependencies, j+1),
-                            'uppermost':None,
-                            'uppermost_child':None,
-                            'right_sibling':None,
-                            'right_sibling_head':None,
-                            'probability':None,
-                            'IOB':self.iob(start, component_i)
-                        }
-                        data.append(d)
-                    sentence_data = data[-j-1:]
-                    depth = self.tree_depth(sent.parseTree, 0)
-                    lexical_heads = self.get_heads(sent.basicDependencies)
-                    lex_heads_dict = {}
-                    for lex in lexical_heads:
-                        lex_heads_dict[sentence_data[lex-1]['token']] = lex
-                    for index, t in enumerate(sentence_data):
-                        upper_path = self.uppermost(sent.parseTree, sentence_data[t['head']-1]['token'], t['token'])
-                        t['uppermost'] = upper_path[0]
-                        t['uppermost_child'] = self.uppermost_child(sent.parseTree, upper_path[1])
-                        right_sib = self.uppermost_right(sent.parseTree, upper_path[1])
-                        t['right_sibling'] = right_sib
-                        sib_head = self.get_right_sib_head(sent.parseTree, sent.basicDependencies, right_sib, lex_heads_dict)
-                        if sib_head:
-                            t['right_sibling_head'] = sentence_data[sib_head-1]['token']
-                        t['head'] = '-'.join([sentence_data[t['head']-1]['token'], str(t['head'])])
-                        if index == 0 and len(sentence_data)>1:
-                            t["precedesLCAPath"] = -1
-                            lca_output = self.LCA(sent.parseTree, sentence_data[index]['token'], None, sentence_data[index+1]['token'], depth)
-                            t['followsLCAPath'] = lca_output[0][0]
-                            t["followsLCA"] = lca_output[0][1]
-                        elif index == len(sentence_data) - 1:
-                            t["followsLCAPath"] = -1
-                            lca_output = self.LCA(sent.parseTree, sentence_data[index]['token'], sentence_data[index-1]['token'], None, depth)
-                            t['precedesLCAPath'] = lca_output[0][0]
-                            t["precedesLCA"] = lca_output[0][1]
-                        else:
-                            lca_output = self.LCA(sent.parseTree, sentence_data[index]['token'], sentence_data[index-1]['token'], sentence_data[index+1]['token'], depth)
-                            t['precedesLCAPath'] = lca_output[0][0]
-                            t["precedesLCA"] = lca_output[0][1]
-                            t['followsLCAPath'] = lca_output[1][0]
-                            t["followsLCA"] = lca_output[1][1]
-                adjust_sen += len(para)
-            ret.append(data)
+        for index, file in enumerate(self.file):
+            ret.append(self.process_file(file))
         convert = {"Arg-B":0, "Arg-I":1, "O":2}
         self.models = []
         X = {1:[], 2:[], 3:[]}
@@ -376,13 +384,14 @@ class ArgumentIdentification():
         for i, file in enumerate(self.file):
             paragraphs = []
             data =[]
-
+            
             with open(file,"r") as f: 
                 for idx, line in enumerate(f.readlines()):
                     if idx == 0: # skip prompt 
                         prompt = line
                         continue
                     if idx == 1: # skip the additional newline after prompt 
+                        just_in_case = line
                         continue
                     paragraphs.append(line)
 
@@ -391,7 +400,7 @@ class ArgumentIdentification():
                 document = self.client.annotate(para)   
                 for i, sent in enumerate(document.sentence):
                     for j, token in enumerate(sent.token):
-                        start = len(prompt) + 1 + adjust_sen + token.beginChar
+                        start = len(prompt) + len(just_in_case) + adjust_sen + token.beginChar
                         punc = self.annotate_punc(token, data)
                         d = {
                             'essay':file,
