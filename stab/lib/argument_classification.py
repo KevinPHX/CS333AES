@@ -1,6 +1,8 @@
 import stanza
 import pandas as pd
 import re
+import shutil
+
 import numpy as np
 # from sklearn.feature_extraction.text import TfidfVectorizer
 from itertools import groupby
@@ -11,18 +13,21 @@ from indicators import FORWARD_INDICATORS, FIRST_PERSON_INDICATORS, THESIS_INDIC
 from pos import pos
 import json
 w = models.KeyedVectors.load_word2vec_format(
-    './GoogleNews-vectors-negative300.bin', binary=True)
+    '../models/GoogleNews-vectors-negative300.bin', binary=True)
 import multiprocessing
 corenlp_dir = '../corenlp'
 import os
 os.environ["CORENLP_HOME"] = corenlp_dir
-
+pdtb_output_dir = '../../data/ArgumentAnnotatedEssays-2.0 2/data/brat-project-final/output'
 from stanza.server import CoreNLPClient
- 
+import subprocess
+
 class ArgumentClassification():
-    def __init__(self, data, client, dependency_tuples=None):
+    def __init__(self, data, client, probability=None, dependency_tuples=None):
         self.data = data
         self.client = client
+        if probability:
+            self.probability = probability
         if dependency_tuples:
             self.dependency_tuples = dependency_tuples
         else:
@@ -36,6 +41,7 @@ class ArgumentClassification():
         paragraph = None
         sentence = None
         start_index = None
+        end_index = None
         component_stats = {}
         pos_dist = pos.copy()
         essays = set()
@@ -50,81 +56,91 @@ class ArgumentClassification():
                 else:
                     dependency_tuples_freq[dep_tuple] = 0
 
-        for index, each in enumerate(self.data):            
-            print(index)
-            if each['IOB'] == 'Arg-B' or each['IOB'] == 'Arg-I':
-                if not encountered_b:
-                    paragraph = each['paragraph']
-                    sentence = each['sentence']
-                    start_index = each['start']
-                    encountered_b = True
-                if each['pos'] in pos_dist.keys() :
-                    pos_dist[each['pos']]+=1
-                component.append(each['token'])
-            else:
-                if not encountered_b:
-                    preceding_tokens.append(each['token'])
+        for essay in groupby(self.data, itemgetter('essay')):
+            print(f"starting {essay[0]['essay']}")
+            parsings = self.pdtb_parse(essay[0]['essay'])
+            for each in enumerate(essay):
+                if each['IOB'] == 'Arg-B' or each['IOB'] == 'Arg-I':
+                    if not encountered_b:
+                        paragraph = each['paragraph']
+                        sentence = each['sentence']
+                        start_index = each['start']
+                        encountered_b = True
+                    if each['pos'] in pos_dist.keys() :
+                        pos_dist[each['pos']]+=1
+                    end_index = each['start'] + len(each['token'])
+                    component.append(each['token'])
                 else:
-                    if not each['token'] == '.':
-                        following_tokens.append(each['token'])
+                    if not encountered_b:
+                        preceding_tokens.append(each['token'])
                     else:
-                        following_tokens.append(each['token'])
-                        component_stats = self.paragraph_stats(each['essay'], paragraph, sentence)
-                        preceding_tokens = [x for x in " ".join(preceding_tokens).split('.')[-1].split(' ') if x != '']
-                        text_info = self.read_file(each['essay'], paragraph, sentence)
-                        fields = {
-                            "essay":each['essay'],
-                            "component":component,
-                            "preceding_tokens":preceding_tokens,
-                            "num_preceding":len(preceding_tokens),
-                            "following_tokens":following_tokens,
-                            "num_following":len(following_tokens),
-                            "type_indicators": self.type_indicators(preceding_tokens, component),
-                            "first_person_indicators": self.first_person_indicators(preceding_tokens, component),
-                            "paragraph":paragraph,
-                            "paragraph_size":component_stats['paragraph_size'],
-                            "first/last": 1 if component_stats['max_sentence'] == sentence or component_stats['min_sentence'] == sentence else 0,
-                            "intro/conc": 1 if each['docPosition'] == 'Introduction' or each['docPosition'] == 'Conclusion' else 0,
-                            "sentence":sentence,
-                            "sentence_size":component_stats['sentence_size'],
-                            "ratio":len(component)/component_stats['sentence_size'],
-                            "probability":0,
-                            "modal_present": 1 if pos_dist['MD'] > 0 else 0,
-                            **pos_dist,
-                            **self.annotate_sentence(sentence, text_info, component, each['essay']),
-                            **self.indicators_context(text_info['paragraph'], component),
-                            **self.embed_component(component+preceding_tokens),
-                            "claim":None
-                        }
-                        essays.add(each['essay'])
-                        if len(component) > 0:
-                            self.components.append(fields)
-                        component = []
-                        preceding_tokens = []
-                        following_tokens = []
-                        encountered_b = False
-                        paragraph = None
-                        sentence = None  
-                        pos_dist = pos.copy()  
+                        if not each['token'] == '.':
+                            following_tokens.append(each['token'])
+                        else:
+                            following_tokens.append(each['token'])
+                            component_stats = self.paragraph_stats(each['essay'], paragraph, sentence)
+                            preceding_tokens = [x for x in " ".join(preceding_tokens).split('.')[-1].split(' ') if x != '']
+                            text_info = self.read_file(each['essay'], paragraph, sentence, start_index, end_index)
+                            fields = {
+                                "essay":each['essay'],
+                                "component":component,
+                                "component_text":text_info['component_text'],
+                                "start":start_index,
+                                "end":end_index,
+                                "preceding_tokens":preceding_tokens,
+                                "num_preceding":len(preceding_tokens),
+                                "following_tokens":following_tokens,
+                                "num_following":len(following_tokens),
+                                "type_indicators": self.type_indicators(preceding_tokens, text_info['component_text']),
+                                "first_person_indicators": self.first_person_indicators(preceding_tokens, component),
+                                "paragraph":paragraph,
+                                "paragraph_size":component_stats['paragraph_size'],
+                                "first/last": 1 if component_stats['max_sentence'] == sentence or component_stats['min_sentence'] == sentence else 0,
+                                "intro/conc": 1 if each['docPosition'] == 'Introduction' or each['docPosition'] == 'Conclusion' else 0,
+                                "sentence":sentence,
+                                "sentence_size":component_stats['sentence_size'],
+                                "ratio":len(component)/component_stats['sentence_size'],
+                                "probability":0,
+                                "modal_present": 1 if pos_dist['MD'] > 0 else 0,
+                                **pos_dist,
+                                **self.annotate_sentence(sentence, text_info, component, each['essay']),
+                                **self.indicators_context(text_info['paragraph'], text_info['component_text']),
+                                **self.embed_component(component+preceding_tokens),
+                                **self.component_pdtb(parsings, start_index, end_index),
+                                "claim":None
+                            }
+                            essays.add(each['essay'])
+                            if len(component) > 0:
+                                self.components.append(fields)
+                            component = []
+                            preceding_tokens = []
+                            following_tokens = []
+                            encountered_b = False
+                            paragraph = None
+                            sentence = None  
+                            start_index = None
+                            end_index = None
+                            pos_dist = pos.copy()                  
         labels = {}
-        probability = []
+        
         if train: 
+            self.probability = []
             for essay in essays:
                 labels[essay] = self.read_data(essay.replace('.txt', '.ann'))
             for component in self.components:
                 list_labels = labels[component['essay']]
                 
                 for label in list_labels:
-                    if " ".join(component['component']) == label['phrase']:
+                    if component['start'] == label['start']:
                         component['claim'] = label['claim']
-                probability.append({'claim':component['claim'], 'preceding_tokens':component['preceding_tokens']})
-        with open('classification_probability.json', 'w') as f:
-            json.dump(probability, f)
+                self.probability.append({'claim':component['claim'], 'preceding_tokens':component['preceding_tokens']})
+        # with open('classification_probability.json', 'w') as f:
+        #     json.dump(probability, f)
         with open('classification_dependency.json', 'w') as f:
             json.dump(list(self.dependency_tuples), f)
         
         for component in self.components:
-            component['probability']=self.probability_calc(probability, component['preceding_tokens'])
+            component['probability']=self.probability_calc(self.probability, component['preceding_tokens'])
         
         
                 
@@ -136,7 +152,10 @@ class ArgumentClassification():
         for c in labels:
             label_instance = [label for label in probability if label["claim"] == c]
             preceding_instance = [e for e in label_instance if e["preceding_tokens"] == preceding]
-            ret["p_"+c] = len(preceding_instance)/len(label_instance)
+            if len(label_instance) > 0:
+                ret["p_"+c] = len(preceding_instance)/len(label_instance)
+            else:
+                ret["p_"+c] = 0
         return ret
 
     def paragraph_stats(self, essay, paragraph, sentence):
@@ -178,6 +197,7 @@ class ArgumentClassification():
 
     
     def type_indicators(self, preceding, component):
+        # TODO: Thiss also won't work
         prec = ' '.join(preceding)
         comp = ' '.join(component)
         for f in FORWARD_INDICATORS:
@@ -194,20 +214,31 @@ class ArgumentClassification():
                 return 1
         return 0
     def first_person_indicators(self, preceding, component):
+        # TODO FIX THIS
         prec = ' '.join(preceding)
         comp = ' '.join(component)
         for f in FIRST_PERSON_INDICATORS:
             if f in prec or f in comp:
                 return 1
         return 0
-    def read_file(self, file, paragraph, sentence):
-        f = open(file,"r").read()
+    def read_file(self, file, paragraph, sentence, start, end):
+        full_file = open(file,"r").read()
         # print(f.split('\n\n'))
-        paragraph_text = f.split('\n\n')[1].split('\n')[int(paragraph)]
-        sentence_text = paragraph_text.split('.')[sentence-1]
-        intro = f.split('\n\n')[1].split('\n')[0]
-        conclusion = f.split('\n\n')[1].split('\n')[-1]
-        return {'paragraph':paragraph_text, 'sentence':sentence_text, 'introduction':intro, 'conclusion':conclusion}
+        paragraphs = []
+
+        with open(file,"r") as f: 
+            for idx, line in enumerate(f.readlines()):
+                if idx == 0: # skip prompt 
+                    continue
+                if idx == 1: # skip the additional newline after prompt 
+                    continue
+                paragraphs.append(line)
+        paragraph_text = paragraphs[int(paragraph)]
+        sentence_text = paragraph_text.split('.')[int(sentence)-1]
+        intro = paragraphs[0]
+        conclusion = paragraphs[-1]
+        component_text = full_file[int(start):int(end)]
+        return {'paragraph':paragraph_text, 'sentence':sentence_text, 'introduction':intro, 'conclusion':conclusion, 'component_text':component_text}
     def annotate_sentence(self, sent_idx, paragraph, component, file):
         document = self.client.annotate(paragraph['paragraph'])
         sentence = None
@@ -291,7 +322,8 @@ class ArgumentClassification():
 
 
     def indicators_context(self, paragraph, component):
-        text = paragraph.replace(' '.join(component), '\n')
+        # TODO Fix this
+        text = paragraph.replace(component, '\n').split('\n')
         preceding_text = text[0]
         following_text = text[1]
         ret = {
@@ -393,9 +425,46 @@ class ArgumentClassification():
             name = component[0]
             claim,start,end = component[1].split(' ')
             phrase = component[2]
-            info = {"essay":ann_file.replace(".ann",".txt"), "name": name, "claim": claim,"start":int(start),"end":int(end),"phrase": phrase}
+            info = {"name": name, "claim": claim,"start":int(start),"end":int(end),"phrase": phrase}
             augmented.append(info)
         return augmented
+    
+    def pdtb_parse(self, essay):
+        cwd = os.getcwd() #current directory
+        os.chdir('../models/pdtb-parser')
+        subprocess.run(['mkdir', pdtb_output_dir])
+        subprocess.run(['sudo','java', '-jar', 'parser.jar', f'../{essay}'])
+        dir_list = os.listdir(pdtb_output_dir)
+        pipe = [i for i in dir_list if '.pipe' in i][0]
+        parsings = open(f'{pdtb_output_dir}/{pipe}', 'r').read().split('\n')
+        list_parsings = [x.split('|') for x in parsings]
+        shutil.rmtree(dir_list) 
+        os.chdir(cwd)
+        return list_parsings
+    def component_pdtb(self, parsings, start, end):
+        ret = {"type": 0, "arg":0, "relation":0}
+        key = {"Comparison":1, "EntRel":2, "Expansion":3, "NoRel":4, 'Temporal':5, 'Contingency':6}
+
+        discourse = None
+        for parse in parsings:
+            arg1 = parse[23].split('..')
+            arg2 = parse[33].split('..')
+            if arg1[0] >= start and arg1[1] <= end:
+                ret["arg"] = 0
+                discourse = parse
+                break
+            elif arg2[0] >= start and arg2[1] <= end:
+                ret["arg"] = 1
+                discourse = parse
+                break
+        if discourse[0] in ["Explicit", "Implicit"]:
+            if discourse[11] in key.keys():
+                ret['type'] =key[discourse[11]]
+            ret['relation'] = 1 if discourse[0] == "Explicit" else 2
+        return ret
+
+
+
 
 if __name__=='__main__':
     client = CoreNLPClient(
@@ -404,7 +473,7 @@ if __name__=='__main__':
         endpoint='http://localhost:9005',
         be_quiet=True)
     client.start()
-    data = pd.read_csv('ALL copy.csv').to_dict('records')
+    data = pd.read_csv('test.csv').iloc[:1858].to_dict('records')
     argclass = ArgumentClassification(data, client)
     argclass.process_data(True)
     print(argclass.components)
