@@ -525,6 +525,7 @@ class ArgumentClassification():
 
 
 
+
 if __name__=='__main__':
     client = CoreNLPClient(
         annotators=['tokenize','ssplit', 'pos', 'lemma', 'ner', 'sentiment', 'depparse'], 
