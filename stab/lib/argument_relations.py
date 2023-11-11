@@ -6,16 +6,14 @@ class ArgumentRelationIdentification():
     def __init__(self, components): 
         self.components = components
         self.get_production_rules()
-        # self.pairwise_features()
+        self.pairwise_features()
     
     def get_production_rules(self): 
         production_rules = []
         for c in self.components: 
             for rule in c["production_rules"]: 
-                if rule[0] in pos: continue 
                 production_rules.append(f"{rule}")
         self.production_rules_500_most_common = Counter(production_rules).most_common(n=500)
-        print(self.production_rules_500_most_common)
     
     def pairwise_features(self): 
         # key will be (i,j) where i is the idx of a source and j is the idx of a target 
@@ -86,9 +84,11 @@ class ArgumentRelationIdentification():
                 if len(shared_nouns) > 0: 
                     self.pairwise[(i,j)]["share_noun"] = 1
                     self.pairwise[(i,j)]["num_shared_nouns"] = len(shared_nouns)
+
+                # count how many times a production rule is shared by source and target 
+                self.pairwise[(i,j)].update(self.shared_production_rules(source,target))
         
         self.get_indicators_between()
-        
         for pair,info in self.pairwise.items(): 
             if pair[0] > 1: break
             print(pair, ": ", info, "\n")
@@ -132,6 +132,13 @@ class ArgumentRelationIdentification():
                             key = f"{type}_indicators"
                             if self.components[c][f"{location}_{key}"] == 1:     
                                 self.pairwise[pair][f"between_{key}"] = 1         
+
+    def shared_production_rules(self,source,target): 
+        info = { rule: 0 for rule, freq in self.production_rules_500_most_common}
+        for rule in source["production_rules"]: 
+            if rule in target["production_rules"]: 
+                info[f"{rule}"] += 1       
+        return info      
 
 if __name__=='__main__':
     with open('components.json') as file: 
