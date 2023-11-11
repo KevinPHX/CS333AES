@@ -1,4 +1,5 @@
 from pos import pos
+from discourse import discourse_relations
 import json
 from collections import defaultdict, Counter
 
@@ -87,8 +88,15 @@ class ArgumentRelationIdentification():
 
                 # count how many times a production rule is shared by source and target 
                 self.pairwise[(i,j)].update(self.shared_production_rules(source,target))
+                
+                # get binary discourse triples of source and target 
+                self.pairwise[(i,j)].update(self.get_discourse_triples(source,target))
         
+        # get binary representation of the types of indicators that occur in and around 
+        # components between source and target 
         self.get_indicators_between()
+
+        # print for testing purposes 
         for pair,info in self.pairwise.items(): 
             if pair[0] > 1: break
             print(pair, ": ", info, "\n")
@@ -139,6 +147,19 @@ class ArgumentRelationIdentification():
             if rule in target["production_rules"]: 
                 info[f"{rule}"] += 1       
         return info      
+    
+    def get_discourse_triples(self,source,target): 
+        info = {}
+        for relation in discourse_relations.keys(): 
+            for arg in ["Arg1","Arg2"]:
+                if "Rel" in relation: 
+                    key = f"{relation}_{arg}"
+                    info[key] = source[key] + target[key]
+                else: 
+                    for type in ["Explicit","Implicit"]: 
+                        key = f"{relation}_{type}_{arg}"
+                        info[key] = source[key] + target[key]
+        return info
 
 if __name__=='__main__':
     with open('components.json') as file: 
