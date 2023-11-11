@@ -1,171 +1,141 @@
-corenlp_dir = '../corenlp'
-# stanza.install_corenlp(dir=corenlp_dir)
-import os
-os.environ["CORENLP_HOME"] = corenlp_dir
-from stanza.server import CoreNLPClient
-import pandas as pd 
-from itertools import groupby
-from operator import itemgetter
 from pos import pos
-from collections import defaultdict
+import json
+from collections import defaultdict, Counter
 
 class ArgumentRelationIdentification(): 
-    def __init__(self, data, client): 
-        self.data = data
-        self.client = client
-        self.pairwise = {} # key is the essay idx (1-indexed). 
-
-    def get_components(self):   
-        self.components = {}
-        for essay in groupby(self.data, itemgetter('essay')):
-            # essay number
-            essay_idx = int(essay[0].split("essay")[1].split(".txt")[0])  
-            # create list to store the components for this essay 
-            self.components[essay_idx] = []
-            # a flag to help us identify if we are currently within a component 
-            found_argB = False
-            # flag to help us identify if a component is first in the paragraph 
-            first_component = True 
-            prior_paragraph_idx = 0
-            prior_component_idx = 0 
-            for token in essay[1]: 
-                if token["IOB"] != "O":
-                    if token["IOB"] == "Arg-B": 
-                        found_argB = True 
-                        # initialize info dictionary for the current component 
-                        component = {
-                            "tokens": [], # the length of this list will be used for getting token stats 
-                            "pos_dist":pos.copy(), # pos distribution 
-                            "nouns": [], # for getting shared nouns between pairs 
-                            "start_position": token["start"],
-                            "production_rules":[],
-                            "paragraph_idx":token["paragraph"], 
-                            "sentence_idx":token["sentence"],
-                            "position_in_doc": token["docPosition"],
-                            "first_or_last_in_paragraph": False, 
-                            "idx_in_paragraph": None, 
-                            "indicator_type": None, 
-                            "indicator_context": None, 
-                            "discourse_triples":None, 
-                            "pmi": None, 
-                        }
-                        if component["paragraph_idx"] > prior_paragraph_idx: 
-                            # reset flag if we are in a new paragraph 
-                            first_component = True 
-                            # we know that the prior component must have been last in the prior paragraph 
-                            self.components[essay_idx][prior_component_idx-1]["first_or_last_in_paragraph"] = True
-                            prior_paragraph_idx += 1  
-                        # the component is first in the paragraph 
-                        if first_component: 
-                            component["first_or_last_in_paragraph"] = True 
-                            component["idx_in_paragraph"] = 0 
-                            first_component = False
-                        else: 
-                            if prior_component_idx > 0: 
-                                component["idx_in_paragraph"] = 1 + self.components[essay_idx][prior_component_idx-1]["idx_in_paragraph"]
-                        prior_component_idx += 1 
-                    # add token to list component tokens 
-                    component["tokens"].append(token["token"])
-                    # update the POS distribution of component 
-                    if token['pos'] in pos:
-                        component["pos_dist"][token['pos']] += 1
-                    # if the token is a noun, add its lemma to the nouns list 
-                    if "NN" in token["pos"]: 
-                        component["nouns"].append(token["lemma"])
-                elif token["IOB"] == "O" and found_argB: 
-                    # reached the end of a component, so reset our flag 
-                    found_argB = False
-                    # add component dictionary to list of components for the current essay 
-                    self.components[essay_idx].append(component)
-
-            # print(f"essay {essay_idx}")
-            # for c in self.components[essay_idx]: 
-            #     print(c["paragraph_idx"],c["first_or_last_in_paragraph"],c["idx_in_paragraph"])
+    def __init__(self, components): 
+        self.components = components
+        self.get_production_rules()
+        # self.pairwise_features()
     
-    def pairwise_features(self,essay_idx): 
+    def pairwise_features(self): 
         # key will be (i,j) where i is the idx of a source and j is the idx of a target 
-        self.pairwise[essay_idx] = {}
-        components = self.components[essay_idx]
-        components_per_paragraph = {}
-        for c in components: 
-            idx = c["paragraph_idx"]
-            if idx not in components_per_paragraph: 
-                components_per_paragraph[idx] = 0 
-            components_per_paragraph[idx] += 1 
-        
-        for i, source in enumerate(components):
-            for j, target in enumerate(components):
+        self.pairwise = {} 
+
+        self.components_per_paragraph = defaultdict(list)
+        idx_in_paragraph = 0 # variable to indicate the position of the component in a paragraph (e.g. idx 0 out of 4 components in the paragraph)
+        for idx in range(len(self.components)): 
+            p_idx = self.components[idx]["paragraph"]
+            idx_in_paragraph += 1 
+            if p_idx not in self.components_per_paragraph:
+                idx_in_paragraph = 0  
+            self.components[idx]["idx_in_paragraph"] = idx_in_paragraph
+            self.components_per_paragraph[p_idx].append(idx)
+
+        for i, source in enumerate(self.components):
+            for j, target in enumerate(self.components):
                 # the source cannot equal the target 
                 if i == j: continue
                 # the components must be in the same paragraph! 
-                if source["paragraph_idx"] != target["paragraph_idx"]: 
+                if source["paragraph"] != target["paragraph"]: 
                     continue 
-
-                pairwise_info = {
-                    # initialize the part-of-speech distribution for the pair with that of the source  
-                    "pos_dist": source["pos_dist"].copy(),
+                
+                self.pairwise[(i,j)] = {
                     # number of tokens in both source and target 
-                    "num_tokens": len(source["tokens"]) + len(target["tokens"]),
+                    "num_tokens": len(source["component"]) + len(target["component"]),
                     # if source and target are present in the same sentence
                     "same_sentence": 0, # default is false 
                     # if target present before source 
                     "target_before_source": 0, # default is false,
                     # if pair is present in intro or conclusion. They are both in the same paragraph
-                    "intro_or_conc": 0, # default is false 
+                    "intro_or_conc": source["intro/conc"],
                     # number of components between source and target
-                    "num_between": abs(source["idx_in_paragraph"]-target["idx_in_paragraph"]-1), 
+                    "num_between": abs(source["idx_in_paragraph"]-target["idx_in_paragraph"])-1, 
                     # number of components in the covering paragraph 
-                    "num_in_paragraph": components_per_paragraph[source["paragraph_idx"]],
+                    "num_in_paragraph": len(self.components_per_paragraph[source["paragraph"]]),
                     # if target and source share at least one noun 
                     "share_noun": 0, # default is false 
                     # the number of nouns shared by target and source 
-                    "num_shared_nouns":0 # default is none 
+                    "num_shared_nouns":0, # default is none 
+                    # source or target is first or last in paragraph 
+                    "first_or_last": 0 # default is none 
                 }
-                # update binary POS distribution with the POS distribution of the target  
-                for pos_type, count in target["pos_dist"].items():
-                    pairwise_info["pos_dist"][pos_type] += count 
+                self.pairwise[(i,j)].update(self.get_indicator_info(source,target))
+                
+                # get binary POS distribution with the POS distribution of the target  
+                for pos_type in pos.keys():
+                    self.pairwise[(i,j)][pos_type] = source[pos_type] + target[pos_type]
+
                 # source and target are present in the same sentence
-                if source["sentence_idx"] == target["sentence_idx"]: 
-                    pairwise_info["same_sentence"] = 1 # true 
+                if source["sentence"] == target["sentence"]: 
+                    self.pairwise[(i,j)]["same_sentence"] = 1 # true 
+                
                 # target is present before source 
-                if source["start_position"] > target["start_position"]: 
-                    pairwise_info["target_before_source"] = 1 # true  
-                # if pair is present in intro or conclusion. They are both in the same paragraph 
-                if source["position_in_doc"] == "Introduction" or source["position_in_doc"] == "Conclusion": 
-                    pairwise_info["intro_or_conc"] = 1 
+                if source["start"] > target["start"]: 
+                    self.pairwise[(i,j)]["target_before_source"] = 1 # true  
+                
                 # if target and source are first or last component in paragraph 
-                if source["first_or_last_in_paragraph"] and target["first_or_last_in_paragraph"]: 
-                    pairwise_info["first_or_last"] = 1 
+                if source["first/last"] or target["first/last"]: 
+                    self.pairwise[(i,j)]["first_or_last"] = 1 
+                
                 # find shared nouns (both binary and number)
-                shared_nouns = {}
-                for noun1 in source["nouns"]: 
-                    for noun2 in target["nouns"]:
-                        if noun1 == noun2: 
-                            if noun1 not in shared_nouns: shared_nouns[noun1] = 0 
-                            shared_nouns[noun1] += 1 
+                shared_nouns = []
+                for idx, lemma in enumerate(source["component_lemmas"]):
+                    if "NN" in source["component_pos"][idx]: 
+                        if lemma in target["component_lemmas"]:
+                            shared_nouns.append(lemma)
                 if len(shared_nouns) > 0: 
-                    pairwise_info["share_noun"] = 1
-                    pairwise_info["num_shared_nouns"] = sum(list(shared_nouns.values()))
-                # add to information dictionary 
-                self.pairwise[essay_idx][(i,j)] = pairwise_info
+                    self.pairwise[(i,j)]["share_noun"] = 1
+                    self.pairwise[(i,j)]["num_shared_nouns"] = len(shared_nouns)
         
-        for pair,info in self.pairwise[essay_idx].items(): 
+        self.get_indicators_between()
+        
+        for pair,info in self.pairwise.items(): 
+            if pair[0] > 1: break
             print(pair, ": ", info, "\n")
         
-    def syntactic(self): 
-        # production rules 
+    def get_production_rules(self): 
+        production_rules = []
+        for c in self.components: 
+            production_rules.extend(f"{c['production_rules']}")
+        self.production_rules_500_most_common = Counter(production_rules).most_common(n=500)
+        print([rule for rule,_ in self.production_rules_500_most_common])
         return
+    
+    def get_indicator_info(self,source,target):
+        indicator_types = ["forward","backwards","thesis","rebuttal"]
+        info = {}
+        for type in indicator_types: 
+            component_key = f"component_{type}_indicators"
+            if source[component_key] == 1 or target[component_key] == 1: 
+                # this indicator type is present in source or target 
+                info[component_key] = 1 
+            else: 
+                # this indicator type is not present in source or target 
+                info[component_key] = 0 
+            for context in ["preceding","following"]: 
+                context_key = f"{context}_{type}_indicators"
+                if source[context_key] == 1 or target[context_key] == 1:
+                    # this indicator type is present in the context of either source or target 
+                    info[f"context_{type}_indicators"] = 1    
+                else: 
+                    # this indicator type is not present in the context of either source or target 
+                    info[f"context_{type}_indicators"] = 0   
+        return info
+
+    def get_indicators_between(self):
+        indicator_types =  ["forward","backwards","thesis","rebuttal"]
+        for pair in self.pairwise.keys(): 
+            s,t = pair[0],pair[1]
+            p_idx = self.components[s]["paragraph"]
+            for type in indicator_types: 
+                key = f"{type}_indicators"
+                self.pairwise[pair][f"between_{key}"] = 0
+            
+            for c in self.components_per_paragraph[p_idx]: 
+                # find a component that is between source and target 
+                # check if any of the four types of indicators occur in this component or its context 
+                if min(s,t) < c < max(s,t):
+                    for type in indicator_types: 
+                        for location in ["component","preceding","following"]: 
+                            key = f"{type}_indicators"
+                            if self.components[c][f"{location}_{key}"] == 1:     
+                                self.pairwise[pair][f"between_{key}"] = 1         
 
 if __name__=='__main__':
-    # client = CoreNLPClient(
-    #     annotators=['tokenize','ssplit', 'pos', 'lemma'], 
-    #     memory='4G', 
-    #     endpoint='http://localhost:9005',
-    #     be_quiet=True)
-    # client.start()
-    data = pd.read_csv('sample.csv').to_dict('records')
-    argrelation = ArgumentRelationIdentification(data, None)
-    argrelation.get_components()
-    for essay in argrelation.components: 
-        argrelation.pairwise_features(essay)
-    # client.stop()
+    with open('components.json') as file: 
+        components = json.load(file)  
+    argrelation = ArgumentRelationIdentification(components)
+
+
+
