@@ -26,9 +26,10 @@ import subprocess
 
 
 class ArgumentClassification():
-    def __init__(self, data, client, probability=None, vectorizer=None, dependency_tuples=None):
+    def __init__(self, data, client, token_list, probability=None, vectorizer=None, dependency_tuples=None):
         self.data = data
         self.client = client
+        self.token_list = token_list
         if probability:
             self.probability = probability
         if dependency_tuples:
@@ -43,6 +44,7 @@ class ArgumentClassification():
     def process_data(self, train=None):
         self.components = []
         component = []
+        p_token = []
         component_lemma = []
         component_pos = []
         component_sent = []
@@ -93,6 +95,7 @@ class ArgumentClassification():
                     component_sent.append(each['sentiment'])
                     component_lemma.append(each['lemma'])
                     component_pos.append(each['pos'])
+                    p_token.append(self.token_list.count(each['token'])/len(self.token_list))
                 else:
                     if not encountered_b:
                         preceding_tokens.append(each['token'])
@@ -110,6 +113,7 @@ class ArgumentClassification():
                                 "component":component,
                                 "component_text":text_info['component_text'],
                                 "component_lemmas":component_lemma,
+                                "p_token":p_token, # FOR PMI!!!
                                 "component_pos":component_pos,
                                 "start":start_index,
                                 "end":end_index,
@@ -141,6 +145,7 @@ class ArgumentClassification():
                                 self.components.append(fields)
                                 count += 1
                             component = []
+                            p_token = []
                             component_sent = []
                             component_lemma = []
                             component_pos = []
@@ -591,8 +596,8 @@ if __name__=='__main__':
         endpoint='http://localhost:9005',
         be_quiet=True)
     client.start()
-    data = pd.read_csv('test.csv').iloc[:408].to_dict('records')
-    argclass = ArgumentClassification(data, client)
+    data = pd.read_csv('test.csv')
+    argclass = ArgumentClassification(data.iloc[:408].to_dict('records'), client, data.token.values.tolist())
     argclass.process_data(True)
     # print(argclass.components[0])
     # with open("components.json", "w") as f:
