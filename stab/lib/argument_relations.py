@@ -8,6 +8,15 @@ class ArgumentRelationIdentification():
         self.get_production_rules()
         # self.pairwise_features()
     
+    def get_production_rules(self): 
+        production_rules = []
+        for c in self.components: 
+            for rule in c["production_rules"]: 
+                if rule[0] in pos: continue 
+                production_rules.append(f"{rule}")
+        self.production_rules_500_most_common = Counter(production_rules).most_common(n=500)
+        print(self.production_rules_500_most_common)
+    
     def pairwise_features(self): 
         # key will be (i,j) where i is the idx of a source and j is the idx of a target 
         self.pairwise = {} 
@@ -83,14 +92,6 @@ class ArgumentRelationIdentification():
         for pair,info in self.pairwise.items(): 
             if pair[0] > 1: break
             print(pair, ": ", info, "\n")
-        
-    def get_production_rules(self): 
-        production_rules = []
-        for c in self.components: 
-            production_rules.extend(f"{c['production_rules']}")
-        self.production_rules_500_most_common = Counter(production_rules).most_common(n=500)
-        print([rule for rule,_ in self.production_rules_500_most_common])
-        return
     
     def get_indicator_info(self,source,target):
         indicator_types = ["forward","backwards","thesis","rebuttal"]
