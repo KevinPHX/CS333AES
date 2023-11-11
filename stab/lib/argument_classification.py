@@ -350,7 +350,7 @@ class ArgumentClassification():
         self.traverse_tree(tree, rules)
         return rules
     def traverse_tree(self, tree, rules):
-        if len(tree.child) == 0:
+        if len(tree.child[0].child) == 0:
             return
         children = [x.value for x in tree.child]
         rules.append((tree.value, tuple(children)))
