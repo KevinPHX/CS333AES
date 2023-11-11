@@ -4,7 +4,7 @@ import re
 import shutil
 
 import numpy as np
-# from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from itertools import groupby
 from operator import itemgetter
 import sys
@@ -21,9 +21,12 @@ os.environ["CORENLP_HOME"] = corenlp_dir
 pdtb_output_dir = '../../data/ArgumentAnnotatedEssays-2.0 2/data/brat-project-final/output'
 from stanza.server import CoreNLPClient
 import subprocess
+# from nltk.stem import WordNetLemmatizer
+# lemmatizer = WordNetLemmatizer()
+
 
 class ArgumentClassification():
-    def __init__(self, data, client, probability=None, dependency_tuples=None):
+    def __init__(self, data, client, probability=None, vectorizer=None, dependency_tuples=None):
         self.data = data
         self.client = client
         if probability:
@@ -31,7 +34,12 @@ class ArgumentClassification():
         if dependency_tuples:
             self.dependency_tuples = dependency_tuples
         else:
-            self.dependency_tuples = set()
+            self.dependency_tuples = {}
+        
+        if vectorizer:
+            self.vectorizer = vectorizer
+        else:
+            self.vectorizer = TfidfVectorizer()
     def process_data(self, train=None):
         self.components = []
         component = []
@@ -45,21 +53,29 @@ class ArgumentClassification():
         component_stats = {}
         pos_dist = pos.copy()
         essays = set()
-        # vectorizer = TfidfVectorizer()
+        
 
         if train:
             dependency_tuples_freq = {}
             for each in self.data:
-                dep_tuple = (each['head'], each['token'])
+                head = list(filter(lambda d: d['essay'] == each['essay'] and d['token'] == each['head'].split('-')[0], self.data))[0]
+                dep_tuple = head["lemma"]+"-"+each['lemma']
                 if dep_tuple in dependency_tuples_freq.keys():
                     dependency_tuples_freq[dep_tuple] += 1
                 else:
-                    dependency_tuples_freq[dep_tuple] = 0
+                    dependency_tuples_freq[dep_tuple] = 1
+            # print(sorted(dependency_tuples_freq, key=lambda k: dependency_tuples_freq[k],  reverse=True))
+            tuples_2k = list(sorted(dependency_tuples_freq, key=lambda k: dependency_tuples_freq[k],  reverse=True))[:2000]
+            for each in tuples_2k:
+                self.dependency_tuples[each] = 0
 
         for essay in groupby(self.data, itemgetter('essay')):
-            print(f"starting {essay[0]['essay']}")
-            parsings = self.pdtb_parse(essay[0]['essay'])
-            for each in enumerate(essay):
+            # print(essay)
+            print(f"starting {essay[0]}")
+            parsings = self.pdtb_parse(essay[0])
+            # print(parsings)
+            for index, each in enumerate(essay[1]):
+                # print(each)
                 if each['IOB'] == 'Arg-B' or each['IOB'] == 'Arg-I':
                     if not encountered_b:
                         paragraph = each['paragraph']
@@ -100,7 +116,7 @@ class ArgumentClassification():
                                 "sentence":sentence,
                                 "sentence_size":component_stats['sentence_size'],
                                 "ratio":len(component)/component_stats['sentence_size'],
-                                "probability":0,
+                                # "probability":0,
                                 "modal_present": 1 if pos_dist['MD'] > 0 else 0,
                                 **pos_dist,
                                 **self.annotate_sentence(sentence, text_info, component, each['essay']),
@@ -125,25 +141,41 @@ class ArgumentClassification():
         
         if train: 
             self.probability = []
+            vectorization_data = []
             for essay in essays:
                 labels[essay] = self.read_data(essay.replace('.txt', '.ann'))
             for component in self.components:
                 list_labels = labels[component['essay']]
-                
+                vectorization_data.append(" ".join(component['preceding_tokens']) + ' ' + " ".join(component['component']))
                 for label in list_labels:
                     if component['start'] == label['start']:
                         component['claim'] = label['claim']
+                
                 self.probability.append({'claim':component['claim'], 'preceding_tokens':component['preceding_tokens']})
+            self.vectorizer.fit(vectorization_data)
+    
+            
         # with open('classification_probability.json', 'w') as f:
         #     json.dump(probability, f)
-        with open('classification_dependency.json', 'w') as f:
-            json.dump(list(self.dependency_tuples), f)
-        
+        # with open('classification_dependency.json', 'w') as f:
+        #     json.dump(list(self.dependency_tuples), f)
+        temp = []
         for component in self.components:
-            component['probability']=self.probability_calc(self.probability, component['preceding_tokens'])
+            vectorized_dep = self.vectorize(" ".join(component["preceding_tokens"]) + ' ' + " ".join(component["component"]))
+            print(vectorized_dep)
+            p=self.probability_calc(self.probability, component['preceding_tokens'])
+            temp.append({**vectorized_dep, **p, **component})
+        self.components = temp
         
         
-                
+    def vectorize(self, text):
+        ret = {}
+        vectorized  = self.vectorizer.transform([text])
+        list_vectorized = vectorized.toarray()
+        for i, each in enumerate(list_vectorized[0]):
+            ret[f"dep_{i}"] = each
+        return ret
+
 
 
     def probability_calc(self, probability, preceding):
@@ -255,12 +287,21 @@ class ArgumentClassification():
             nps = self.noun_phrases(sentence.parseTree, component)
             vps = self.verb_phrases(sentence.parseTree, component)        
             shared_p_values = self.shared_phrase([paragraph['introduction'], paragraph['conclusion']], vps, nps)
+            dependency_info = self.dependency(sentence.token, sentence.basicDependencies)
         
-        return {"depth":depth, "num_subclause":num_subclause, "tense":tense, **shared_p_values}
+        return {"depth":depth, "num_subclause":num_subclause, "tense":tense, **shared_p_values, **dependency_info}
 
     def dependency(self, tokens, dependency):
-        for dep in dependency:
-            self.dependency_tuples.add((tokens[dep['source']-1], tokens[dep['target']-1]))
+        ret = self.dependency_tuples.copy()
+        for dep in dependency.ListFields()[1][1]:
+            # self.dependency_tuples.add((tokens[dep['source']-1], tokens[dep['target']-1]))
+            dep_tuple = tokens[dep.source-1].word+"-"+tokens[dep.target-1].word
+            if dep_tuple in self.dependency_tuples.keys():
+                ret[dep_tuple] += 1
+        return ret
+            
+
+
     
 
         
@@ -357,6 +398,9 @@ class ArgumentClassification():
             if f in following_text:
                 ret['following_thesis_context']=1
         return ret
+    
+
+
                 
 
         # if len(parse_tree.child) == 0 and "VB" in parent and parse_tree.value in component:
@@ -438,26 +482,41 @@ class ArgumentClassification():
         pipe = [i for i in dir_list if '.pipe' in i][0]
         parsings = open(f'{pdtb_output_dir}/{pipe}', 'r').read().split('\n')
         list_parsings = [x.split('|') for x in parsings]
-        shutil.rmtree(dir_list) 
+        print(dir_list)
+        # shutil.rmtree(pdtb_output_dir) 
         os.chdir(cwd)
         return list_parsings
     def component_pdtb(self, parsings, start, end):
+        print('start: ',start)
+        print('end: ', end)
         ret = {"type": 0, "arg":0, "relation":0}
         key = {"Comparison":1, "EntRel":2, "Expansion":3, "NoRel":4, 'Temporal':5, 'Contingency':6}
 
         discourse = None
         for parse in parsings:
-            arg1 = parse[23].split('..')
-            arg2 = parse[33].split('..')
-            if arg1[0] >= start and arg1[1] <= end:
-                ret["arg"] = 0
-                discourse = parse
-                break
-            elif arg2[0] >= start and arg2[1] <= end:
-                ret["arg"] = 1
-                discourse = parse
-                break
-        if discourse[0] in ["Explicit", "Implicit"]:
+            if len(parse) > 34:
+                arg1 = parse[22].split('..')
+                arg2 = parse[32].split('..')
+                print("Arg1: ", str(arg1))
+                print("Arg2: ", str(arg2))
+                if start <= int(arg1[0])  and end <= int(arg2[-1]):
+                    # ret["arg"] = 1
+                    discourse = parse
+                    break
+                # elif int(arg2[0]) >= start and int(arg2[-1]) <= end:
+                #     ret["arg"] = 2
+                #     discourse = parse
+                #     break
+        print(discourse)
+        if discourse and discourse[0] in ["Explicit", "Implicit"]:
+            arg1 = discourse[22].split('..')
+            arg2 = discourse[32].split('..')
+            prop1 = int(arg1[-1]) - start
+            prop2 = end - int(arg2[0])
+            if prop1 > prop2:
+                ret['arg'] = 1
+            else:
+                ret['arg'] = 2
             if discourse[11] in key.keys():
                 ret['type'] =key[discourse[11]]
             ret['relation'] = 1 if discourse[0] == "Explicit" else 2
@@ -473,8 +532,12 @@ if __name__=='__main__':
         endpoint='http://localhost:9005',
         be_quiet=True)
     client.start()
-    data = pd.read_csv('test.csv').iloc[:1858].to_dict('records')
+    data = pd.read_csv('test.csv').iloc[:408].to_dict('records')
     argclass = ArgumentClassification(data, client)
     argclass.process_data(True)
-    print(argclass.components)
+    # print(argclass.components[0])
+    # with open("components.json", "w") as f:
+    #     json.dump(argclass.components, f)
+    pd.DataFrame(argclass.components).to_json("components.json", "records")
+
     client.stop()
