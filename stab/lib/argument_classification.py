@@ -53,6 +53,7 @@ class ArgumentClassification():
         component_stats = {}
         pos_dist = pos.copy()
         essays = set()
+        count = 1
         
 
         if train:
@@ -99,6 +100,7 @@ class ArgumentClassification():
                             text_info = self.read_file(each['essay'], paragraph, sentence, start_index, end_index)
                             fields = {
                                 "essay":each['essay'],
+                                "index":count,
                                 "component":component,
                                 "component_text":text_info['component_text'],
                                 "start":start_index,
@@ -128,6 +130,7 @@ class ArgumentClassification():
                             essays.add(each['essay'])
                             if len(component) > 0:
                                 self.components.append(fields)
+                                count += 1
                             component = []
                             preceding_tokens = []
                             following_tokens = []
