@@ -188,9 +188,23 @@ class ArgumentClassification():
             vectorized_dep = self.vectorize(" ".join(component["preceding_tokens"]) + ' ' + " ".join(component["component"]))
             # print(vectorized_dep)
             p=self.probability_calc(self.probability, component['preceding_tokens'])
-            temp.append({**vectorized_dep, **p, **component})
+            stats = self.component_stats(component['essay'], component['paragraph'], component['component'])
+            temp.append({**vectorized_dep, **p, **stats, **component})
         self.components = temp
     
+    def component_stats(self, essay, paragraph, component):
+        grouped = groupby(self.components, itemgetter('essay', 'paragraph'))
+        ret = {"num_component_components": 0, 'num_preceding_components': 0, 'num_following_components': 0}
+        for group in grouped:
+            if group[0][0] == essay and group[0][1] == paragraph:
+                test = list(group[1])
+                ret['num_component_components'] = len(test)
+                for i, g in enumerate(test):
+                    if g['component'] == component:
+                        ret['num_preceding_components'] = i      
+                ret['num_following_components'] = len(test) -  ret['num_preceding_components']-1
+        return ret
+     
 
     def first_last(self, paragraph):
         if len(self.components) == 0:
@@ -574,8 +588,8 @@ class ArgumentClassification():
     def pdtb_parse(self, essay):
         cwd = os.getcwd() #current directory
         os.chdir('../models/pdtb-parser')
-        subprocess.run(['mkdir', pdtb_output_dir])
-        subprocess.run(['sudo','java', '-jar', 'parser.jar', f'../{essay}'])
+        # subprocess.run(['mkdir', pdtb_output_dir])
+        # subprocess.run(['sudo','java', '-jar', 'parser.jar', f'../{essay}'])
         essay_name = essay.split('/')[-1]
         # dir_list = os.listdir(pdtb_output_dir)
         pipe = f'{pdtb_output_dir}/{essay_name}.pipe'
@@ -588,9 +602,26 @@ class ArgumentClassification():
     def component_pdtb(self, parsings, start, end):
         # print('start: ',start)
         # print('end: ', end)
-        ret = {"Comparison":0, "EntRel":0, "Expansion":0, "NoRel":0, 'Temporal':0, 'Contingency':0, "Arg1":0, "Arg2":0, "Implicit":0, "Explicit":0}
+        # ret = {"Comparison":0, "EntRel":0, "Expansion":0, "NoRel":0, 'Temporal':0, 'Contingency':0, "Arg1":0, "Arg2":0, "Implicit":0, "Explicit":0}
         # key = {"Comparison":1, "EntRel":2, "Expansion":3, "NoRel":4, 'Temporal':5, 'Contingency':6}
-
+        ret = {
+            "Comparison_Arg1_Explicit":0,
+            "Expansion_Arg1_Explicit":0,
+            'Temporal_Arg1_Explicit':0,
+            'Contingency_Arg1_Explicit':0,
+            "Comparison_Arg2_Explicit":0,
+            "Expansion_Arg2_Explicit":0,
+            'Temporal_Arg2_Explicit':0,
+            'Contingency_Arg2_Explicit':0,
+            "Comparison_Arg1_Implicit":0,
+            "Expansion_Arg1_Implicit":0,
+            'Temporal_Arg1_Implicit':0,
+            'Contingency_Arg1_Implicit':0,
+            "Comparison_Arg2_Implicit":0,
+            "Expansion_Arg2_Implicit":0,
+            'Temporal_Arg2_Implicit':0,
+            'Contingency_Arg2_Implicit':0
+        }
         discourse = []
         for parse in parsings:
             if len(parse) > 34:
@@ -598,29 +629,35 @@ class ArgumentClassification():
                 arg2 = parse[32].split('..')
                 # print("Arg1: ", str(arg1))
                 # print("Arg2: ", str(arg2))
-                if start <= int(arg1[0])  and end <= int(arg2[-1]):
+                if start >= int(arg1[0])  and end <= int(arg2[-1]):
                     # ret["arg"] = 1
                     discourse.append(parse)
-                    break
+                    # break
                 # elif int(arg2[0]) >= start and int(arg2[-1]) <= end:
                 #     ret["arg"] = 2
                 #     discourse = parse
                 #     break
         # print(discourse)
         for dis in discourse:
+            temp = []
             if dis[0] in ["Explicit", "Implicit"]:
                 arg1 = dis[22].split('..')
                 arg2 = dis[32].split('..')
                 prop1 = int(arg1[-1]) - start
                 prop2 = end - int(arg2[0])
+                temp.append(dis[11])
                 if prop1 > prop2:
-                    ret['Arg1'] = 1
+                    temp.append('Arg1')
                 else:
-                    ret['Arg2'] = 1
-                if dis[11] in ret.keys():
-                    ret[dis[11]] = 1
-                if dis[0] in ret.keys():
-                    ret[dis[0]] = 1
+                    temp.append('Arg2')
+                
+                temp.append(dis[0])
+            # print(temp)
+
+            key = "_".join(temp)
+            if key in ret.keys():
+                ret[key] += 1
+            # print(key)
         return ret
 
 
