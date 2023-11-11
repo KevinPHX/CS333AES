@@ -481,11 +481,13 @@ class ArgumentClassification():
         os.chdir('../models/pdtb-parser')
         subprocess.run(['mkdir', pdtb_output_dir])
         subprocess.run(['sudo','java', '-jar', 'parser.jar', f'../{essay}'])
-        dir_list = os.listdir(pdtb_output_dir)
-        pipe = [i for i in dir_list if '.pipe' in i][0]
-        parsings = open(f'{pdtb_output_dir}/{pipe}', 'r').read().split('\n')
+        essay_name = essay.split('/')[-1]
+        # dir_list = os.listdir(pdtb_output_dir)
+        pipe = f'{pdtb_output_dir}/{essay_name}.pipe'
+        print(pipe)
+        parsings = open(pipe, 'r').read().split('\n')
         list_parsings = [x.split('|') for x in parsings]
-        print(dir_list)
+        # print(dir_list)
         # shutil.rmtree(pdtb_output_dir) 
         os.chdir(cwd)
         return list_parsings
