@@ -43,6 +43,9 @@ class ArgumentClassification():
     def process_data(self, train=None):
         self.components = []
         component = []
+        component_lemma = []
+        component_pos = []
+        component_sent = []
         preceding_tokens = []
         following_tokens = []
         encountered_b = False
@@ -87,6 +90,9 @@ class ArgumentClassification():
                         pos_dist[each['pos']]+=1
                     end_index = each['start'] + len(each['token'])
                     component.append(each['token'])
+                    component_sent.append(each['sentiment'])
+                    component_lemma.append(each['lemma'])
+                    component_pos.append(each['pos'])
                 else:
                     if not encountered_b:
                         preceding_tokens.append(each['token'])
@@ -103,6 +109,8 @@ class ArgumentClassification():
                                 "index":count,
                                 "component":component,
                                 "component_text":text_info['component_text'],
+                                "component_lemmas":component_lemma,
+                                "component_pos":component_pos,
                                 "start":start_index,
                                 "end":end_index,
                                 "preceding_tokens":preceding_tokens,
@@ -113,7 +121,8 @@ class ArgumentClassification():
                                 "first_person_indicators": self.first_person_indicators(preceding_tokens, component),
                                 "paragraph":paragraph,
                                 "paragraph_size":component_stats['paragraph_size'],
-                                "first/last": 1 if component_stats['max_sentence'] == sentence or component_stats['min_sentence'] == sentence else 0,
+                                # "first/last": 1 if component_stats['max_sentence'] == sentence or component_stats['min_sentence'] == sentence else 0,
+                                "first/last":self.first_last(paragraph),
                                 "intro/conc": 1 if each['docPosition'] == 'Introduction' or each['docPosition'] == 'Conclusion' else 0,
                                 "sentence":sentence,
                                 "sentence_size":component_stats['sentence_size'],
@@ -132,6 +141,9 @@ class ArgumentClassification():
                                 self.components.append(fields)
                                 count += 1
                             component = []
+                            component_sent = []
+                            component_lemma = []
+                            component_pos = []
                             preceding_tokens = []
                             following_tokens = []
                             encountered_b = False
@@ -139,7 +151,8 @@ class ArgumentClassification():
                             sentence = None  
                             start_index = None
                             end_index = None
-                            pos_dist = pos.copy()                  
+                            pos_dist = pos.copy()
+            count = 1           
         labels = {}
         
         if train: 
@@ -165,11 +178,19 @@ class ArgumentClassification():
         temp = []
         for component in self.components:
             vectorized_dep = self.vectorize(" ".join(component["preceding_tokens"]) + ' ' + " ".join(component["component"]))
-            print(vectorized_dep)
+            # print(vectorized_dep)
             p=self.probability_calc(self.probability, component['preceding_tokens'])
             temp.append({**vectorized_dep, **p, **component})
         self.components = temp
-        
+    
+
+    def first_last(self, paragraph):
+        if len(self.components) == 0:
+            return 1
+        if self.components[-1]['paragraph'] < paragraph:
+            self.components[-1]['first/last'] = 1
+            return 1
+        return 0
         
     def vectorize(self, text):
         ret = {}
@@ -284,6 +305,7 @@ class ArgumentClassification():
                 sentence = sent
                 break
         if sentence:
+            # print(sentence.sentiment)
             depth = self.tree_depth(sentence.parseTree, 0)
             num_subclause = self.subclause(sentence.parseTree)
             tense = self.verb_tense(sentence.parseTree, component)
@@ -291,8 +313,40 @@ class ArgumentClassification():
             vps = self.verb_phrases(sentence.parseTree, component)        
             shared_p_values = self.shared_phrase([paragraph['introduction'], paragraph['conclusion']], vps, nps)
             dependency_info = self.dependency(sentence.token, sentence.basicDependencies)
+            sentiment_scores = self.sentiment_tree(sentence.annotatedParseTree)
+        return {"depth":depth, "num_subclause":num_subclause, "tense":tense, **shared_p_values, **dependency_info, **sentiment_scores}
+    def sentiment_tree(self, ann_tree):
+        ret = {
+            "STRONG_NEGATIVE":0,
+            "WEAK_NEGATIVE":0,
+            "NEUTRAL":0,
+            "WEAK_POSITIVE":0,
+            "STRONG_POSITIVE":0,
+        }
+        self.tree_path_sentiment(ann_tree, ret)
+        total = 0
+        for key in ret.keys():
+            total += ret[key]
         
-        return {"depth":depth, "num_subclause":num_subclause, "tense":tense, **shared_p_values, **dependency_info}
+        for key in ret.keys():
+            ret[key] = ret[key]/total
+        return ret
+    def tree_path_sentiment(self, tree, count):
+        legend = {
+            0:"STRONG_NEGATIVE",
+            1:"WEAK_NEGATIVE",
+            2:"NEUTRAL",
+            3:"WEAK_POSITIVE",
+            4:"STRONG_POSITIVE"
+        }
+        count[legend[tree.sentiment]] += 1
+        if len(tree.child) == 0:
+            return
+        for child in tree.child:
+            self.tree_path_sentiment(child, count)
+        
+
+
 
     def dependency(self, tokens, dependency):
         ret = self.dependency_tuples.copy()
@@ -484,7 +538,6 @@ class ArgumentClassification():
         essay_name = essay.split('/')[-1]
         # dir_list = os.listdir(pdtb_output_dir)
         pipe = f'{pdtb_output_dir}/{essay_name}.pipe'
-        print(pipe)
         parsings = open(pipe, 'r').read().split('\n')
         list_parsings = [x.split('|') for x in parsings]
         # print(dir_list)
@@ -492,8 +545,8 @@ class ArgumentClassification():
         os.chdir(cwd)
         return list_parsings
     def component_pdtb(self, parsings, start, end):
-        print('start: ',start)
-        print('end: ', end)
+        # print('start: ',start)
+        # print('end: ', end)
         ret = {"type": 0, "arg":0, "relation":0}
         key = {"Comparison":1, "EntRel":2, "Expansion":3, "NoRel":4, 'Temporal':5, 'Contingency':6}
 
@@ -502,8 +555,8 @@ class ArgumentClassification():
             if len(parse) > 34:
                 arg1 = parse[22].split('..')
                 arg2 = parse[32].split('..')
-                print("Arg1: ", str(arg1))
-                print("Arg2: ", str(arg2))
+                # print("Arg1: ", str(arg1))
+                # print("Arg2: ", str(arg2))
                 if start <= int(arg1[0])  and end <= int(arg2[-1]):
                     # ret["arg"] = 1
                     discourse = parse
@@ -512,7 +565,7 @@ class ArgumentClassification():
                 #     ret["arg"] = 2
                 #     discourse = parse
                 #     break
-        print(discourse)
+        # print(discourse)
         if discourse and discourse[0] in ["Explicit", "Implicit"]:
             arg1 = discourse[22].split('..')
             arg2 = discourse[32].split('..')
