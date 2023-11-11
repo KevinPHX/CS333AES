@@ -313,11 +313,11 @@ class ArgumentClassification():
             path = []
             self.tree_path(parse_tree, each, path)
             if len(path) > 2:
-                if path[-2] in ['VB', 'VBZ', 'VBP']:
+                if path[1] in ['VB', 'VBZ', 'VBP']:
                     return 0
-                elif path[-2] in ['VBD', 'VBN']:
+                elif path[1] in ['VBD', 'VBN']:
                      return 1
-                elif path[-2] == 'VBG':
+                elif path[1] == 'VBG':
                     return 2
     def noun_phrases(self, parse_tree, component):
         ret = []
