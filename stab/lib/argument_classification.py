@@ -138,6 +138,9 @@ class ArgumentClassification():
                                 **self.indicators_context(text_info['paragraph'], text_info['component_text']),
                                 **self.embed_component(component+preceding_tokens),
                                 **self.component_pdtb(parsings, start_index, end_index),
+                                **self.type_indicators_text(" ".join(preceding_tokens), "preceding"),
+                                **self.type_indicators_text(" ".join(following_tokens), "following"),
+                                **self.type_indicators_text(text_info['component_text'], "component"),
                                 "claim":None
                             }
                             essays.add(each['essay'])
@@ -253,7 +256,7 @@ class ArgumentClassification():
                 continue
         ret_dict = {}
         for i, each in enumerate(ret):
-            ret_dict[f"dim_{i}"] = each
+            ret_dict[f"dim_{i}"] = float(each)
         return ret_dict
 
     
@@ -274,6 +277,27 @@ class ArgumentClassification():
             if f in prec or f in comp:
                 return 1
         return 0
+    def type_indicators_text(self, text, part):
+        # TODO: Thiss also won't work
+        ret = {
+            f"{part}_forward_indicators":0,
+            f"{part}_backwards_indicators":0,
+            f"{part}_rebuttal_indicators":0,
+            f"{part}_thesis_indicators":0,
+        }
+        for f in FORWARD_INDICATORS:
+            if f in text:
+                ret[f"{part}_forward_indicators"] = 1
+        for f in BACKWARDS_INDICATORS:
+            if f in text:
+                ret[f"{part}_backwards_indicators"] = 1
+        for f in REBUTTAL_INDICATORS:
+            if f in text:
+                ret[f"{part}_rebuttal_indicators"] = 1
+        for f in THESIS_INDICATORS:
+            if f in text:
+                ret[f"{part}_thesis_indicators"] = 1
+        return ret
     def first_person_indicators(self, preceding, component):
         # TODO FIX THIS
         prec = ' '.join(preceding)
@@ -319,7 +343,19 @@ class ArgumentClassification():
             shared_p_values = self.shared_phrase([paragraph['introduction'], paragraph['conclusion']], vps, nps)
             dependency_info = self.dependency(sentence.token, sentence.basicDependencies)
             sentiment_scores = self.sentiment_tree(sentence.annotatedParseTree)
-        return {"depth":depth, "num_subclause":num_subclause, "tense":tense, **shared_p_values, **dependency_info, **sentiment_scores}
+            rules = self.production_rules(sentence.parseTree)
+        return {"depth":depth, "num_subclause":num_subclause, "tense":tense, **shared_p_values, **dependency_info, **sentiment_scores, "production_rules":rules}
+    def production_rules(self, tree):
+        rules = []
+        self.traverse_tree(tree, rules)
+        return rules
+    def traverse_tree(self, tree, rules):
+        if len(tree.child) == 0:
+            return
+        children = [x.value for x in tree.child]
+        rules.append((tree.value, tuple(children)))
+        for child in tree.child:
+            self.traverse_tree(child, rules)
     def sentiment_tree(self, ann_tree):
         ret = {
             "STRONG_NEGATIVE":0,
@@ -552,10 +588,10 @@ class ArgumentClassification():
     def component_pdtb(self, parsings, start, end):
         # print('start: ',start)
         # print('end: ', end)
-        ret = {"type": 0, "arg":0, "relation":0}
-        key = {"Comparison":1, "EntRel":2, "Expansion":3, "NoRel":4, 'Temporal':5, 'Contingency':6}
+        ret = {"Comparison":0, "EntRel":0, "Expansion":0, "NoRel":0, 'Temporal':0, 'Contingency':0, "Arg1":0, "Arg2":0, "Implicit":0, "Explicit":0}
+        # key = {"Comparison":1, "EntRel":2, "Expansion":3, "NoRel":4, 'Temporal':5, 'Contingency':6}
 
-        discourse = None
+        discourse = []
         for parse in parsings:
             if len(parse) > 34:
                 arg1 = parse[22].split('..')
@@ -564,25 +600,27 @@ class ArgumentClassification():
                 # print("Arg2: ", str(arg2))
                 if start <= int(arg1[0])  and end <= int(arg2[-1]):
                     # ret["arg"] = 1
-                    discourse = parse
+                    discourse.append(parse)
                     break
                 # elif int(arg2[0]) >= start and int(arg2[-1]) <= end:
                 #     ret["arg"] = 2
                 #     discourse = parse
                 #     break
         # print(discourse)
-        if discourse and discourse[0] in ["Explicit", "Implicit"]:
-            arg1 = discourse[22].split('..')
-            arg2 = discourse[32].split('..')
-            prop1 = int(arg1[-1]) - start
-            prop2 = end - int(arg2[0])
-            if prop1 > prop2:
-                ret['arg'] = 1
-            else:
-                ret['arg'] = 2
-            if discourse[11] in key.keys():
-                ret['type'] =key[discourse[11]]
-            ret['relation'] = 1 if discourse[0] == "Explicit" else 2
+        for dis in discourse:
+            if dis[0] in ["Explicit", "Implicit"]:
+                arg1 = dis[22].split('..')
+                arg2 = dis[32].split('..')
+                prop1 = int(arg1[-1]) - start
+                prop2 = end - int(arg2[0])
+                if prop1 > prop2:
+                    ret['Arg1'] = 1
+                else:
+                    ret['Arg2'] = 1
+                if dis[11] in ret.keys():
+                    ret[dis[11]] = 1
+                if dis[0] in ret.keys():
+                    ret[dis[0]] = 1
         return ret
 
 
@@ -600,8 +638,8 @@ if __name__=='__main__':
     argclass = ArgumentClassification(data.iloc[:408].to_dict('records'), client, data.token.values.tolist())
     argclass.process_data(True)
     # print(argclass.components[0])
-    # with open("components.json", "w") as f:
-    #     json.dump(argclass.components, f)
-    pd.DataFrame(argclass.components).to_json("components.json", "records")
+    with open("components.json", "w") as f:
+        json.dump(argclass.components, f)
+    # pd.DataFrame(argclass.components).to_json("components.json", "records")
 
     client.stop()
