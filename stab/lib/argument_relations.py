@@ -16,16 +16,19 @@ class ArgumentRelationIdentification():
     def get_components(self): 
         self.components = {}
         for essay in groupby(self.data, itemgetter('essay')):
-            current_components = []
+            # essay number
+            idx = int(essay[0].split("essay")[1].split(".txt")[0]) + 1  
+            # create list to store the components for this essay 
+            self.components[idx] = []
+            # a flag to help us identify if we are currently within a component 
             found_argB = False
-            idx = essay[0]
             for token in essay[1]: 
                 if token["IOB"] != "O":
                     if token["IOB"] == "Arg-B": 
                         found_argB = True 
                         # initialize info dictionary for the current component 
                         component = {
-                            "tokens": [token["token"]], # the length of this list will be used for getting token stats 
+                            "tokens": [], # the length of this list will be used for getting token stats 
                             "pos_dist":pos.copy(), # pos distribution 
                             "nouns": [], # for getting shared nouns between pairs 
                             "production_rules":[],
@@ -46,11 +49,15 @@ class ArgumentRelationIdentification():
                     # if the token is a noun, add its lemma to the nouns list 
                     if "NN" in token["pos"]: 
                         component["nouns"].append(token["lemma"])
-                elif token["IOB"] == "O" and not found_argB: 
-                    # reached the end of a component 
+                elif token["IOB"] == "O" and found_argB: 
+                    # reached the end of a component, so reset our flag  
                     found_argB = False
-
-        return 
+                    # add component dictionary to list of components for the current essay 
+                    self.components[idx].append(component)
+        
+        print(f"essay {idx}")
+        for c in self.components[idx]: 
+            print(c)
 
     def syntactic(self): 
         # production rules 
@@ -65,5 +72,5 @@ if __name__=='__main__':
     # client.start()
     data = pd.read_csv('sample.csv').to_dict('records')
     argrelation = ArgumentRelationIdentification(data, None)
-    # argrelation.process_data(True)
+    argrelation.get_components()
     # client.stop()
