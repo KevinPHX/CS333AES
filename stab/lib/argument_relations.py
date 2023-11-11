@@ -7,6 +7,7 @@ import pandas as pd
 from itertools import groupby
 from operator import itemgetter
 from pos import pos
+from collections import defaultdict
 
 class ArgumentRelationIdentification(): 
     def __init__(self, data, client): 
@@ -42,6 +43,7 @@ class ArgumentRelationIdentification():
                             "sentence_idx":token["sentence"],
                             "position_in_doc": token["docPosition"],
                             "first_or_last_in_paragraph": False, 
+                            "idx_in_paragraph": None, 
                             "indicator_type": None, 
                             "indicator_context": None, 
                             "discourse_triples":None, 
@@ -56,7 +58,11 @@ class ArgumentRelationIdentification():
                         # the component is first in the paragraph 
                         if first_component: 
                             component["first_or_last_in_paragraph"] = True 
+                            component["idx_in_paragraph"] = 0 
                             first_component = False
+                        else: 
+                            if prior_component_idx > 0: 
+                                component["idx_in_paragraph"] = 1 + self.components[essay_idx][prior_component_idx-1]["idx_in_paragraph"]
                         prior_component_idx += 1 
                     # add token to list component tokens 
                     component["tokens"].append(token["token"])
@@ -74,12 +80,19 @@ class ArgumentRelationIdentification():
 
             # print(f"essay {essay_idx}")
             # for c in self.components[essay_idx]: 
-            #     print(c["paragraph_idx"],c["first_or_last_in_paragraph"])
+            #     print(c["paragraph_idx"],c["first_or_last_in_paragraph"],c["idx_in_paragraph"])
     
     def pairwise_features(self,essay_idx): 
         # key will be (i,j) where i is the idx of a source and j is the idx of a target 
         self.pairwise[essay_idx] = {}
         components = self.components[essay_idx]
+        components_per_paragraph = {}
+        for c in components: 
+            idx = c["paragraph_idx"]
+            if idx not in components_per_paragraph: 
+                components_per_paragraph[idx] = 0 
+            components_per_paragraph[idx] += 1 
+        
         for i, source in enumerate(components):
             for j, target in enumerate(components):
                 # the source cannot equal the target 
@@ -99,6 +112,14 @@ class ArgumentRelationIdentification():
                     "target_before_source": 0, # default is false,
                     # if pair is present in intro or conclusion. They are both in the same paragraph
                     "intro_or_conc": 0, # default is false 
+                    # number of components between source and target
+                    "num_between": abs(source["idx_in_paragraph"]-target["idx_in_paragraph"]-1), 
+                    # number of components in the covering paragraph 
+                    "num_in_paragraph": components_per_paragraph[source["paragraph_idx"]],
+                    # if target and source share at least one noun 
+                    "share_noun": 0, # default is false 
+                    # the number of nouns shared by target and source 
+                    "num_shared_nouns":0 # default is none 
                 }
                 # update binary POS distribution with the POS distribution of the target  
                 for pos_type, count in target["pos_dist"].items():
@@ -115,13 +136,21 @@ class ArgumentRelationIdentification():
                 # if target and source are first or last component in paragraph 
                 if source["first_or_last_in_paragraph"] and target["first_or_last_in_paragraph"]: 
                     pairwise_info["first_or_last"] = 1 
-
+                # find shared nouns (both binary and number)
+                shared_nouns = {}
+                for noun1 in source["nouns"]: 
+                    for noun2 in target["nouns"]:
+                        if noun1 == noun2: 
+                            if noun1 not in shared_nouns: shared_nouns[noun1] = 0 
+                            shared_nouns[noun1] += 1 
+                if len(shared_nouns) > 0: 
+                    pairwise_info["share_noun"] = 1
+                    pairwise_info["num_shared_nouns"] = sum(list(shared_nouns.values()))
                 # add to information dictionary 
                 self.pairwise[essay_idx][(i,j)] = pairwise_info
         
         for pair,info in self.pairwise[essay_idx].items(): 
-            print(pair, ": ", info)
-            break
+            print(pair, ": ", info, "\n")
         
     def syntactic(self): 
         # production rules 
