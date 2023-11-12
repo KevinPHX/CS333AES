@@ -680,7 +680,7 @@ if __name__=='__main__':
     argclass = ArgumentClassification(data.iloc[:408].to_dict('records'), client, data.token.values.tolist())
     argclass.process_data(True)
     # print(argclass.components[0])
-    with open("components.json", "w") as f:
+    with open("../outputs/components.json", "w") as f:
         json.dump(argclass.components, f)
     # pd.DataFrame(argclass.components).to_json("components.json", "records")
 

@@ -1,0 +1,2098 @@
+token {
+  word: "Albert"
+  pos: "NNP"
+  value: "Albert"
+  before: ""
+  after: " "
+  originalText: "Albert"
+  ner: "PERSON"
+  coarseNER: "PERSON"
+  fineGrainedNER: "PERSON"
+  nerLabelProbs: "PERSON=0.9999331283889166"
+  lemma: "Albert"
+  beginChar: 0
+  endChar: 6
+  beginIndex: 0
+  endIndex: 1
+  tokenBeginIndex: 0
+  tokenEndIndex: 1
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+  entityMentionIndex: 0
+}
+token {
+  word: "Einstein"
+  pos: "NNP"
+  value: "Einstein"
+  before: " "
+  after: " "
+  originalText: "Einstein"
+  ner: "PERSON"
+  coarseNER: "PERSON"
+  fineGrainedNER: "PERSON"
+  nerLabelProbs: "PERSON=0.9999992044892745"
+  lemma: "Einstein"
+  beginChar: 7
+  endChar: 15
+  beginIndex: 1
+  endIndex: 2
+  tokenBeginIndex: 1
+  tokenEndIndex: 2
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+  entityMentionIndex: 0
+}
+token {
+  word: "was"
+  pos: "VBD"
+  value: "was"
+  before: " "
+  after: " "
+  originalText: "was"
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9999932789559319"
+  lemma: "be"
+  beginChar: 16
+  endChar: 19
+  beginIndex: 2
+  endIndex: 3
+  tokenBeginIndex: 2
+  tokenEndIndex: 3
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+}
+token {
+  word: "a"
+  pos: "DT"
+  value: "a"
+  before: " "
+  after: " "
+  originalText: "a"
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9999927468825828"
+  lemma: "a"
+  beginChar: 20
+  endChar: 21
+  beginIndex: 3
+  endIndex: 4
+  tokenBeginIndex: 3
+  tokenEndIndex: 4
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+}
+token {
+  word: "German"
+  pos: "JJ"
+  value: "German"
+  before: " "
+  after: ""
+  originalText: "German"
+  ner: "NATIONALITY"
+  coarseNER: "MISC"
+  fineGrainedNER: "NATIONALITY"
+  nerLabelProbs: "MISC=0.9999987842676035"
+  lemma: "German"
+  beginChar: 22
+  endChar: 28
+  beginIndex: 4
+  endIndex: 5
+  tokenBeginIndex: 4
+  tokenEndIndex: 5
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+  entityMentionIndex: 1
+}
+token {
+  word: "-"
+  pos: "HYPH"
+  value: "-"
+  before: ""
+  after: ""
+  originalText: "-"
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9998765802180007"
+  lemma: "-"
+  beginChar: 28
+  endChar: 29
+  beginIndex: 5
+  endIndex: 6
+  tokenBeginIndex: 5
+  tokenEndIndex: 6
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+}
+token {
+  word: "born"
+  pos: "VBN"
+  value: "born"
+  before: ""
+  after: " "
+  originalText: "born"
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9998956433598255"
+  lemma: "bear"
+  beginChar: 29
+  endChar: 33
+  beginIndex: 6
+  endIndex: 7
+  tokenBeginIndex: 6
+  tokenEndIndex: 7
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+}
+token {
+  word: "theoretical"
+  pos: "JJ"
+  value: "theoretical"
+  before: " "
+  after: " "
+  originalText: "theoretical"
+  ner: "TITLE"
+  coarseNER: "O"
+  fineGrainedNER: "TITLE"
+  nerLabelProbs: "O=0.9999947872437227"
+  lemma: "theoretical"
+  beginChar: 34
+  endChar: 45
+  beginIndex: 7
+  endIndex: 8
+  tokenBeginIndex: 7
+  tokenEndIndex: 8
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+  entityMentionIndex: 2
+}
+token {
+  word: "physicist"
+  pos: "NN"
+  value: "physicist"
+  before: " "
+  after: ""
+  originalText: "physicist"
+  ner: "TITLE"
+  coarseNER: "O"
+  fineGrainedNER: "TITLE"
+  nerLabelProbs: "O=0.9999861020678511"
+  lemma: "physicist"
+  beginChar: 46
+  endChar: 55
+  beginIndex: 8
+  endIndex: 9
+  tokenBeginIndex: 8
+  tokenEndIndex: 9
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+  entityMentionIndex: 2
+}
+token {
+  word: "."
+  pos: "."
+  value: "."
+  before: ""
+  after: " "
+  originalText: "."
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9999991921578578"
+  lemma: "."
+  beginChar: 55
+  endChar: 56
+  beginIndex: 9
+  endIndex: 10
+  tokenBeginIndex: 9
+  tokenEndIndex: 10
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+}
+tokenOffsetBegin: 0
+tokenOffsetEnd: 10
+sentenceIndex: 0
+characterOffsetBegin: 0
+characterOffsetEnd: 56
+parseTree {
+  child {
+    child {
+      child {
+        child {
+          value: "Albert"
+        }
+        value: "NNP"
+        score: -8.8496379852294922
+      }
+      child {
+        child {
+          value: "Einstein"
+        }
+        value: "NNP"
+        score: -10.393918037414551
+      }
+      value: "NP"
+      score: -22.208171844482422
+    }
+    child {
+      child {
+        child {
+          value: "was"
+        }
+        value: "VBD"
+        score: -0.42985981702804565
+      }
+      child {
+        child {
+          child {
+            value: "a"
+          }
+          value: "DT"
+          score: -1.5601264238357544
+        }
+        child {
+          child {
+            child {
+              value: "German"
+            }
+            value: "JJ"
+            score: -5.6924829483032227
+          }
+          child {
+            child {
+              value: "-"
+            }
+            value: "HYPH"
+            score: -0.012106309644877911
+          }
+          child {
+            child {
+              value: "born"
+            }
+            value: "VBN"
+            score: -5.7755861282348633
+          }
+          value: "ADJP"
+          score: -15.493135452270508
+        }
+        child {
+          child {
+            value: "theoretical"
+          }
+          value: "JJ"
+          score: -9.2328519821167
+        }
+        child {
+          child {
+            value: "physicist"
+          }
+          value: "NN"
+          score: -11.6840181350708
+        }
+        value: "NP"
+        score: -43.543113708496094
+      }
+      value: "VP"
+      score: -51.381767272949219
+    }
+    child {
+      child {
+        value: "."
+      }
+      value: "."
+      score: -0.057524647563695908
+    }
+    value: "S"
+    score: -74.783981323242188
+  }
+  value: "ROOT"
+  score: -74.955360412597656
+}
+binarizedParseTree {
+  child {
+    child {
+      child {
+        child {
+          child {
+            value: "Albert"
+          }
+          value: "NNP"
+        }
+        child {
+          child {
+            value: "Einstein"
+          }
+          value: "NNP"
+        }
+        value: "NP"
+      }
+      child {
+        child {
+          child {
+            value: "was"
+          }
+          value: "VBD"
+        }
+        child {
+          child {
+            child {
+              value: "a"
+            }
+            value: "DT"
+          }
+          child {
+            child {
+              child {
+                child {
+                  value: "German"
+                }
+                value: "JJ"
+              }
+              child {
+                child {
+                  child {
+                    value: "-"
+                  }
+                  value: "HYPH"
+                }
+                child {
+                  child {
+                    value: "born"
+                  }
+                  value: "VBN"
+                }
+                value: "@ADJP"
+              }
+              value: "ADJP"
+            }
+            child {
+              child {
+                child {
+                  value: "theoretical"
+                }
+                value: "JJ"
+              }
+              child {
+                child {
+                  value: "physicist"
+                }
+                value: "NN"
+              }
+              value: "@NP"
+            }
+            value: "@NP"
+          }
+          value: "NP"
+        }
+        value: "VP"
+      }
+      value: "@S"
+    }
+    child {
+      child {
+        value: "."
+      }
+      value: "."
+    }
+    value: "S"
+  }
+  value: "ROOT"
+}
+annotatedParseTree {
+  child {
+    child {
+      child {
+        child {
+          value: "Albert"
+          yieldBeginIndex: 0
+          yieldEndIndex: 0
+        }
+        value: "NNP"
+        yieldBeginIndex: 0
+        yieldEndIndex: 0
+        sentiment: NEUTRAL
+      }
+      child {
+        child {
+          value: "Einstein"
+          yieldBeginIndex: 1
+          yieldEndIndex: 1
+        }
+        value: "NNP"
+        yieldBeginIndex: 1
+        yieldEndIndex: 1
+        sentiment: NEUTRAL
+      }
+      value: "NP"
+      yieldBeginIndex: 0
+      yieldEndIndex: 1
+      sentiment: NEUTRAL
+    }
+    child {
+      child {
+        child {
+          value: "was"
+          yieldBeginIndex: 2
+          yieldEndIndex: 2
+        }
+        value: "VBD"
+        yieldBeginIndex: 2
+        yieldEndIndex: 2
+        sentiment: NEUTRAL
+      }
+      child {
+        child {
+          child {
+            value: "a"
+            yieldBeginIndex: 3
+            yieldEndIndex: 3
+          }
+          value: "DT"
+          yieldBeginIndex: 3
+          yieldEndIndex: 3
+          sentiment: NEUTRAL
+        }
+        child {
+          child {
+            child {
+              child {
+                value: "German"
+                yieldBeginIndex: 4
+                yieldEndIndex: 4
+              }
+              value: "JJ"
+              yieldBeginIndex: 4
+              yieldEndIndex: 4
+              sentiment: NEUTRAL
+            }
+            child {
+              child {
+                child {
+                  value: "-"
+                  yieldBeginIndex: 5
+                  yieldEndIndex: 5
+                }
+                value: "HYPH"
+                yieldBeginIndex: 5
+                yieldEndIndex: 5
+                sentiment: NEUTRAL
+              }
+              child {
+                child {
+                  value: "born"
+                  yieldBeginIndex: 6
+                  yieldEndIndex: 6
+                }
+                value: "VBN"
+                yieldBeginIndex: 6
+                yieldEndIndex: 6
+                sentiment: NEUTRAL
+              }
+              value: "@ADJP"
+              yieldBeginIndex: 5
+              yieldEndIndex: 6
+              sentiment: NEUTRAL
+            }
+            value: "ADJP"
+            yieldBeginIndex: 4
+            yieldEndIndex: 6
+            sentiment: WEAK_POSITIVE
+          }
+          child {
+            child {
+              child {
+                value: "theoretical"
+                yieldBeginIndex: 7
+                yieldEndIndex: 7
+              }
+              value: "JJ"
+              yieldBeginIndex: 7
+              yieldEndIndex: 7
+              sentiment: NEUTRAL
+            }
+            child {
+              child {
+                value: "physicist"
+                yieldBeginIndex: 8
+                yieldEndIndex: 8
+              }
+              value: "NN"
+              yieldBeginIndex: 8
+              yieldEndIndex: 8
+              sentiment: NEUTRAL
+            }
+            value: "@NP"
+            yieldBeginIndex: 7
+            yieldEndIndex: 8
+            sentiment: NEUTRAL
+          }
+          value: "@NP"
+          yieldBeginIndex: 4
+          yieldEndIndex: 8
+          sentiment: NEUTRAL
+        }
+        value: "NP"
+        yieldBeginIndex: 3
+        yieldEndIndex: 8
+        sentiment: NEUTRAL
+      }
+      value: "VP"
+      yieldBeginIndex: 2
+      yieldEndIndex: 8
+      sentiment: NEUTRAL
+    }
+    value: "@S"
+    yieldBeginIndex: 0
+    yieldEndIndex: 8
+    sentiment: NEUTRAL
+  }
+  child {
+    child {
+      value: "."
+      yieldBeginIndex: 9
+      yieldEndIndex: 9
+    }
+    value: "."
+    yieldBeginIndex: 9
+    yieldEndIndex: 9
+    sentiment: NEUTRAL
+  }
+  value: "ROOT"
+  yieldBeginIndex: 0
+  yieldEndIndex: 9
+  sentiment: WEAK_POSITIVE
+}
+sentiment: "Positive"
+basicDependencies {
+  node {
+    sentenceIndex: 0
+    index: 2
+  }
+  node {
+    sentenceIndex: 0
+    index: 1
+  }
+  node {
+    sentenceIndex: 0
+    index: 9
+  }
+  node {
+    sentenceIndex: 0
+    index: 3
+  }
+  node {
+    sentenceIndex: 0
+    index: 4
+  }
+  node {
+    sentenceIndex: 0
+    index: 7
+  }
+  node {
+    sentenceIndex: 0
+    index: 5
+  }
+  node {
+    sentenceIndex: 0
+    index: 6
+  }
+  node {
+    sentenceIndex: 0
+    index: 8
+  }
+  node {
+    sentenceIndex: 0
+    index: 10
+  }
+  edge {
+    source: 2
+    target: 1
+    dep: "compound"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 2
+    dep: "nsubj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 3
+    dep: "cop"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 4
+    dep: "det"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 7
+    dep: "amod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 8
+    dep: "amod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 10
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 7
+    target: 5
+    dep: "dep"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: Any
+  }
+  edge {
+    source: 7
+    target: 6
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  root: 9
+}
+collapsedDependencies {
+  node {
+    sentenceIndex: 0
+    index: 2
+  }
+  node {
+    sentenceIndex: 0
+    index: 1
+  }
+  node {
+    sentenceIndex: 0
+    index: 9
+  }
+  node {
+    sentenceIndex: 0
+    index: 3
+  }
+  node {
+    sentenceIndex: 0
+    index: 4
+  }
+  node {
+    sentenceIndex: 0
+    index: 7
+  }
+  node {
+    sentenceIndex: 0
+    index: 5
+  }
+  node {
+    sentenceIndex: 0
+    index: 6
+  }
+  node {
+    sentenceIndex: 0
+    index: 8
+  }
+  node {
+    sentenceIndex: 0
+    index: 10
+  }
+  edge {
+    source: 2
+    target: 1
+    dep: "compound"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 2
+    dep: "nsubj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 3
+    dep: "cop"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 4
+    dep: "det"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 7
+    dep: "amod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 8
+    dep: "amod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 10
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 7
+    target: 5
+    dep: "dep"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: Any
+  }
+  edge {
+    source: 7
+    target: 6
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  root: 9
+}
+collapsedCCProcessedDependencies {
+  node {
+    sentenceIndex: 0
+    index: 2
+  }
+  node {
+    sentenceIndex: 0
+    index: 1
+  }
+  node {
+    sentenceIndex: 0
+    index: 9
+  }
+  node {
+    sentenceIndex: 0
+    index: 3
+  }
+  node {
+    sentenceIndex: 0
+    index: 4
+  }
+  node {
+    sentenceIndex: 0
+    index: 7
+  }
+  node {
+    sentenceIndex: 0
+    index: 5
+  }
+  node {
+    sentenceIndex: 0
+    index: 6
+  }
+  node {
+    sentenceIndex: 0
+    index: 8
+  }
+  node {
+    sentenceIndex: 0
+    index: 10
+  }
+  edge {
+    source: 2
+    target: 1
+    dep: "compound"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 2
+    dep: "nsubj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 3
+    dep: "cop"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 4
+    dep: "det"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 7
+    dep: "amod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 8
+    dep: "amod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 10
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 7
+    target: 5
+    dep: "dep"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: Any
+  }
+  edge {
+    source: 7
+    target: 6
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  root: 9
+}
+enhancedDependencies {
+  node {
+    sentenceIndex: 0
+    index: 2
+  }
+  node {
+    sentenceIndex: 0
+    index: 1
+  }
+  node {
+    sentenceIndex: 0
+    index: 9
+  }
+  node {
+    sentenceIndex: 0
+    index: 3
+  }
+  node {
+    sentenceIndex: 0
+    index: 4
+  }
+  node {
+    sentenceIndex: 0
+    index: 7
+  }
+  node {
+    sentenceIndex: 0
+    index: 5
+  }
+  node {
+    sentenceIndex: 0
+    index: 6
+  }
+  node {
+    sentenceIndex: 0
+    index: 8
+  }
+  node {
+    sentenceIndex: 0
+    index: 10
+  }
+  edge {
+    source: 2
+    target: 1
+    dep: "compound"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 2
+    dep: "nsubj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 3
+    dep: "cop"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 4
+    dep: "det"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 7
+    dep: "amod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 8
+    dep: "amod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 10
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 7
+    target: 5
+    dep: "dep"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: Any
+  }
+  edge {
+    source: 7
+    target: 6
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  root: 9
+}
+enhancedPlusPlusDependencies {
+  node {
+    sentenceIndex: 0
+    index: 2
+  }
+  node {
+    sentenceIndex: 0
+    index: 1
+  }
+  node {
+    sentenceIndex: 0
+    index: 9
+  }
+  node {
+    sentenceIndex: 0
+    index: 3
+  }
+  node {
+    sentenceIndex: 0
+    index: 4
+  }
+  node {
+    sentenceIndex: 0
+    index: 7
+  }
+  node {
+    sentenceIndex: 0
+    index: 5
+  }
+  node {
+    sentenceIndex: 0
+    index: 6
+  }
+  node {
+    sentenceIndex: 0
+    index: 8
+  }
+  node {
+    sentenceIndex: 0
+    index: 10
+  }
+  edge {
+    source: 2
+    target: 1
+    dep: "compound"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 2
+    dep: "nsubj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 3
+    dep: "cop"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 4
+    dep: "det"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 7
+    dep: "amod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 8
+    dep: "amod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 9
+    target: 10
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 7
+    target: 5
+    dep: "dep"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: Any
+  }
+  edge {
+    source: 7
+    target: 6
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  root: 9
+}
+hasRelationAnnotations: false
+hasNumerizedTokensAnnotation: false
+mentions {
+  sentenceIndex: 0
+  tokenStartInSentenceInclusive: 0
+  tokenEndInSentenceExclusive: 2
+  ner: "PERSON"
+  entityType: "PERSON"
+  entityMentionIndex: 0
+  canonicalEntityMentionIndex: 0
+  entityMentionText: "Albert Einstein"
+}
+mentions {
+  sentenceIndex: 0
+  tokenStartInSentenceInclusive: 4
+  tokenEndInSentenceExclusive: 5
+  ner: "NATIONALITY"
+  entityType: "NATIONALITY"
+  entityMentionIndex: 1
+  canonicalEntityMentionIndex: 1
+  entityMentionText: "German"
+}
+mentions {
+  sentenceIndex: 0
+  tokenStartInSentenceInclusive: 7
+  tokenEndInSentenceExclusive: 9
+  ner: "TITLE"
+  entityType: "TITLE"
+  entityMentionIndex: 2
+  canonicalEntityMentionIndex: 2
+  entityMentionText: "theoretical physicist"
+}
+hasEntityMentionsAnnotation: true
+
+token {
+  word: "He"
+  pos: "PRP"
+  value: "He"
+  before: " "
+  after: " "
+  originalText: "He"
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9999729421729151"
+  lemma: "he"
+  beginChar: 57
+  endChar: 59
+  beginIndex: 0
+  endIndex: 1
+  tokenBeginIndex: 10
+  tokenEndIndex: 11
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+  gender: "MALE"
+  entityMentionIndex: 3
+}
+token {
+  word: "developed"
+  pos: "VBD"
+  value: "developed"
+  before: " "
+  after: " "
+  originalText: "developed"
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.999998247370159"
+  lemma: "develop"
+  beginChar: 60
+  endChar: 69
+  beginIndex: 1
+  endIndex: 2
+  tokenBeginIndex: 11
+  tokenEndIndex: 12
+  hasXmlContext: false
+  sentiment: "Positive"
+  isNewline: false
+}
+token {
+  word: "the"
+  pos: "DT"
+  value: "the"
+  before: " "
+  after: " "
+  originalText: "the"
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9999996050163914"
+  lemma: "the"
+  beginChar: 70
+  endChar: 73
+  beginIndex: 2
+  endIndex: 3
+  tokenBeginIndex: 12
+  tokenEndIndex: 13
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+}
+token {
+  word: "theory"
+  pos: "NN"
+  value: "theory"
+  before: " "
+  after: " "
+  originalText: "theory"
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9999955206946957"
+  lemma: "theory"
+  beginChar: 74
+  endChar: 80
+  beginIndex: 3
+  endIndex: 4
+  tokenBeginIndex: 13
+  tokenEndIndex: 14
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+}
+token {
+  word: "of"
+  pos: "IN"
+  value: "of"
+  before: " "
+  after: " "
+  originalText: "of"
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9999998701306025"
+  lemma: "of"
+  beginChar: 81
+  endChar: 83
+  beginIndex: 4
+  endIndex: 5
+  tokenBeginIndex: 14
+  tokenEndIndex: 15
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+}
+token {
+  word: "relativity"
+  pos: "NN"
+  value: "relativity"
+  before: " "
+  after: ""
+  originalText: "relativity"
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9999834854333183"
+  lemma: "relativity"
+  beginChar: 84
+  endChar: 94
+  beginIndex: 5
+  endIndex: 6
+  tokenBeginIndex: 15
+  tokenEndIndex: 16
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+}
+token {
+  word: "."
+  pos: "."
+  value: "."
+  before: ""
+  after: ""
+  originalText: "."
+  ner: "O"
+  coarseNER: "O"
+  fineGrainedNER: "O"
+  nerLabelProbs: "O=0.9999997199188294"
+  lemma: "."
+  beginChar: 94
+  endChar: 95
+  beginIndex: 6
+  endIndex: 7
+  tokenBeginIndex: 16
+  tokenEndIndex: 17
+  hasXmlContext: false
+  sentiment: "Neutral"
+  isNewline: false
+}
+tokenOffsetBegin: 10
+tokenOffsetEnd: 17
+sentenceIndex: 1
+characterOffsetBegin: 57
+characterOffsetEnd: 95
+parseTree {
+  child {
+    child {
+      child {
+        child {
+          value: "He"
+        }
+        value: "PRP"
+        score: -3.1612608432769775
+      }
+      value: "NP"
+      score: -4.0228281021118164
+    }
+    child {
+      child {
+        child {
+          value: "developed"
+        }
+        value: "VBD"
+        score: -6.7114896774291992
+      }
+      child {
+        child {
+          child {
+            child {
+              value: "the"
+            }
+            value: "DT"
+            score: -0.58933228254318237
+          }
+          child {
+            child {
+              value: "theory"
+            }
+            value: "NN"
+            score: -8.11536693572998
+          }
+          value: "NP"
+          score: -10.302995681762695
+        }
+        child {
+          child {
+            child {
+              value: "of"
+            }
+            value: "IN"
+            score: -0.65580403804779053
+          }
+          child {
+            child {
+              child {
+                value: "relativity"
+              }
+              value: "NN"
+              score: -14.162236213684082
+            }
+            value: "NP"
+            score: -16.256217956542969
+          }
+          value: "PP"
+          score: -17.333087921142578
+        }
+        value: "NP"
+        score: -28.058622360229492
+      }
+      value: "VP"
+      score: -39.4036979675293
+    }
+    child {
+      child {
+        value: "."
+      }
+      value: "."
+      score: -0.057524647563695908
+    }
+    value: "S"
+    score: -44.620567321777344
+  }
+  value: "ROOT"
+  score: -44.791946411132812
+}
+binarizedParseTree {
+  child {
+    child {
+      child {
+        child {
+          child {
+            value: "He"
+          }
+          value: "PRP"
+        }
+        value: "NP"
+      }
+      child {
+        child {
+          child {
+            value: "developed"
+          }
+          value: "VBD"
+        }
+        child {
+          child {
+            child {
+              child {
+                value: "the"
+              }
+              value: "DT"
+            }
+            child {
+              child {
+                value: "theory"
+              }
+              value: "NN"
+            }
+            value: "NP"
+          }
+          child {
+            child {
+              child {
+                value: "of"
+              }
+              value: "IN"
+            }
+            child {
+              child {
+                child {
+                  value: "relativity"
+                }
+                value: "NN"
+              }
+              value: "NP"
+            }
+            value: "PP"
+          }
+          value: "NP"
+        }
+        value: "VP"
+      }
+      value: "@S"
+    }
+    child {
+      child {
+        value: "."
+      }
+      value: "."
+    }
+    value: "S"
+  }
+  value: "ROOT"
+}
+annotatedParseTree {
+  child {
+    child {
+      child {
+        value: "He"
+        yieldBeginIndex: 0
+        yieldEndIndex: 0
+      }
+      value: "NP"
+      yieldBeginIndex: 0
+      yieldEndIndex: 0
+      sentiment: NEUTRAL
+    }
+    child {
+      child {
+        child {
+          value: "developed"
+          yieldBeginIndex: 1
+          yieldEndIndex: 1
+        }
+        value: "VBD"
+        yieldBeginIndex: 1
+        yieldEndIndex: 1
+        sentiment: WEAK_POSITIVE
+      }
+      child {
+        child {
+          child {
+            child {
+              value: "the"
+              yieldBeginIndex: 2
+              yieldEndIndex: 2
+            }
+            value: "DT"
+            yieldBeginIndex: 2
+            yieldEndIndex: 2
+            sentiment: NEUTRAL
+          }
+          child {
+            child {
+              value: "theory"
+              yieldBeginIndex: 3
+              yieldEndIndex: 3
+            }
+            value: "NN"
+            yieldBeginIndex: 3
+            yieldEndIndex: 3
+            sentiment: NEUTRAL
+          }
+          value: "NP"
+          yieldBeginIndex: 2
+          yieldEndIndex: 3
+          sentiment: NEUTRAL
+        }
+        child {
+          child {
+            child {
+              value: "of"
+              yieldBeginIndex: 4
+              yieldEndIndex: 4
+            }
+            value: "IN"
+            yieldBeginIndex: 4
+            yieldEndIndex: 4
+            sentiment: NEUTRAL
+          }
+          child {
+            child {
+              value: "relativity"
+              yieldBeginIndex: 5
+              yieldEndIndex: 5
+            }
+            value: "NP"
+            yieldBeginIndex: 5
+            yieldEndIndex: 5
+            sentiment: NEUTRAL
+          }
+          value: "PP"
+          yieldBeginIndex: 4
+          yieldEndIndex: 5
+          sentiment: NEUTRAL
+        }
+        value: "NP"
+        yieldBeginIndex: 2
+        yieldEndIndex: 5
+        sentiment: NEUTRAL
+      }
+      value: "VP"
+      yieldBeginIndex: 1
+      yieldEndIndex: 5
+      sentiment: NEUTRAL
+    }
+    value: "@S"
+    yieldBeginIndex: 0
+    yieldEndIndex: 5
+    sentiment: NEUTRAL
+  }
+  child {
+    child {
+      value: "."
+      yieldBeginIndex: 6
+      yieldEndIndex: 6
+    }
+    value: "."
+    yieldBeginIndex: 6
+    yieldEndIndex: 6
+    sentiment: NEUTRAL
+  }
+  value: "ROOT"
+  yieldBeginIndex: 0
+  yieldEndIndex: 6
+  sentiment: WEAK_POSITIVE
+}
+sentiment: "Positive"
+basicDependencies {
+  node {
+    sentenceIndex: 1
+    index: 2
+  }
+  node {
+    sentenceIndex: 1
+    index: 1
+  }
+  node {
+    sentenceIndex: 1
+    index: 4
+  }
+  node {
+    sentenceIndex: 1
+    index: 3
+  }
+  node {
+    sentenceIndex: 1
+    index: 6
+  }
+  node {
+    sentenceIndex: 1
+    index: 5
+  }
+  node {
+    sentenceIndex: 1
+    index: 7
+  }
+  edge {
+    source: 2
+    target: 1
+    dep: "nsubj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 2
+    target: 4
+    dep: "obj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 2
+    target: 7
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 4
+    target: 3
+    dep: "det"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 4
+    target: 6
+    dep: "nmod"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 6
+    target: 5
+    dep: "case"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  root: 2
+}
+collapsedDependencies {
+  node {
+    sentenceIndex: 1
+    index: 2
+  }
+  node {
+    sentenceIndex: 1
+    index: 1
+  }
+  node {
+    sentenceIndex: 1
+    index: 4
+  }
+  node {
+    sentenceIndex: 1
+    index: 3
+  }
+  node {
+    sentenceIndex: 1
+    index: 6
+  }
+  node {
+    sentenceIndex: 1
+    index: 5
+  }
+  node {
+    sentenceIndex: 1
+    index: 7
+  }
+  edge {
+    source: 2
+    target: 1
+    dep: "nsubj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 2
+    target: 4
+    dep: "obj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 2
+    target: 7
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 4
+    target: 3
+    dep: "det"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 4
+    target: 6
+    dep: "nmod:of"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 6
+    target: 5
+    dep: "case"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  root: 2
+}
+collapsedCCProcessedDependencies {
+  node {
+    sentenceIndex: 1
+    index: 2
+  }
+  node {
+    sentenceIndex: 1
+    index: 1
+  }
+  node {
+    sentenceIndex: 1
+    index: 4
+  }
+  node {
+    sentenceIndex: 1
+    index: 3
+  }
+  node {
+    sentenceIndex: 1
+    index: 6
+  }
+  node {
+    sentenceIndex: 1
+    index: 5
+  }
+  node {
+    sentenceIndex: 1
+    index: 7
+  }
+  edge {
+    source: 2
+    target: 1
+    dep: "nsubj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 2
+    target: 4
+    dep: "obj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 2
+    target: 7
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 4
+    target: 3
+    dep: "det"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 4
+    target: 6
+    dep: "nmod:of"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 6
+    target: 5
+    dep: "case"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  root: 2
+}
+enhancedDependencies {
+  node {
+    sentenceIndex: 1
+    index: 2
+  }
+  node {
+    sentenceIndex: 1
+    index: 1
+  }
+  node {
+    sentenceIndex: 1
+    index: 4
+  }
+  node {
+    sentenceIndex: 1
+    index: 3
+  }
+  node {
+    sentenceIndex: 1
+    index: 6
+  }
+  node {
+    sentenceIndex: 1
+    index: 5
+  }
+  node {
+    sentenceIndex: 1
+    index: 7
+  }
+  edge {
+    source: 2
+    target: 1
+    dep: "nsubj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 2
+    target: 4
+    dep: "obj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 2
+    target: 7
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 4
+    target: 3
+    dep: "det"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 4
+    target: 6
+    dep: "nmod:of"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 6
+    target: 5
+    dep: "case"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  root: 2
+}
+enhancedPlusPlusDependencies {
+  node {
+    sentenceIndex: 1
+    index: 2
+  }
+  node {
+    sentenceIndex: 1
+    index: 1
+  }
+  node {
+    sentenceIndex: 1
+    index: 4
+  }
+  node {
+    sentenceIndex: 1
+    index: 3
+  }
+  node {
+    sentenceIndex: 1
+    index: 6
+  }
+  node {
+    sentenceIndex: 1
+    index: 5
+  }
+  node {
+    sentenceIndex: 1
+    index: 7
+  }
+  edge {
+    source: 2
+    target: 1
+    dep: "nsubj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 2
+    target: 4
+    dep: "obj"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 2
+    target: 7
+    dep: "punct"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 4
+    target: 3
+    dep: "det"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 4
+    target: 6
+    dep: "nmod:of"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  edge {
+    source: 6
+    target: 5
+    dep: "case"
+    isExtra: false
+    sourceCopy: 0
+    targetCopy: 0
+    language: UniversalEnglish
+  }
+  root: 2
+}
+hasRelationAnnotations: false
+hasNumerizedTokensAnnotation: false
+mentions {
+  sentenceIndex: 1
+  tokenStartInSentenceInclusive: 10
+  tokenEndInSentenceExclusive: 11
+  ner: "PERSON"
+  entityType: "PERSON"
+  gender: "MALE"
+  entityMentionIndex: 3
+  canonicalEntityMentionIndex: 3
+  entityMentionText: "He"
+}
+hasEntityMentionsAnnotation: true
+
