@@ -219,17 +219,17 @@ class ArgumentTrees():
         return False
 
 
-if __name__ == "__main__": 
-    essayDir = "/Users/amycweng/Downloads/CS333_Project/ArgumentAnnotatedEssays-2.0/brat-project-final"
-    NUM_ESSAYS = 402 #402 
-    for num in range(NUM_ESSAYS):
-        if num+1 < 10: filename = f'essay00{num+1}'
-        elif num+ 1 < 100: filename = f'essay0{num+1}'
-        else: filename = f'essay{num+1}'
+# if __name__ == "__main__": 
+#     essayDir = "/Users/amycweng/Downloads/CS333_Project/ArgumentAnnotatedEssays-2.0/brat-project-final"
+#     NUM_ESSAYS = 402 #402 
+#     for num in range(NUM_ESSAYS):
+#         if num+1 < 10: filename = f'essay00{num+1}'
+#         elif num+ 1 < 100: filename = f'essay0{num+1}'
+#         else: filename = f'essay{num+1}'
 
-        essay_ann_file = f"{essayDir}/{filename}.ann"
-        essay_txt_file = f"{essayDir}/{filename}.txt"
-        argument = ArgumentTrees(essay_ann_file)
-        argument.solve(essay_txt_file)
-        print(f"{filename}")
-        argument.evaluate()
+#         essay_ann_file = f"{essayDir}/{filename}.ann"
+#         essay_txt_file = f"{essayDir}/{filename}.txt"
+#         argument = ArgumentTrees(essay_ann_file)
+#         argument.solve(essay_txt_file)
+#         print(f"{filename}")
+#         argument.evaluate()
