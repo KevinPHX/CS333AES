@@ -9,6 +9,7 @@ INDICATOR_TYPES = ["forward","backwards","thesis","rebuttal"]
 class ArgumentRelationIdentification(): 
     def __init__(self, components, argument, relation_probabilities): 
         self.components = components
+        self.relations = argument.outgoing_relations 
         self.position_to_name = {v:k for k,v in argument.idx.items()}
         self.idx_to_name = []
         # number of lemmas that occur in argument components 
@@ -20,6 +21,7 @@ class ArgumentRelationIdentification():
         for c in self.components:
             # map components to their names in the ann files 
             name = self.position_to_name[c["start"]]
+            self.idx_to_name.append(name)
             self.all_lemmas += len(c["component_lemmas"]) 
             if len(argument.incoming_relations[name]) > 0: 
                 self.lemmas_incoming.extend(c["component_lemmas"])
@@ -84,6 +86,8 @@ class ArgumentRelationIdentification():
                     continue 
                 
                 self.pairwise[(i,j)] = {
+                    # there is actually a directed edge from source to target 
+                    "is_a_relation": 0, # default is false 
                     # number of tokens in both source and target 
                     "num_tokens": len(source["component"]) + len(target["component"]),
                     # if source and target are present in the same sentence
@@ -103,6 +107,10 @@ class ArgumentRelationIdentification():
                     # source or target is first or last in paragraph 
                     "first_or_last": 0 # default is none 
                 }
+                
+                if self.idx_to_name[j] in self.relations[self.idx_to_name[i]]: 
+                    self.pairwise[(i,j)]["is_a_relation"] = 1 
+
                 self.pairwise[(i,j)].update(self.get_indicator_info(source,target))
                 
                 # get binary POS distribution with the POS distribution of the target  
@@ -145,9 +153,11 @@ class ArgumentRelationIdentification():
 
         # print for testing purposes 
         for pair,info in self.pairwise.items(): 
-            if pair[0] > 1: break
-            print(pair, ": ", info, "\n")
-    
+            # if pair[0] > 1: break
+            if info["is_a_relation"]: 
+                print(f"{self.idx_to_name[pair[0]]} to {self.idx_to_name[pair[1]]}: {info}\n")
+                break
+
     def get_indicator_info(self,source,target):
         info = {}
         for type in INDICATOR_TYPES: 
