@@ -325,7 +325,9 @@ class ArgumentIdentification():
                     sib_head = self.get_right_sib_head(sent.parseTree, sent.basicDependencies, right_sib, lex_heads_dict)
                     if sib_head:
                         t['right_sibling_head'] = sentence_data[sib_head-1]['token']
+                    head = t['head']
                     t['head'] = '-'.join([sentence_data[t['head']-1]['token'], str(t['head'])])
+                    t['head_lemma'] = sentence_data[head-1]['lemma']
                     if index == 0 and len(sentence_data)>1:
                         t["precedesLCAPath"] = -1
                         lca_output = self.LCA(sent.parseTree, sentence_data[index]['token'], None, sentence_data[index+1]['token'], depth)
