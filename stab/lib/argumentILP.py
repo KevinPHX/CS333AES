@@ -1,6 +1,7 @@
 import gurobipy as gp
 from gurobipy import GRB
 from collections import defaultdict
+import json
 
 class ArgumentTrees(): 
     def __init__(self, ann_file): 
@@ -9,6 +10,7 @@ class ArgumentTrees():
         self.type = {}
         self.idx = {}
         self.claim_types = ["Claim","MajorClaim"]
+        # get ground truth relations and component information from the .ann files 
         with open(ann_file,"r") as f: 
             for line in f.readlines(): 
                 info = line.strip('\n').split("\t")
@@ -219,17 +221,29 @@ class ArgumentTrees():
         return False
 
 
-# if __name__ == "__main__": 
-#     essayDir = "/Users/amycweng/Downloads/CS333_Project/ArgumentAnnotatedEssays-2.0/brat-project-final"
-#     NUM_ESSAYS = 402 #402 
-#     for num in range(NUM_ESSAYS):
-#         if num+1 < 10: filename = f'essay00{num+1}'
-#         elif num+ 1 < 100: filename = f'essay0{num+1}'
-#         else: filename = f'essay{num+1}'
+if __name__ == "__main__": 
+    essay_files = []
+    with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
+        for line in file.readlines(): 
+            essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
 
-#         essay_ann_file = f"{essayDir}/{filename}.ann"
-#         essay_txt_file = f"{essayDir}/{filename}.txt"
-#         argument = ArgumentTrees(essay_ann_file)
-#         argument.solve(essay_txt_file)
-#         print(f"{filename}")
-#         argument.evaluate()
+    arguments = {}
+    for essay_file in essay_files:
+        essay_name = essay_file.split("-final/")[1]
+        essay_ann_file = essay_name.replace(".txt",".ann")
+        # read in relation information 
+        with open(f'CS333AES/stab/outputs/relation/{essay_name}.json') as file: 
+            relation_info = json.load(file)
+            relations = []
+            for pair in relation_info: 
+                relations.append(pair)
+
+        with open(f'CS333AES/stab/outputs/components/{essay_name}.json') as file: 
+            component_info = json.load(file)
+        
+        relations = 0
+        # initialize class for data formatting & ILP evaluation 
+        argument = ArgumentTrees(essay_ann_file)
+        argument.solve(components)
+        print(f"{essay_name}")
+        argument.evaluate()
