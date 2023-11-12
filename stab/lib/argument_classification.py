@@ -1,28 +1,21 @@
-import stanza
 import pandas as pd
-import re
-import shutil
-
-import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from itertools import groupby
 from operator import itemgetter
 import sys
+import re
 from gensim import models
 from indicators import FORWARD_INDICATORS, FIRST_PERSON_INDICATORS, THESIS_INDICATORS, BACKWARDS_INDICATORS, REBUTTAL_INDICATORS
 from pos import pos
 import json
 w = models.KeyedVectors.load_word2vec_format(
     '../models/GoogleNews-vectors-negative300.bin', binary=True)
-import multiprocessing
 corenlp_dir = '../corenlp'
 import os
 os.environ["CORENLP_HOME"] = corenlp_dir
 pdtb_output_dir = '../../data/ArgumentAnnotatedEssays-2.0 2/data/brat-project-final/output'
 from stanza.server import CoreNLPClient
 import subprocess
-# from nltk.stem import WordNetLemmatizer
-# lemmatizer = WordNetLemmatizer()
 
 
 class ArgumentClassification():
@@ -64,9 +57,11 @@ class ArgumentClassification():
 
         if train:
             dependency_tuples_freq = {}
-            for each in self.data:
-                head = list(filter(lambda d: d['essay'] == each['essay'] and d['token'] == each['head'].split('-')[0], self.data))[0]
-                dep_tuple = head["lemma"]+"-"+each['lemma']
+            for each in self.data:  
+                # head = list(filter(lambda d: d['essay'] == each['essay'] and d['token'] == each['head'].split('-')[0], self.data))
+                # print(head)
+                # if len(head)>0:
+                dep_tuple = each["head_lemma"]+"-"+each['lemma']
                 if dep_tuple in dependency_tuples_freq.keys():
                     dependency_tuples_freq[dep_tuple] += 1
                 else:
@@ -106,10 +101,15 @@ class ArgumentClassification():
                             following_tokens.append(each['token'])
                         else:
                             following_tokens.append(each['token'])
+                            # print(each['essay'])
+                            # print(paragraph)
+                            # print(sentence)
+                            
                             component_stats = self.paragraph_stats(each['essay'], paragraph, sentence)
                             preceding_tokens = [x for x in " ".join(preceding_tokens).split('.')[-1].split(' ') if x != '']
                             preceding_lemmas = preceding_lemmas[-len(preceding_tokens):]
                             text_info = self.read_file(each['essay'], paragraph, sentence, start_index, end_index)
+                            # print('sentence_size',str(component_stats['sentence_size']))
                             fields = {
                                 "essay":each['essay'],
                                 "index":count,
@@ -165,6 +165,7 @@ class ArgumentClassification():
                             start_index = None
                             end_index = None
                             pos_dist = pos.copy()
+            encountered_b = False
             count = 1           
         labels = {}
         
@@ -252,6 +253,7 @@ class ArgumentClassification():
         for group in grouped:
             if group[0][0] == essay and group[0][1] == paragraph:
                 for e in group[1]:
+                    # print(e)
                     # paragraph_text.append(e['token'])
                     if e['sentence'] == sentence:
                         sentence_size+=1
@@ -261,6 +263,7 @@ class ArgumentClassification():
                     if e['sentence'] < min_index:
                         min_index = e['sentence']
                     paragraph_size += 1
+        # print(sentence_size)
         # return {"max_sentence":max_index, "min_sentence":min_index, "paragraph_size":paragraph_size, "sentence_size":sentence_size, "covering_sentence":covering_sentence, 'paragraph_text':paragraph_text}
         return {"max_sentence":max_index, "min_sentence":min_index, "paragraph_size":paragraph_size, "sentence_size":sentence_size}
 
@@ -338,7 +341,9 @@ class ArgumentClassification():
                     continue
                 paragraphs.append(line)
         paragraph_text = paragraphs[int(paragraph)]
-        sentence_text = paragraph_text.split('.')[int(sentence)-1]
+        print(paragraph_text.split('.'))
+        print(int(sentence))
+        sentence_text = re.split('[.?!]', paragraph_text)[int(sentence)]
         intro = paragraphs[0]
         conclusion = paragraphs[-1]
         component_text = full_file[int(start):int(end)]
@@ -593,8 +598,8 @@ class ArgumentClassification():
     def pdtb_parse(self, essay):
         cwd = os.getcwd() #current directory
         os.chdir('../models/pdtb-parser')
-        # subprocess.run(['mkdir', pdtb_output_dir])
-        # subprocess.run(['sudo','java', '-jar', 'parser.jar', f'../{essay}'])
+        subprocess.run(['mkdir', pdtb_output_dir])
+        subprocess.run(['sudo','java', '-jar', 'parser.jar', f'../{essay}'])
         essay_name = essay.split('/')[-1]
         # dir_list = os.listdir(pdtb_output_dir)
         pipe = f'{pdtb_output_dir}/{essay_name}.pipe'
@@ -605,10 +610,6 @@ class ArgumentClassification():
         os.chdir(cwd)
         return list_parsings
     def component_pdtb(self, parsings, start, end):
-        # print('start: ',start)
-        # print('end: ', end)
-        # ret = {"Comparison":0, "EntRel":0, "Expansion":0, "NoRel":0, 'Temporal':0, 'Contingency':0, "Arg1":0, "Arg2":0, "Implicit":0, "Explicit":0}
-        # key = {"Comparison":1, "EntRel":2, "Expansion":3, "NoRel":4, 'Temporal':5, 'Contingency':6}
         ret = {
             "Comparison_Arg1_Explicit":0,
             "Expansion_Arg1_Explicit":0,
@@ -634,9 +635,12 @@ class ArgumentClassification():
                 arg2 = parse[32].split('..')
                 # print("Arg1: ", str(arg1))
                 # print("Arg2: ", str(arg2))
-                if start >= int(arg1[0])  and end <= int(arg2[-1]):
-                    # ret["arg"] = 1
-                    discourse.append(parse)
+                if '' in arg1  or '' in arg2:
+                    continue
+                else:
+                    if start >= int(arg1[0])  and end <= int(arg2[-1]):
+                        # ret["arg"] = 1
+                        discourse.append(parse)
                     # break
                 # elif int(arg2[0]) >= start and int(arg2[-1]) <= end:
                 #     ret["arg"] = 2
