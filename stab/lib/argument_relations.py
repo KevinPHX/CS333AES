@@ -29,8 +29,8 @@ class ArgumentRelationIdentification():
         self.p_outgoing = relation_probabilities["outgoing"]
         self.p_incoming = relation_probabilities["incoming"]
         self.get_pointwise_mutual_info()
-        # self.get_production_rules()
-        # self.pairwise_features()
+        self.get_production_rules()
+        self.pairwise_features()
     
     def get_pointwise_mutual_info(self): 
         # get PMI(t,d) for each token t and direction d 
@@ -50,8 +50,8 @@ class ArgumentRelationIdentification():
                 else: 
                     c[f"pmi_outgoing"].append(0)
             
-        for c in self.components: 
-            print(c["pmi_incoming"],c["pmi_outgoing"])
+        # for c in self.components: 
+        #     print(c["pmi_incoming"],c["pmi_outgoing"])
 
 
     def get_production_rules(self): 
@@ -136,7 +136,9 @@ class ArgumentRelationIdentification():
                 
                 # get binary discourse triples of source and target 
                 self.pairwise[(i,j)].update(self.get_discourse_triples(source,target))
-        
+
+                # get pmi features 
+                self.pairwise[(i,j)].update(self.get_pmi_features(source,target))
         # get binary representation of the types of indicators that occur in and around 
         # components between source and target 
         self.get_indicators_between()
@@ -200,9 +202,26 @@ class ArgumentRelationIdentification():
                     info[key] = source[key] + target[key]
         return info
     
-    def pointwise_mutual_info(self,source,target): 
-        # pmi between a lemmatized token t and the direction of a relation 
-        return 
+    def get_pmi_features(self,source,target): 
+        info = {
+            "presence_positive_associations":0, # default is false 
+            "presence_negative_associations":0, # default is false 
+        } 
+        positive, negative = 0,0 
+        total = len(source["component_lemmas"]) + len(target["component_lemmas"])
+        for direction in ["incoming","outgoing"]: 
+            for lemma_pmi in source[f"pmi_{direction}"]: 
+                if lemma_pmi > 0: 
+                    positive += 1 
+                elif lemma_pmi < 0: 
+                    negative += 1 
+        info["ratio_positive_associations"] = positive / total
+        info["ratio_negative_associations"] = negative / total 
+        if positive > 0: 
+            info["presence_positive_associations"] = 1 
+        if negative > 0: 
+            info["presence_negative_associations"] = 1 
+        return info
 
 def relations(num_essays, essayDir): 
     # get the probability that a component is related to another component 
