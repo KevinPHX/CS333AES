@@ -3,7 +3,9 @@ from statsmodels.discrete.discrete_model import Poisson
 import sys, os
 path = os.path.abspath("../")
 sys.path.append(path)
-from lib.argument_identification import ArgumentIdentification, ArgumentClassification, StanceRecognition
+from lib.argument_identification import ArgumentIdentification
+from lib.argument_classification import ArgumentClassification
+from lib.stance_recognition import StanceRecognition
 corenlp_dir = '../corenlp'
 import pickle
 import json
@@ -23,8 +25,8 @@ if __name__ == '__main__':
         endpoint='http://localhost:9005',
         be_quiet=True)
     client.start()
-    train_text = open("../assets/train_text.txt", "r").read().split('\n')[:1]
-    train_ann = open("../assets/train_ann.txt", "r").read().split('\n')[:1]
+    train_text = open("../assets/train_text.txt", "r").read().split('\n')
+    train_ann = open("../assets/train_ann.txt", "r").read().split('\n')
     print("Argument Identification")
     identifier = ArgumentIdentification(client, train_text, train_ann)
     identifier.run_annotated()
