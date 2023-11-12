@@ -27,24 +27,29 @@ if __name__ == '__main__':
     client.start()
     train_text = open("../assets/train_text.txt", "r").read().split('\n')
     train_ann = open("../assets/train_ann.txt", "r").read().split('\n')
-    # print("Argument Identification")
-    # identifier = ArgumentIdentification(client, train_text, train_ann)
-    # identifier.run_annotated()
-    # data = pd.DataFrame(identifier.train_data)
-    # data.to_csv("../outputs/train.csv")
-    # # save models
-    # with open('../models/identification_probability.pkl', 'wb') as f:
-    #     pickle.dump(identifier.models, f)
+    print("Argument Identification")
+    identifier = ArgumentIdentification(client, train_text, train_ann)
+    identifier.run_annotated()
+    data = pd.DataFrame(identifier.train_data)
+    data.to_csv("../outputs/train.csv")
+    # save models
+    with open('../models/identification_probability.pkl', 'wb') as f:
+        pickle.dump(identifier.models, f)
     data = pd.read_csv("../outputs/train.csv")
     print("Argument Classification")
-    argclass = ArgumentClassification(data.to_dict('records'), client, data.token.values.tolist())
+    argclass = ArgumentClassification(data.iloc[:400].to_dict('records'), client, data.token.values.tolist())
     argclass.process_data(True)
-    with open("../outputs/components.json", "w") as f:
+    with open("../outputs/components1.json", "w") as f:
         json.dump(argclass.components, f)
-    with open("../models/probability.json", "w") as f:
+    with open("../models/probability1.json", "w") as f:
         json.dump(argclass.probability, f)
-    with open("../models/dependency.json", "w") as f:
+    with open("../models/dependency1.json", "w") as f:
         json.dump(argclass.dependency_tuples, f)
+    with open('../models/classification_vectorizer.pkl', 'wb') as f:
+        pickle.dump(argclass.vectorizer, f)
+    
+    
+
     
 
 
