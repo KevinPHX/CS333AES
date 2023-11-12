@@ -49,6 +49,7 @@ class ArgumentClassification():
         component_pos = []
         component_sent = []
         preceding_tokens = []
+        preceding_lemmas = []
         following_tokens = []
         encountered_b = False
         paragraph = None
@@ -99,6 +100,7 @@ class ArgumentClassification():
                 else:
                     if not encountered_b:
                         preceding_tokens.append(each['token'])
+                        preceding_lemmas.append(each['lemma'])
                     else:
                         if not each['token'] == '.':
                             following_tokens.append(each['token'])
@@ -106,6 +108,7 @@ class ArgumentClassification():
                             following_tokens.append(each['token'])
                             component_stats = self.paragraph_stats(each['essay'], paragraph, sentence)
                             preceding_tokens = [x for x in " ".join(preceding_tokens).split('.')[-1].split(' ') if x != '']
+                            preceding_lemmas = preceding_lemmas[-len(preceding_tokens):]
                             text_info = self.read_file(each['essay'], paragraph, sentence, start_index, end_index)
                             fields = {
                                 "essay":each['essay'],
@@ -118,6 +121,7 @@ class ArgumentClassification():
                                 "start":start_index,
                                 "end":end_index,
                                 "preceding_tokens":preceding_tokens,
+                                "preceding_lemmas":preceding_lemmas, 
                                 "num_preceding":len(preceding_tokens),
                                 "following_tokens":following_tokens,
                                 "num_following":len(following_tokens),
@@ -153,6 +157,7 @@ class ArgumentClassification():
                             component_lemma = []
                             component_pos = []
                             preceding_tokens = []
+                            preceding_lemmas = []
                             following_tokens = []
                             encountered_b = False
                             paragraph = None
@@ -175,7 +180,7 @@ class ArgumentClassification():
                     if component['start'] == label['start']:
                         component['claim'] = label['claim']
                 
-                self.probability.append({'claim':component['claim'], 'preceding_tokens':component['preceding_tokens']})
+                self.probability.append({'claim':component['claim'], 'preceding_tokens':component['preceding_lemmas']})
             self.vectorizer.fit(vectorization_data)
     
             
@@ -187,7 +192,7 @@ class ArgumentClassification():
         for component in self.components:
             vectorized_dep = self.vectorize(" ".join(component["preceding_tokens"]) + ' ' + " ".join(component["component"]))
             # print(vectorized_dep)
-            p=self.probability_calc(self.probability, component['preceding_tokens'])
+            p=self.probability_calc(self.probability, component['preceding_lemmas'])
             stats = self.component_stats(component['essay'], component['paragraph'], component['component'])
             temp.append({**vectorized_dep, **p, **stats, **component})
         self.components = temp
@@ -671,7 +676,7 @@ if __name__=='__main__':
         endpoint='http://localhost:9005',
         be_quiet=True)
     client.start()
-    data = pd.read_csv('test.csv')
+    data = pd.read_csv('../outputs/train_old.csv')
     argclass = ArgumentClassification(data.iloc[:408].to_dict('records'), client, data.token.values.tolist())
     argclass.process_data(True)
     # print(argclass.components[0])
