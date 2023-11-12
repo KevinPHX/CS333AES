@@ -85,7 +85,7 @@ class ArgumentRelationIdentification():
                 if source["paragraph"] != target["paragraph"]: 
                     continue 
                 
-                self.pairwise[f"{i},{j}"] = {
+                self.pairwise[f"{i+1},{j+1}"] = {
                     # there is actually a directed edge from source to target 
                     "is_a_relation": 0, # default is false 
                     # number of tokens in both source and target 
@@ -109,25 +109,25 @@ class ArgumentRelationIdentification():
                 }
                 
                 if self.idx_to_name[j] in self.relations[self.idx_to_name[i]]: 
-                    self.pairwise[f"{i},{j}"]["is_a_relation"] = 1 
+                    self.pairwise[f"{i+1},{j+1}"]["is_a_relation"] = 1 
 
-                self.pairwise[f"{i},{j}"].update(self.get_indicator_info(source,target))
+                self.pairwise[f"{i+1},{j+1}"].update(self.get_indicator_info(source,target))
                 
                 # get binary POS distribution with the POS distribution of the target  
                 for pos_type in pos.keys():
-                    self.pairwise[f"{i},{j}"][pos_type] = source[pos_type] + target[pos_type]
+                    self.pairwise[f"{i+1},{j+1}"][pos_type] = source[pos_type] + target[pos_type]
 
                 # source and target are present in the same sentence
                 if source["sentence"] == target["sentence"]: 
-                    self.pairwise[f"{i},{j}"]["same_sentence"] = 1 # true 
+                    self.pairwise[f"{i+1},{j+1}"]["same_sentence"] = 1 # true 
                 
                 # target is present before source 
                 if source["start"] > target["start"]: 
-                    self.pairwise[f"{i},{j}"]["target_before_source"] = 1 # true  
+                    self.pairwise[f"{i+1},{j+1}"]["target_before_source"] = 1 # true  
                 
                 # if target and source are first or last component in paragraph 
                 if source["first/last"] or target["first/last"]: 
-                    self.pairwise[f"{i},{j}"]["first_or_last"] = 1 
+                    self.pairwise[f"{i+1},{j+1}"]["first_or_last"] = 1 
                 
                 # find shared nouns (both binary and number)
                 shared_nouns = []
@@ -136,17 +136,17 @@ class ArgumentRelationIdentification():
                         if lemma in target["component_lemmas"]:
                             shared_nouns.append(lemma)
                 if len(shared_nouns) > 0: 
-                    self.pairwise[f"{i},{j}"]["share_noun"] = 1
-                    self.pairwise[f"{i},{j}"]["num_shared_nouns"] = len(shared_nouns)
+                    self.pairwise[f"{i+1},{j+1}"]["share_noun"] = 1
+                    self.pairwise[f"{i+1},{j+1}"]["num_shared_nouns"] = len(shared_nouns)
 
                 # count how many times a production rule is shared by source and target 
-                self.pairwise[f"{i},{j}"].update(self.shared_production_rules(source,target))
+                self.pairwise[f"{i+1},{j+1}"].update(self.shared_production_rules(source,target))
                 
                 # get binary discourse triples of source and target 
-                self.pairwise[f"{i},{j}"].update(self.get_discourse_triples(source,target))
+                self.pairwise[f"{i+1},{j+1}"].update(self.get_discourse_triples(source,target))
 
                 # get pmi features 
-                self.pairwise[f"{i},{j}"].update(self.get_pmi_features(source,target))
+                self.pairwise[f"{i+1},{j+1}"].update(self.get_pmi_features(source,target))
         # get binary representation of the types of indicators that occur in and around 
         # components between source and target 
         self.get_indicators_between()
@@ -180,7 +180,7 @@ class ArgumentRelationIdentification():
 
     def get_indicators_between(self):
         for pair in self.pairwise.keys(): 
-            s,t = int(pair.split(",")[0]), int(pair.split(",")[1])
+            s,t = int(pair.split(",")[0])-1, int(pair.split(",")[1])-1
             p_idx = self.components[s]["paragraph"]
             for type in INDICATOR_TYPES: 
                 key = f"{type}_indicators"
@@ -277,8 +277,3 @@ if __name__=='__main__':
         argrelation = ArgumentRelationIdentification(components,argument,relation_probabilities)
         with open(f"CS333AES/stab/outputs/relations/{essay_name}.json", "w") as file:
             json.dump(argrelation.pairwise, file)
-
-        
-
-
-
