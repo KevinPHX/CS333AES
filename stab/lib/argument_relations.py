@@ -1,14 +1,59 @@
 from pos import pos
-from discourse import discourse_relations
 import json
 from collections import defaultdict, Counter
+from argumentILP import ArgumentTrees 
+from math import log
+DISCOURSE_RELATIONS = ["Comparison","Contingency","Expansion","Temporal"]
+INDICATOR_TYPES = ["forward","backwards","thesis","rebuttal"]
 
 class ArgumentRelationIdentification(): 
-    def __init__(self, components): 
+    def __init__(self, components, argument, relation_probabilities): 
         self.components = components
+        self.position_to_name = {v:k for k,v in argument.idx.items()}
+        self.idx_to_name = []
+        # number of lemmas that occur in argument components 
+        self.all_lemmas = 0 
+        # all lemmas that occur in components with an incoming relation 
+        self.lemmas_incoming = []
+        # all lemmas that occur in components with an outgoing relation 
+        self.lemmas_outgoing = []
+        for c in self.components:
+            # map components to their names in the ann files 
+            name = self.position_to_name[c["start"]]
+            self.all_lemmas += len(c["component_lemmas"]) 
+            if len(argument.incoming_relations[name]) > 0: 
+                self.lemmas_incoming.extend(c["component_lemmas"])
+            if len(argument.outgoing_relations[name]) > 0: 
+                self.lemmas_outgoing.extend(c["component_lemmas"])
+
+        self.p_outgoing = relation_probabilities["outgoing"]
+        self.p_incoming = relation_probabilities["incoming"]
+        self.get_pointwise_mutual_info()
         self.get_production_rules()
         self.pairwise_features()
     
+    def get_pointwise_mutual_info(self): 
+        # get PMI(t,d) for each token t and direction d 
+        for c in self.components: 
+            c["pmi_incoming"] = []
+            c["pmi_outgoing"] = []
+            for idx,prob in enumerate(c["p_token"]):
+                lemma = c["component_lemmas"][idx]
+                p_t_in = self.lemmas_incoming.count(lemma) / self.all_lemmas
+                p_t_out = self.lemmas_outgoing.count(lemma) / self.all_lemmas
+                if p_t_in != 0: 
+                    c[f"pmi_incoming"].append( log( p_t_in / (prob * self.p_incoming)) )
+                else: 
+                    c[f"pmi_incoming"].append(0)
+                if p_t_out != 0: 
+                    c[f"pmi_outgoing"].append( log( p_t_out / (prob * self.p_outgoing)) )
+                else: 
+                    c[f"pmi_outgoing"].append(0)
+            
+        # for c in self.components: 
+        #     print(c["pmi_incoming"],c["pmi_outgoing"])
+
+
     def get_production_rules(self): 
         production_rules = []
         for c in self.components: 
@@ -91,7 +136,9 @@ class ArgumentRelationIdentification():
                 
                 # get binary discourse triples of source and target 
                 self.pairwise[(i,j)].update(self.get_discourse_triples(source,target))
-        
+
+                # get pmi features 
+                self.pairwise[(i,j)].update(self.get_pmi_features(source,target))
         # get binary representation of the types of indicators that occur in and around 
         # components between source and target 
         self.get_indicators_between()
@@ -102,9 +149,8 @@ class ArgumentRelationIdentification():
             print(pair, ": ", info, "\n")
     
     def get_indicator_info(self,source,target):
-        indicator_types = ["forward","backwards","thesis","rebuttal"]
         info = {}
-        for type in indicator_types: 
+        for type in INDICATOR_TYPES: 
             component_key = f"component_{type}_indicators"
             if source[component_key] == 1 or target[component_key] == 1: 
                 # this indicator type is present in source or target 
@@ -123,11 +169,10 @@ class ArgumentRelationIdentification():
         return info
 
     def get_indicators_between(self):
-        indicator_types =  ["forward","backwards","thesis","rebuttal"]
         for pair in self.pairwise.keys(): 
             s,t = pair[0],pair[1]
             p_idx = self.components[s]["paragraph"]
-            for type in indicator_types: 
+            for type in INDICATOR_TYPES: 
                 key = f"{type}_indicators"
                 self.pairwise[pair][f"between_{key}"] = 0
             
@@ -135,7 +180,7 @@ class ArgumentRelationIdentification():
                 # find a component that is between source and target 
                 # check if any of the four types of indicators occur in this component or its context 
                 if min(s,t) < c < max(s,t):
-                    for type in indicator_types: 
+                    for type in INDICATOR_TYPES: 
                         for location in ["component","preceding","following"]: 
                             key = f"{type}_indicators"
                             if self.components[c][f"{location}_{key}"] == 1:     
@@ -150,21 +195,77 @@ class ArgumentRelationIdentification():
     
     def get_discourse_triples(self,source,target): 
         info = {}
-        for relation in discourse_relations.keys(): 
+        for relation in DISCOURSE_RELATIONS: 
             for arg in ["Arg1","Arg2"]:
-                if "Rel" in relation: 
-                    key = f"{relation}_{arg}"
+                for type in ["Explicit","Implicit"]: 
+                    key = f"{relation}_{arg}_{type}"
                     info[key] = source[key] + target[key]
-                else: 
-                    for type in ["Explicit","Implicit"]: 
-                        key = f"{relation}_{type}_{arg}"
-                        info[key] = source[key] + target[key]
+        return info
+    
+    def get_pmi_features(self,source,target): 
+        info = {
+            "presence_positive_associations":0, # default is false 
+            "presence_negative_associations":0, # default is false 
+        } 
+        positive, negative = 0,0 
+        total = len(source["component_lemmas"]) + len(target["component_lemmas"])
+        for direction in ["incoming","outgoing"]: 
+            for lemma_pmi in source[f"pmi_{direction}"]: 
+                if lemma_pmi > 0: 
+                    positive += 1 
+                elif lemma_pmi < 0: 
+                    negative += 1 
+        info["ratio_positive_associations"] = positive / total
+        info["ratio_negative_associations"] = negative / total 
+        if positive > 0: 
+            info["presence_positive_associations"] = 1 
+        if negative > 0: 
+            info["presence_negative_associations"] = 1 
         return info
 
+def relations(num_essays, essayDir): 
+    # get the probability that a component is related to another component 
+    # ratio of num of components with at least one incoming relation to all components 
+    #   to the total number of components in the entire dataset 
+    num_components_with_relation = {"outgoing": 0, "incoming":0}
+    total_components = 0 
+    arguments = []
+    for num in range(num_essays):
+        # get essay file name 
+        if num+1 < 10: filename = f'essay00{num+1}'
+        elif num+ 1 < 100: filename = f'essay0{num+1}'
+        else: filename = f'essay{num+1}'
+        essay_ann_file = f"{essayDir}/{filename}.ann"
+        # the init function of the class in the ILP code file is helpful here 
+        argument = ArgumentTrees(essay_ann_file)
+        # update total count of components 
+        total_components += len(argument.outgoing_relations)
+        # update count of components that have at least one outgoing edge 
+        for out_neighbors in argument.outgoing_relations.values(): 
+            if len(out_neighbors) > 0: 
+                num_components_with_relation["outgoing"] += 1 
+        # update count of components that have at least one incoming edge 
+        for in_neighbors in argument.incoming_relations.values(): 
+            if len(in_neighbors) > 0: 
+                num_components_with_relation["incoming"] += 1 
+        # append argument structure to list 
+        arguments.append(argument)
+    relation_probabilities = {"outgoing": num_components_with_relation["outgoing"] / total_components,
+                            "incoming": num_components_with_relation["incoming"] / total_components }
+    return arguments, relation_probabilities 
+
 if __name__=='__main__':
-    with open('components.json') as file: 
-        components = json.load(file)  
-    argrelation = ArgumentRelationIdentification(components)
+    essayDir = "ArgumentAnnotatedEssays-2.0/brat-project-final"
+    num_essays = 402 #402 
+    arguments, relation_probabilities = relations(num_essays,essayDir)
+    for num in range(num_essays): 
+        with open('CS333AES/stab/outputs/components.json') as file: 
+            components = json.load(file)
+        argument = arguments[num]
+        argrelation = ArgumentRelationIdentification(components,argument,relation_probabilities)
+        break
+
+        
 
 
 

@@ -1,13 +1,11 @@
 import gurobipy as gp
 from gurobipy import GRB
-from structural import Structural 
 from collections import defaultdict
-import csv 
 
 class ArgumentTrees(): 
-    def __init__(self, ann_file, txt_file): 
-        self.incoming_relations = defaultdict(list)
-        self.outgoing_relations = defaultdict(list)
+    def __init__(self, ann_file): 
+        self.incoming_relations = {}
+        self.outgoing_relations = {}
         self.type = {}
         self.idx = {}
         self.claim_types = ["Claim","MajorClaim"]
@@ -18,14 +16,14 @@ class ArgumentTrees():
                 if "T" in name: 
                     self.idx[name] = int(info[1].split(" ")[1])
                     self.type[name] = info[1].split(" ")[0]
+                    self.outgoing_relations[name] = []
+                    self.incoming_relations[name] = []
                 elif "R" in name:
                     info = info[1].split(' ')
                     arg1 = info[1].split(":")[1]
                     arg2 = info[2].split(":")[1]
                     self.outgoing_relations[arg1].append(arg2)
                     self.incoming_relations[arg2].append(arg1)
-
-        self.get_components_per_paragraph(txt_file)
 
     def get_components_per_paragraph(self,txt_file): 
         self.components_per_paragraph = defaultdict(list)
@@ -89,7 +87,8 @@ class ArgumentTrees():
                 w[i][j] = (1/2)*r[i][j] + (1/4)*cr[i][j] + (1/4)*c[i][j]
         return w 
 
-    def solve(self): 
+    def solve(self,txt_file): 
+        self.get_components_per_paragraph(txt_file)
         self.results = defaultdict(list) # paragraph idx to optimized relations
         for p,components in self.components_per_paragraph.items():
             if len(components) > 1:
@@ -220,16 +219,17 @@ class ArgumentTrees():
         return False
 
 
-essayDir = "/Users/amycweng/Downloads/CS333_Project/ArgumentAnnotatedEssays-2.0/brat-project-final"
-NUM_ESSAYS = 402 #402 
-for num in range(NUM_ESSAYS):
-    if num+1 < 10: filename = f'essay00{num+1}'
-    elif num+ 1 < 100: filename = f'essay0{num+1}'
-    else: filename = f'essay{num+1}'
+if __name__ == "__main__": 
+    essayDir = "/Users/amycweng/Downloads/CS333_Project/ArgumentAnnotatedEssays-2.0/brat-project-final"
+    NUM_ESSAYS = 402 #402 
+    for num in range(NUM_ESSAYS):
+        if num+1 < 10: filename = f'essay00{num+1}'
+        elif num+ 1 < 100: filename = f'essay0{num+1}'
+        else: filename = f'essay{num+1}'
 
-    essay_ann_file = f"{essayDir}/{filename}.ann"
-    essay_txt_file = f"{essayDir}/{filename}.txt"
-    argument = ArgumentTrees(essay_ann_file, essay_txt_file)
-    argument.solve()
-    print(f"{filename}")
-    argument.evaluate()
+        essay_ann_file = f"{essayDir}/{filename}.ann"
+        essay_txt_file = f"{essayDir}/{filename}.txt"
+        argument = ArgumentTrees(essay_ann_file)
+        argument.solve(essay_txt_file)
+        print(f"{filename}")
+        argument.evaluate()
