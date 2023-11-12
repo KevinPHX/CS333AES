@@ -2,5 +2,4 @@ stab/data/
 .idea
 *.log
 stab/__pycache__/
-stab/archive/
 */corenlp/*
