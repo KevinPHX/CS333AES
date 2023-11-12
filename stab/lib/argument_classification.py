@@ -114,6 +114,7 @@ class ArgumentClassification():
                                 "essay":each['essay'],
                                 "index":count,
                                 "component":component,
+                                "component_sent":component_sent,
                                 "component_text":text_info['component_text'],
                                 "component_lemmas":component_lemma,
                                 "p_token":p_token, # FOR PMI!!!
@@ -684,7 +685,7 @@ if __name__=='__main__':
     argclass = ArgumentClassification(data.iloc[:408].to_dict('records'), client, data.token.values.tolist())
     argclass.process_data(True)
     # print(argclass.components[0])
-    with open("../outputs/components.json", "w") as f:
+    with open("../outputs/components1.json", "w") as f:
         json.dump(argclass.components, f)
     # pd.DataFrame(argclass.components).to_json("components.json", "records")
 
