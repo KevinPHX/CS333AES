@@ -15,15 +15,25 @@ if __name__== '__main__':
     test = pd.read_csv('../outputs/identification.csv')
     sent_x = []
     sent_y = []
-    for p in set(test.paragraph.values):
-        for s in set(test[test.paragraph==p].sentence.values):
-            temp_test = test[(test.paragraph == p) & (test.sentence == s)]
-            sent_x.append(temp_test.loc[:, temp_test.columns != 'IOB'].to_dict("records"))
-            sent_y.append(temp_test.IOB.values)
+    for e in set(test.essay.values):
+        for p in set(test[test.essay==e].paragraph.values):
+            for s in set(test[(test.essay==e)&(test.paragraph==p)].sentence.values):
+                temp_test = test[(test.essay == e) & (test.paragraph == p) & (test.sentence == s)]
+                # if not (count_o > max_len and count_i > max_len) :
+                #     unique, counts = np.unique(temp_test.IOB.values, return_counts=True)
+                #     un = dict(zip(unique, counts))
+                #     print(un)
+                #     if 'O' in un.keys():
+                #         count_o += un['O']
+                #     if 'Arg-I' in un.keys():
+                #         count_i += un['Arg-I']
+
+                sent_x.append(temp_test.loc[:, ~temp_test.columns.isin(['Unnamed: 0','IOB', 'essay', 'head_lemma', 'token_sentiment', 'sentence_sentiment'])].to_dict("records"))
+                sent_y.append(temp_test.IOB.values)
     trainer = pycrfsuite.Trainer(verbose=False)
+    
     for xseq, yseq in zip(sent_x, sent_y):
         trainer.append(xseq, yseq)
-
     trainer.set_params({
         'c1': 1.0,   # coefficient for L1 penalty
         'c2': 1e-3,  # coefficient for L2 penalty
@@ -33,6 +43,7 @@ if __name__== '__main__':
         'feature.possible_transitions': True
     })
     trainer.train('../models/argument_identification.crfsuite')
+    print(trainer.logparser.last_iteration)
     print("Done!")
     print("Training SVM for Argument Classification")
     

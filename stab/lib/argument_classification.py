@@ -88,7 +88,7 @@ class ArgumentClassification():
                         pos_dist[each['pos']]+=1
                     end_index = each['start'] + len(each['token'])
                     component.append(each['token'])
-                    component_sent.append(each['sentiment'])
+                    component_sent.append(each['token_sentiment'])
                     component_lemma.append(each['lemma'])
                     component_pos.append(each['pos'])
                     p_token.append(self.token_list.count(each['token'])/len(self.token_list))
@@ -170,7 +170,7 @@ class ArgumentClassification():
             count = 1           
         labels = {}
         
-        if train: 
+        if train == "train": 
             self.probability = []
             vectorization_data = []
             for essay in essays:
@@ -184,12 +184,15 @@ class ArgumentClassification():
                 
                 self.probability.append({'claim':component['claim'], 'preceding_tokens':component['preceding_lemmas']})
             self.vectorizer.fit(vectorization_data)
+        elif train=='eval':
+            for essay in essays:
+                    labels[essay] = self.read_data(essay.replace('.txt', '.ann'))
+            for component in self.components:
+                list_labels = labels[component['essay']]
+                for label in list_labels:
+                    if component['start'] == label['start']:
+                        component['claim'] = label['claim']
     
-            
-        # with open('classification_probability.json', 'w') as f:
-        #     json.dump(probability, f)
-        # with open('classification_dependency.json', 'w') as f:
-        #     json.dump(list(self.dependency_tuples), f)
         temp = []
         for component in self.components:
             vectorized_dep = self.vectorize(" ".join(component["preceding_tokens"]) + ' ' + " ".join(component["component"]))

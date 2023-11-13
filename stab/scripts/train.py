@@ -28,14 +28,14 @@ if __name__ == '__main__':
     client.start()
     train_text = open("../assets/train_text.txt", "r").read().split('\n')
     train_ann = open("../assets/train_ann.txt", "r").read().split('\n')
-    # print("Argument Identification")
-    # identifier = ArgumentIdentification(client, train_text, train_ann)
-    # identifier.run_annotated()
-    # data = pd.DataFrame(identifier.train_data)
-    # data.to_csv("../outputs/identification.csv")
-    # # save models
-    # with open('../models/identification_probability.pkl', 'wb') as f:
-    #     pickle.dump(identifier.models, f)
+    print("Argument Identification")
+    identifier = ArgumentIdentification(client, train_text, train_ann)
+    identifier.run_annotated()
+    data = pd.DataFrame(identifier.train_data)
+    data.to_csv("../outputs/identification.csv")
+    # save models
+    with open('../models/identification_probability.json', 'w') as f:
+        json.dump(identifier.probability, f)
     
     # data = pd.read_csv("../outputs/identification.csv")
     # print("Argument Classification")
@@ -58,17 +58,17 @@ if __name__ == '__main__':
     #         e = d['essay'].split('/')[-1]
     #         essays[e].append(d)
     # for key in essays.keys():
-    #     with open(f"./classification/{key}.json", "w") as f:
+    #     with open(f"../outputs/classification/{key}.json", "w") as f:
     #         json.dump(essays[key], f)
     
     # print("Relation Identification")
 
-    # arguments, relation_probabilities = relations(train_text)
+    arguments, relation_probabilities = relations(train_text)
 
-    # with open("../models/arguments.json", "w") as f:
-    #     json.dump(arguments, f)
-    # with open("../models/relation_probabilities.json", "w") as f:
-    #     json.dump(relation_probabilities, f)
+    with open("../models/arguments.json", "w") as f:
+        json.dump(arguments, f)
+    with open("../models/relation_probabilities.json", "w") as f:
+        json.dump(relation_probabilities, f)
         
 
     # for essay_file in train_text: 
