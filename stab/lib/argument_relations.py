@@ -1,35 +1,29 @@
 from pos import pos
 import json
 from collections import defaultdict, Counter
-from argumentILP import ArgumentTrees 
 from math import log
 DISCOURSE_RELATIONS = ["Comparison","Contingency","Expansion","Temporal"]
 INDICATOR_TYPES = ["forward","backwards","thesis","rebuttal"]
 
 class ArgumentRelationIdentification(): 
-    def __init__(self, components, argument, relation_probabilities): 
+    def __init__(self, essay_name, components,relation_info_file, relation_prob_file,lemma_file): 
         self.components = components
-        self.relations = argument.outgoing_relations 
-        self.position_to_name = {v:k for k,v in argument.idx.items()}
         self.idx_to_name = []
-        # number of lemmas that occur in argument components 
-        self.all_lemmas = 0 
-        # all lemmas that occur in components with an incoming relation 
-        self.lemmas_incoming = []
-        # all lemmas that occur in components with an outgoing relation 
-        self.lemmas_outgoing = []
-        for c in self.components:
-            # map components to their names in the ann files 
-            name = self.position_to_name[c["start"]]
-            self.idx_to_name.append(name)
-            self.all_lemmas += len(c["component_lemmas"]) 
-            if len(argument.incoming_relations[name]) > 0: 
-                self.lemmas_incoming.extend(c["component_lemmas"])
-            if len(argument.outgoing_relations[name]) > 0: 
-                self.lemmas_outgoing.extend(c["component_lemmas"])
+        with open(relation_info_file) as file: 
+            info = json.load(file)
+            self.position_to_name = {v:k for k,v in info[essay_name]["idx_to_start"].items()}
+            self.relations = info[essay_name]["outgoing_relations"] 
 
-        self.p_outgoing = relation_probabilities["outgoing"]
-        self.p_incoming = relation_probabilities["incoming"]
+        with open(relation_prob_file) as file: 
+            info = json.load(file)
+            self.p_outgoing = info["outgoing"]
+            self.p_incoming = info["incoming"]
+        with open(lemma_file) as file: 
+            info = json.load(file)
+            self.num_all_lemmas = info["num_all_lemmas"]
+            self.lemmas_incoming = info["lemmas_incoming"]
+            self.lemmas_outgoing = info["lemmas_outgoing"]
+        
         self.get_pointwise_mutual_info()
         self.get_production_rules()
         self.pairwise_features()
@@ -37,17 +31,19 @@ class ArgumentRelationIdentification():
     def get_pointwise_mutual_info(self): 
         # get PMI(t,d) for each token t and direction d 
         for c in self.components: 
+            name = self.position_to_name[c["start"]]
+            self.idx_to_name.append(name)
             c["pmi_incoming"] = []
             c["pmi_outgoing"] = []
             for idx,prob in enumerate(c["p_token"]):
                 lemma = c["component_lemmas"][idx]
-                p_t_in = self.lemmas_incoming.count(lemma) / self.all_lemmas
-                p_t_out = self.lemmas_outgoing.count(lemma) / self.all_lemmas
-                if p_t_in != 0: 
+                if lemma in self.lemmas_incoming: 
+                    p_t_in = self.lemmas_incoming[lemma] / self.num_all_lemmas
                     c[f"pmi_incoming"].append( log( p_t_in / (prob * self.p_incoming)) )
                 else: 
                     c[f"pmi_incoming"].append(0)
-                if p_t_out != 0: 
+                if lemma in self.lemmas_outgoing: 
+                    p_t_out = self.lemmas_outgoing[lemma] / self.num_all_lemmas
                     c[f"pmi_outgoing"].append( log( p_t_out / (prob * self.p_outgoing)) )
                 else: 
                     c[f"pmi_outgoing"].append(0)
@@ -233,47 +229,25 @@ class ArgumentRelationIdentification():
             info["presence_negative_associations"] = 1 
         return info
 
-def relations(essay_files): 
-    # get the probability that a component is related to another component 
-    # ratio of num of components with at least one incoming relation to all components 
-    #   to the total number of components in the entire dataset 
-    num_components_with_relation = {"outgoing": 0, "incoming":0}
-    total_components = 0 
-    arguments = {}
-    for essay_file in essay_files:
-        essay_ann_file = essay_file.replace(".txt",".ann")
-        # the init function of the class in the ILP code file is helpful here 
-        argument = ArgumentTrees(essay_ann_file)
-        # update total count of components 
-        total_components += len(argument.outgoing_relations)
-        # update count of components that have at least one outgoing edge 
-        for out_neighbors in argument.outgoing_relations.values(): 
-            if len(out_neighbors) > 0: 
-                num_components_with_relation["outgoing"] += 1 
-        # update count of components that have at least one incoming edge 
-        for in_neighbors in argument.incoming_relations.values(): 
-            if len(in_neighbors) > 0: 
-                num_components_with_relation["incoming"] += 1 
-        # add argument structure to dictionary 
-        arguments[essay_file.split("-final/")[1]] = argument
-    relation_probabilities = {"outgoing": num_components_with_relation["outgoing"] / total_components,
-                            "incoming": num_components_with_relation["incoming"] / total_components }
-    return arguments, relation_probabilities 
-
 if __name__=='__main__':
-    essay_files = []
+
+    essay_names = []
     with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
         for line in file.readlines(): 
-            essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
-    arguments, relation_probabilities = relations(essay_files)
-    for essay_file in essay_files: 
-        essay_name = essay_file.split("-final/")[1]
+            essay_names.append(line.split("-final/")[1].strip("\n"))
+
+    for essay_name in essay_names: 
         # read component data for this essay 
         with open(f'CS333AES/stab/outputs/classification/{essay_name}.json') as file: 
             components = json.load(file)
-        # access the actual relations data for this essay 
-        argument = arguments[essay_name]
+        # relation information for each essay 
+        relation_info_file = "CS333AES/stab/models/argument_relation_info.json"
+        # relation probabilities 
+        relation_prob_file = "CS333AES/stab/models/relation_probabilities.json"
+        # lemma information for components of training data 
+        lemma_file = "CS333AES/stab/models/training_data_lemmas.json"
         # run argument relation features extraction 
-        argrelation = ArgumentRelationIdentification(components,argument,relation_probabilities)
-        with open(f"CS333AES/stab/outputs/relations/{essay_name}.json", "w") as file:
+        argrelation = ArgumentRelationIdentification(essay_name, components,relation_info_file,relation_prob_file,lemma_file)
+        with open(f"CS333AES/stab/outputs/relations/{essay_name}.TESTING.json", "w") as file:
             json.dump(argrelation.pairwise, file)
+        print(essay_name)
