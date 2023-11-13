@@ -1,6 +1,7 @@
 import gurobipy as gp
 from gurobipy import GRB
 from collections import defaultdict
+import json 
 
 class ArgumentTrees(): 
     def __init__(self, ann_file): 
@@ -26,8 +27,34 @@ class ArgumentTrees():
                     self.incoming_relations[arg2].append(arg1)
         self.start_to_name = {position: name for name,position in self.idx.items()}
 
-    def get_weights(self,idx_to_name,out_neighbors,in_neighbors): 
-        components = list(idx_to_name.keys())
+    def read_predicted_data(self,components_info,relation_info): 
+        relations = []
+        for pair, info in relation_info.items(): 
+            if info["is_a_relation"]: 
+                relations.append(pair)
+
+        self.predicted_info = {}
+        self.predicted_per_paragraph = {}
+        self.position_to_name = {}
+        for k, info in enumerate(components_info): 
+            self.predicted_info[k+1] = {
+                "type": info["claim"], 
+                "start": info["start"],
+                "paragraph": info["paragraph"],
+                "name": self.start_to_name[info["start"]]
+            } 
+            if info["paragraph"] not in self.predicted_per_paragraph: 
+                self.predicted_per_paragraph[info["paragraph"]] = []
+            self.predicted_per_paragraph[info["paragraph"]].append(k+1)
+
+        self.predicted_outgoing = {k: [] for k in self.predicted_info}
+        self.predicted_incoming = {k: [] for k in self.predicted_info}
+        for pair in relations: 
+            source, target = int(pair.split(",")[0]), int(pair.split(",")[1])
+            self.predicted_outgoing[source].append(target)
+            self.predicted_incoming[target].append(source)   
+
+    def get_weights(self,components,out_neighbors,in_neighbors): 
         n = len(components)
         rel = 0 # total number of relations predicted WITHIN the paragraph
         # r[i][j]=1 means that there is a predicted relation from source i to target j 
@@ -52,7 +79,7 @@ class ArgumentTrees():
         for i in components: 
             for j in components:
                 cr[i][j] = cs[j] - cs[i]
-                target_type = self.type[idx_to_name[j]]
+                target_type = self.predicted_info[j]["type"]
                 if target_type in self.claim_types: 
                     c[i][j] = 1 # target is a claim or majorclaim 
                 else: 
@@ -69,33 +96,22 @@ class ArgumentTrees():
         
         return w 
 
-            
-    def solve(self,txt_file): 
-        self.get_components_per_paragraph(txt_file)
+    def optimize(self): 
         self.results = defaultdict(list) # paragraph idx to optimized relations
-        for p,components in self.components_per_paragraph.items():
-            if len(components) > 1:
-                idx_to_name = {idx:name for idx,name in enumerate(components)} 
-                name_to_idx = {name:idx for idx,name in idx_to_name.items()}
+        for p, components in self.predicted_per_paragraph.items(): 
+            if len(components) > 1: 
                 out_neighbors = defaultdict(dict) 
                 in_neighbors = defaultdict(dict) 
-                types = {}
-                for idx, name in idx_to_name.items():
-                    for target in self.outgoing_relations[name]:  
-                        out_neighbors[idx][name_to_idx[target]] = True 
-                    for source in self.incoming_relations[name]: 
-                        in_neighbors[idx][name_to_idx[source]] = True
-                    types[idx] = self.type[name]
-                
-                # get weights 
-                w = self.get_weights(idx_to_name,out_neighbors,in_neighbors)
-                # print(f"weights")
-                # for w_list in w: print(w_list)
-                
-                self.solve_paragraph(p,idx_to_name,w)
+                for c in self.predicted_outgoing.keys(): 
+                    for target in self.predicted_outgoing[c]:  
+                        out_neighbors[c][target] = True  
+                    for source in self.predicted_incoming[c]:  
+                        in_neighbors[c][source] = True  
+                w = self.get_weights(components,out_neighbors,in_neighbors)
 
-    def solve_paragraph(self,p,idx_to_name,w): 
-        components = list(idx_to_name.keys())
+                self.solve_paragraph(p,components,w)
+            
+    def solve_paragraph(self,p,components,w): 
         # silence Gurobi output 
         env = gp.Env(empty=True)
         env.setParam("OutputFlag",0)
@@ -158,8 +174,8 @@ class ArgumentTrees():
                     decision = int(x[(i,j)].X)
                     if decision == 1: 
                         # f.write(f"Relation from {idx_to_name[i]} to {idx_to_name[j]}\n")
-                        source = idx_to_name[i]
-                        target = idx_to_name[j]
+                        source = self.predicted_info[i]["name"]
+                        target = self.predicted_info[j]["name"]
 
                         # enforce the constraint within the annotation guidelines that no claims should be linked to each other  
                         if self.type[source] in self.claim_types and self.type[target] in self.claim_types:
@@ -169,33 +185,7 @@ class ArgumentTrees():
             # f.write(f'Number of Relations: {num_relations}\n')
             # f.close()
     
-    def get_components_per_paragraph(self,txt_file): 
-        self.components_per_paragraph = defaultdict(list)
-        paragraphs = []
-        self.paragraph_idx = []
-        with open(txt_file,"r") as f: 
-            for idx, line in enumerate(f.readlines()):
-                if idx == 0: # skip prompt 
-                    self.prompt = line
-                    continue
-                if idx == 1: # skip the additional newline after prompt 
-                    continue
-                paragraphs.append(line)
-        self.essay = "".join(paragraphs)
-        start = len(self.prompt)  
-        for paragraph in paragraphs:
-            self.paragraph_idx.append(start)
-            start += len(paragraph) 
-        for c,component_start in self.idx.items():
-            for p_idx, paragraph_start in enumerate(self.paragraph_idx):
-                if p_idx + 1 <= len(self.paragraph_idx)-1: 
-                    if paragraph_start <= component_start < self.paragraph_idx[p_idx+1]: 
-                        self.components_per_paragraph[p_idx].append(c)
-                        break
-                elif p_idx == len(self.paragraph_idx)-1: # final paragraph
-                    if paragraph_start <= component_start: 
-                        self.components_per_paragraph[p_idx].append(c) 
-                
+    
     def evaluate(self):
         true_pos, true_neg, false_pos, false_neg = 0,0,0,0
         for i,j_list in self.results.items():
@@ -234,9 +224,18 @@ if __name__ == "__main__":
     for essay_file in essay_files:
         essay_name = essay_file.split("-final/")[1]
         essay_ann_file = essay_file.replace(".txt",".ann")
+        # read in relation information 
+        with open(f'CS333AES/stab/outputs/relations/{essay_name}.json') as file: 
+            relation_info = json.load(file)
+        with open(f'CS333AES/stab/outputs/classification/{essay_name}.json') as file: 
+            components_info = json.load(file)
 
         # initialize class for data formatting & ILP evaluation 
         argument = ArgumentTrees(essay_ann_file)
         print(f"{essay_name}")
-        argument.solve(essay_file)
+        argument.read_predicted_data(components_info, relation_info)
+        argument.optimize()
+        print(argument.predicted_info)
+        print(argument.results)
         argument.evaluate()
+        if "4" in essay_name: break
