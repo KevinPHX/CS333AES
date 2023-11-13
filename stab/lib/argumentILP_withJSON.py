@@ -97,7 +97,8 @@ class ArgumentTrees():
         return w 
 
     def optimize(self): 
-        self.results = defaultdict(list) # paragraph idx to optimized relations
+        self.results_indices = defaultdict(list)
+        self.results_names = defaultdict(list) # paragraph idx to optimized relations
         for p, components in self.predicted_per_paragraph.items(): 
             if len(components) > 1: 
                 out_neighbors = defaultdict(dict) 
@@ -173,22 +174,23 @@ class ArgumentTrees():
                     num_relations += int(x[(i,j)].X)
                     decision = int(x[(i,j)].X)
                     if decision == 1: 
-                        # f.write(f"Relation from {idx_to_name[i]} to {idx_to_name[j]}\n")
                         source = self.predicted_info[i]["name"]
                         target = self.predicted_info[j]["name"]
-
                         # enforce the constraint within the annotation guidelines that no claims should be linked to each other  
-                        if self.type[source] in self.claim_types and self.type[target] in self.claim_types:
+                        source_type = self.predicted_info[i]["type"]
+                        target_type = self.predicted_info[j]["type"]
+                        if source_type in self.claim_types and target_type in self.claim_types:
                             continue 
                         # only link premises to claims 
-                        self.results[source].append(target) 
+                        self.results_names[source].append(target) 
+                        self.results_indices[i].append(j)
             # f.write(f'Number of Relations: {num_relations}\n')
             # f.close()
     
     
     def evaluate(self):
         true_pos, true_neg, false_pos, false_neg = 0,0,0,0
-        for i,j_list in self.results.items():
+        for i,j_list in self.results_names.items():
             if i in self.outgoing_relations: 
                 for j in j_list: 
                     if j in self.outgoing_relations[i]: 
@@ -201,7 +203,7 @@ class ArgumentTrees():
         for i,j_list in self.outgoing_relations.items(): 
             if i in self.outgoing_relations:
                 for j in j_list: 
-                    if j not in self.results[i]: 
+                    if j not in self.results_names[i]: 
                         false_neg += 1
                         print(f"False Negative ({i},{j})")  
         if false_neg == 0 and false_pos == 0: 
@@ -235,7 +237,19 @@ if __name__ == "__main__":
         print(f"{essay_name}")
         argument.read_predicted_data(components_info, relation_info)
         argument.optimize()
-        print(argument.predicted_info)
-        print(argument.results)
+
+        # prepare to write output out to the relations json file 
+        for i,j_list in argument.predicted_outgoing.items(): 
+            for j in j_list: 
+                if i == j: continue 
+                # initialize field to know whether the ILP makes this pair a relation 
+                relation_info[f"{i},{j}"]["is_optimized_relation"] = 0 
+        for source,target_list in argument.results_indices.items(): 
+            for target in target_list: 
+                relation_info[f"{source},{target}"]["is_optimized_relation"] = 1 
+
         argument.evaluate()
-        if "4" in essay_name: break
+        with open(f"CS333AES/stab/outputs/relations/{essay_name}.TESTING.json","w") as file: 
+            json.dump(relation_info,file)
+        
+        break
