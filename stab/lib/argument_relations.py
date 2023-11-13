@@ -6,13 +6,20 @@ DISCOURSE_RELATIONS = ["Comparison","Contingency","Expansion","Temporal"]
 INDICATOR_TYPES = ["forward","backwards","thesis","rebuttal"]
 
 class ArgumentRelationIdentification(): 
-    def __init__(self, essay_name, components,relation_info_file, relation_prob_file,lemma_file): 
+    def __init__(self, essay_name, components, relation_prob_file,lemma_file,relation_info_file=None): 
         self.components = components
-        self.idx_to_name = []
-        with open(relation_info_file) as file: 
-            info = json.load(file)
-            self.position_to_name = {v:k for k,v in info[essay_name]["idx_to_start"].items()}
-            self.relations = info[essay_name]["outgoing_relations"] 
+        
+        self.is_training_data = False 
+        if relation_info_file is not None: 
+            self.idx_to_name = []
+            self.is_training_data = True 
+            with open(relation_info_file) as file: 
+                info = json.load(file)
+                self.position_to_name = {v:k for k,v in info[essay_name]["idx_to_start"].items()}
+                self.relations = info[essay_name]["outgoing_relations"] 
+            for c in self.components: 
+                name = self.position_to_name[c["start"]]
+                self.idx_to_name.append(name)
 
         with open(relation_prob_file) as file: 
             info = json.load(file)
@@ -31,8 +38,6 @@ class ArgumentRelationIdentification():
     def get_pointwise_mutual_info(self): 
         # get PMI(t,d) for each token t and direction d 
         for c in self.components: 
-            name = self.position_to_name[c["start"]]
-            self.idx_to_name.append(name)
             c["pmi_incoming"] = []
             c["pmi_outgoing"] = []
             for idx,prob in enumerate(c["p_token"]):
@@ -104,8 +109,9 @@ class ArgumentRelationIdentification():
                     "first_or_last": 0 # default is none 
                 }
                 
-                if self.idx_to_name[j] in self.relations[self.idx_to_name[i]]: 
-                    self.pairwise[f"{i+1},{j+1}"]["is_a_relation"] = 1 
+                if self.is_training_data: 
+                    if self.idx_to_name[j] in self.relations[self.idx_to_name[i]]: 
+                        self.pairwise[f"{i+1},{j+1}"]["is_a_relation"] = 1 
 
                 self.pairwise[f"{i+1},{j+1}"].update(self.get_indicator_info(source,target))
                 
@@ -247,7 +253,7 @@ if __name__=='__main__':
         # lemma information for components of training data 
         lemma_file = "CS333AES/stab/models/training_data_lemmas.json"
         # run argument relation features extraction 
-        argrelation = ArgumentRelationIdentification(essay_name, components,relation_info_file,relation_prob_file,lemma_file)
-        with open(f"CS333AES/stab/outputs/relations/{essay_name}.TESTING.json", "w") as file:
+        argrelation = ArgumentRelationIdentification(essay_name, components,relation_prob_file,lemma_file,relation_info_file)
+        with open(f"CS333AES/stab/outputs/relations/{essay_name}.json", "w") as file:
             json.dump(argrelation.pairwise, file)
         print(essay_name)
