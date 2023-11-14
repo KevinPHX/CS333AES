@@ -1,6 +1,7 @@
 import gurobipy as gp
 from gurobipy import GRB
 from collections import defaultdict
+import json 
 
 class ArgumentTrees(): 
     def __init__(self, ann_file): 
@@ -223,10 +224,9 @@ class ArgumentTrees():
         #     print(f"False positive rate: {false_neg/(true_pos+false_neg)}") 
         return False
 
-
 if __name__ == "__main__": 
     essay_files = []
-    with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
+    with open(f"CS333AES/stab/assets/test_text.txt","r") as file: 
         for line in file.readlines(): 
             essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
 
@@ -237,6 +237,13 @@ if __name__ == "__main__":
 
         # initialize class for data formatting & ILP evaluation 
         argument = ArgumentTrees(essay_ann_file)
+        arguments[essay_file.split("-final/")[1]] = {  
+                                                    "idx_to_start": argument.idx, 
+                                                    "incoming_relations": argument.incoming_relations,
+                                                    "outgoing_relations": argument.outgoing_relations
+                                                }
         print(f"{essay_name}")
-        argument.solve(essay_file)
-        argument.evaluate()
+        # argument.solve(essay_file)
+        # argument.evaluate()
+        with open(f"CS333AES/stab/models/argument_relation_info_TEST_SET.json","w") as file: 
+            json.dump(arguments, file)

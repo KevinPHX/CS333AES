@@ -36,9 +36,9 @@ class ArgumentRelationPreprocessing():
                                                             }
         relation_probabilities = {"outgoing": num_components_with_relation["outgoing"] / total_components,
                                 "incoming": num_components_with_relation["incoming"] / total_components }
-        with open("CS333AES/stab/models/relation_probabilities.json","w") as file: 
+        with open(f"CS333AES/stab/models/relation_probabilities.json","w") as file: 
             json.dump(relation_probabilities, file)
-        with open("CS333AES/stab/models/argument_relation_info.json","w") as file: 
+        with open(f"CS333AES/stab/models/argument_relation_info.json","w") as file: 
             json.dump(self.arguments, file)
         
     def get_all_lemmas(self): 
@@ -83,3 +83,5 @@ if __name__ == "__main__":
     training_data_relations = ArgumentRelationPreprocessing(all_components)
     training_data_relations.relation_probabilities(essay_files)
     training_data_relations.get_all_lemmas()
+
+  
