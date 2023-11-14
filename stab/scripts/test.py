@@ -93,7 +93,7 @@ if __name__ == '__main__':
             json.dump(essays[key], f)
     
     
-    print("Relation Identification")
+
 
         
 
@@ -105,13 +105,13 @@ if __name__ == '__main__':
         with open(f'../outputs/test/classification/{essay_name}.json') as file: 
             components = json.load(file)
         # relation information for each essay 
-        relation_info_file = "../models/argument_relation_info.json"
+        relation_info_file = "../models/argument_relation_info_TEST_SET.json"
         # relation probabilities 
         relation_prob_file = "../models/relation_probabilities.json"
         # lemma information for components of training data 
         lemma_file = "../models/training_data_lemmas.json"
         # run argument relation features extraction 
-        argrelation = ArgumentRelationIdentification(essay_name, components,relation_prob_file,lemma_file)
+        argrelation = ArgumentRelationIdentification(essay_name, components,relation_prob_file,lemma_file, relation_info_file)
         with open(f"../outputs/test/relations/{essay_name}.json", "w") as file:
             json.dump(argrelation.pairwise, file)
     
@@ -128,4 +128,4 @@ if __name__ == '__main__':
 
 
     
-    client.stop()
+    # client.stop()

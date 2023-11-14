@@ -1,0 +1,50 @@
+Argument Identification
+              precision    recall  f1-score   support
+
+       Arg-B       0.80      0.71      0.75      1266
+       Arg-I       0.91      0.92      0.92     18680
+           O       0.82      0.82      0.82      8670
+
+   micro avg       0.88      0.88      0.88     28616
+   macro avg       0.85      0.82      0.83     28616
+weighted avg       0.88      0.88      0.88     28616
+ samples avg       0.88      0.88      0.88     28616
+
+Argument Classification
+              precision    recall  f1-score   support
+
+  MajorClaim       0.72      0.72      0.72       153
+       Claim       0.44      0.09      0.15       304
+     Premise       0.74      0.97      0.84       809
+
+    accuracy                           0.73      1266
+   macro avg       0.64      0.59      0.57      1266
+weighted avg       0.67      0.73      0.66      1266
+
+[[110  16  27]
+ [ 35  28 241]
+ [  8  19 782]]
+Argument Relation Identification
+              precision    recall  f1-score   support
+
+          No       0.89      0.48      0.62      4113
+         Yes       0.21      0.69      0.32       809
+
+    accuracy                           0.51      4922
+   macro avg       0.55      0.59      0.47      4922
+weighted avg       0.78      0.51      0.57      4922
+
+[[1973 2140]
+ [ 248  561]]
+Stance Identification
+              precision    recall  f1-score   support
+
+     Against       0.32      0.45      0.38        49
+         For       0.88      0.82      0.85       251
+
+    accuracy                           0.76       300
+   macro avg       0.60      0.63      0.61       300
+weighted avg       0.79      0.76      0.77       300
+
+[[ 22  27]
+ [ 46 205]]
