@@ -49,7 +49,7 @@ if __name__== '__main__':
     
     X_class = []
     y_class = []
-    clf_class = SVC(gamma='auto')
+    clf_class = SVC(gamma='scale')
     legend = {"MajorClaim":0, "Claim":1, "Premise":2}
     for essay_file in train_text: 
         essay_name = essay_file.split("-final/")[1]
@@ -62,6 +62,9 @@ if __name__== '__main__':
                     x.append(0)
                 else:
                     x.append(c[key])
+            # if legend[x[-1]] == 0:
+            #     continue
+            # else:
             X_class.append(x[:-1])
 
             y_class.append(legend[x[-1]])
@@ -76,6 +79,8 @@ if __name__== '__main__':
     X_rel = []
     y_rel = []
     clf_rel = SVC(gamma='auto')
+    max_count_rel = 2522
+    count = 0
     for essay_file in train_text: 
         essay_name = essay_file.split("-final/")[1]
         with open(f'../outputs/relations/{essay_name}.json') as file: 
@@ -91,8 +96,15 @@ if __name__== '__main__':
                     x.append(0)
                 else:
                     x.append(relations[r][key])
-            X_rel.append(x[1:])
-            y_rel.append(x[0])
+            if x[0] == 0:
+                if count < max_count_rel:
+                    X_rel.append(x[1:])
+                    y_rel.append(x[0])
+                    count += 1
+            else:
+                X_rel.append(x[1:])
+                y_rel.append(x[0])
+
     clf_rel.fit(X_rel, y_rel)
     with open('../models/relation_model.pkl', 'wb') as f:
         pickle.dump(clf_rel, f)
@@ -104,15 +116,24 @@ if __name__== '__main__':
     y_stance = []
     clf_stance = SVC(gamma='auto')
     stance_legend = {'Against':0,'For':1}
+    max_count = 226
+    count = 0
     for essay_file in train_text: 
         essay_name = essay_file.split("-final/")[1]
-        with open(f'../outputs/Stance/{essay_name}.json') as file: 
+        with open(f'../outputs/stance/{essay_name}.json') as file: 
             stance = json.load(file)
-
+    
         for s in stance:
             x = [s[key] for key in STANCE_FEATURES]
-            X_stance.append(x[:-1])
-            y_stance.append(stance_legend[x[-1]])
+            if x[-1] =='For':
+                if count < max_count:
+                    X_stance.append(x[:-1])
+                    y_stance.append(stance_legend[x[-1]])
+                    count += 1
+            else:
+                X_stance.append(x[:-1])
+                y_stance.append(stance_legend[x[-1]])
+           
     clf_stance.fit(X_stance, y_stance)
     with open('../models/stance_model.pkl', 'wb') as f:
         pickle.dump(clf_stance, f)

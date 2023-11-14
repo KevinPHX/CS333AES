@@ -44,6 +44,7 @@ class ArgumentClassification():
         preceding_tokens = []
         preceding_lemmas = []
         following_tokens = []
+        following_lemmas = []
         encountered_b = False
         paragraph = None
         sentence = None
@@ -75,14 +76,15 @@ class ArgumentClassification():
             # print(essay)
             print(f"starting {essay[0]}")
             parsings = self.pdtb_parse(essay[0])
-            # print(parsings)
-            for index, each in enumerate(essay[1]):
+            essay_tokens = list(essay[1])    
+            for index, each in enumerate(essay_tokens):
                 # print(each)
                 if each['IOB'] == 'Arg-B' or each['IOB'] == 'Arg-I':
                     if not encountered_b:
                         paragraph = each['paragraph']
                         sentence = each['sentence']
                         start_index = each['start']
+                        component_stats = self.paragraph_stats(each['essay'], paragraph, sentence)
                         encountered_b = True
                     if each['pos'] in pos_dist.keys() :
                         pos_dist[each['pos']]+=1
@@ -97,59 +99,62 @@ class ArgumentClassification():
                         preceding_tokens.append(each['token'])
                         preceding_lemmas.append(each['lemma'])
                     else:
-                        if not each['token'] == '.':
-                            following_tokens.append(each['token'])
-                        else:
-                            following_tokens.append(each['token'])
-                            # print(each['essay'])
-                            # print(paragraph)
-                            # print(sentence)
-                            
-                            component_stats = self.paragraph_stats(each['essay'], paragraph, sentence)
-                            preceding_tokens = [x for x in " ".join(preceding_tokens).split('.')[-1].split(' ') if x != '']
-                            preceding_lemmas = preceding_lemmas[-len(preceding_tokens):]
-                            text_info = self.read_file(each['essay'], paragraph, sentence, start_index, end_index)
-                            # print('sentence_size',str(component_stats['sentence_size']))
-                            fields = {
-                                "essay":each['essay'],
-                                "index":count,
-                                "component":component,
-                                "component_sent":component_sent,
-                                "component_text":text_info['component_text'],
-                                "component_lemmas":component_lemma,
-                                "p_token":p_token, # FOR PMI!!!
-                                "component_pos":component_pos,
-                                "start":start_index,
-                                "end":end_index,
-                                "preceding_tokens":preceding_tokens,
-                                "preceding_lemmas":preceding_lemmas, 
-                                "num_preceding":len(preceding_tokens),
-                                "following_tokens":following_tokens,
-                                "num_following":len(following_tokens),
-                                "type_indicators": self.type_indicators(preceding_tokens, text_info['component_text']),
-                                "first_person_indicators": self.first_person_indicators(preceding_tokens, component),
-                                "paragraph":paragraph,
-                                "paragraph_size":component_stats['paragraph_size'],
-                                # "first/last": 1 if component_stats['max_sentence'] == sentence or component_stats['min_sentence'] == sentence else 0,
-                                "first/last":self.first_last(paragraph),
-                                "intro/conc": 1 if each['docPosition'] == 'Introduction' or each['docPosition'] == 'Conclusion' else 0,
-                                "sentence":sentence,
-                                "sentence_size":component_stats['sentence_size'],
-                                "ratio":len(component)/component_stats['sentence_size'],
-                                # "probability":0,
-                                "modal_present": 1 if pos_dist['MD'] > 0 else 0,
-                                **pos_dist,
-                                **self.annotate_sentence(sentence, text_info, component, each['essay']),
-                                **self.indicators_context(text_info['paragraph'], text_info['component_text']),
-                                **self.embed_component(component+preceding_tokens),
-                                **self.component_pdtb(parsings, start_index, end_index),
-                                **self.type_indicators_text(" ".join(preceding_tokens), "preceding"),
-                                **self.type_indicators_text(" ".join(following_tokens), "following"),
-                                **self.type_indicators_text(text_info['component_text'], "component"),
-                                "claim":None
-                            }
-                            essays.add(each['essay'])
+                        following_tokens.append(each['token'])
+                        following_lemmas.append(each['lemma'])
+                        # if index+1 < len(essay_tokens):
+                        #     print(essay_tokens[index+1]['IOB'])
+                        if each['token'] == '.' or (index + 1 <len(essay_tokens) and essay_tokens[index+1]['IOB'] == 'Arg-B'):
                             if len(component) > 0:
+                                # print(component)
+                                if len(self.components) > 0 and self.components[-1]['sentence'] == sentence:
+                                    preceding_tokens = self.components[-1]['following_tokens']
+                                    preceding_lemmas = self.components[-1]['following_lemmas']
+                                else:
+                                    preceding_tokens = [x for x in " ".join(preceding_tokens).split('.')[-1].split(' ') if x != '']
+                                    preceding_lemmas = preceding_lemmas[-len(preceding_tokens):]
+                                text_info = self.read_file(each['essay'], paragraph, sentence, start_index, end_index)
+                                # print('sentence_size',str(component_stats['sentence_size']))
+                                fields = {
+                                    "essay":each['essay'],
+                                    "index":count,
+                                    "component":component,
+                                    "component_sent":component_sent,
+                                    "component_text":text_info['component_text'],
+                                    "component_lemmas":component_lemma,
+                                    "p_token":p_token, # FOR PMI!!!
+                                    "component_pos":component_pos,
+                                    "start":start_index,
+                                    "end":end_index,
+                                    "preceding_tokens":preceding_tokens,
+                                    "preceding_lemmas":preceding_lemmas, 
+                                    "num_preceding":len(preceding_tokens),
+                                    "following_tokens":following_tokens,
+                                    "following_lemmas":following_lemmas,
+                                    "num_following":len(following_tokens),
+                                    "type_indicators": self.type_indicators(preceding_tokens, text_info['component_text']),
+                                    "first_person_indicators": self.first_person_indicators(preceding_tokens, component),
+                                    "paragraph":paragraph,
+                                    "paragraph_size":component_stats['paragraph_size'],
+                                    # "first/last": 1 if component_stats['max_sentence'] == sentence or component_stats['min_sentence'] == sentence else 0,
+                                    "first/last":self.first_last(paragraph),
+                                    "intro/conc": 1 if each['docPosition'] == 'Introduction' or each['docPosition'] == 'Conclusion' else 0,
+                                    "sentence":sentence,
+                                    "sentence_size":component_stats['sentence_size'],
+                                    "ratio":len(component)/component_stats['sentence_size'],
+                                    # "probability":0,
+                                    "modal_present": 1 if pos_dist['MD'] > 0 else 0,
+                                    **pos_dist,
+                                    **self.annotate_sentence(sentence, text_info, component, each['essay']),
+                                    **self.indicators_context(text_info['paragraph'], text_info['component_text']),
+                                    **self.embed_component(component+preceding_tokens),
+                                    **self.component_pdtb(parsings, start_index, end_index),
+                                    **self.type_indicators_text(" ".join(preceding_tokens), "preceding"),
+                                    **self.type_indicators_text(" ".join(following_tokens), "following"),
+                                    **self.type_indicators_text(text_info['component_text'], "component"),
+                                    "claim":None
+                                }
+                                essays.add(each['essay'])
+                            
                                 self.components.append(fields)
                                 count += 1
                             component = []
@@ -160,6 +165,7 @@ class ArgumentClassification():
                             preceding_tokens = []
                             preceding_lemmas = []
                             following_tokens = []
+                            following_lemmas = []
                             encountered_b = False
                             paragraph = None
                             sentence = None  
@@ -169,7 +175,7 @@ class ArgumentClassification():
             encountered_b = False
             count = 1           
         labels = {}
-        
+        print(self.components)
         if train == "train": 
             self.probability = []
             vectorization_data = []
@@ -183,6 +189,7 @@ class ArgumentClassification():
                         component['claim'] = label['claim']
                 
                 self.probability.append({'claim':component['claim'], 'preceding_tokens':component['preceding_lemmas']})
+            print(vectorization_data)
             self.vectorizer.fit(vectorization_data)
         elif train=='eval':
             for essay in essays:
@@ -421,7 +428,7 @@ class ArgumentClassification():
         ret = self.dependency_tuples.copy()
         for dep in dependency.ListFields()[1][1]:
             # self.dependency_tuples.add((tokens[dep['source']-1], tokens[dep['target']-1]))
-            dep_tuple = tokens[dep.source-1].word+"-"+tokens[dep.target-1].word
+            dep_tuple = tokens[dep.source-1].lemma+"-"+tokens[dep.target-1].lemma
             if dep_tuple in self.dependency_tuples.keys():
                 ret[dep_tuple] += 1
         return ret
@@ -681,14 +688,14 @@ if __name__=='__main__':
     client = CoreNLPClient(
         annotators=['tokenize','ssplit', 'pos', 'lemma', 'ner', 'sentiment', 'depparse'], 
         memory='4G', 
-        endpoint='http://localhost:9005',
+        endpoint='http://localhost:9006',
         be_quiet=True)
     client.start()
-    data = pd.read_csv('../outputs/train_old.csv')
-    argclass = ArgumentClassification(data.iloc[:408].to_dict('records'), client, data.token.values.tolist())
-    argclass.process_data(True)
+    data = pd.read_csv('../outputs/identification.csv')
+    argclass = ArgumentClassification(data.iloc[408:765].to_dict('records'), client, data.lemma.values.tolist())
+    argclass.process_data('train')
     # print(argclass.components[0])
-    with open("../outputs/components1.json", "w") as f:
+    with open("component1.json", "w") as f:
         json.dump(argclass.components, f)
     # pd.DataFrame(argclass.components).to_json("components.json", "records")
 

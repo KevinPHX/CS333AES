@@ -26,7 +26,8 @@ class StanceRecognition():
                     stance = model.predict([component[key] for key in STANCE_FEATURES])
                 if stance:
                     clues = self.subjectivity_clues(component)
-                    self.components.append({**component, **clues, 'stance':stance})
+                    to_add = {**component, **clues, 'stance':stance}
+                    self.components.append({key:to_add[key] for key in STANCE_FEATURES})
     def subjectivity_clues(self, component):
         ret = {
             'num_positive':0,
@@ -35,7 +36,7 @@ class StanceRecognition():
             'positive_negative':0
         }
 
-        for sentiment in component['component_sentiment']:
+        for sentiment in component['component_sent']:
             if sentiment == 'Positive':
                 ret['num_positive'] +=1
             elif sentiment == 'Neutral':
