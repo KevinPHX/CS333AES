@@ -239,7 +239,7 @@ if __name__ == "__main__":
         argument = ArgumentTrees(essay_ann_file)
         arguments[essay_file.split("-final/")[1]] = {  
                                                     "idx_to_start": argument.idx, 
-                                                    "incoming_relations": argument.incoming_relations,
+                                                    # "incoming_relations": argument.incoming_relations,
                                                     "outgoing_relations": argument.outgoing_relations
                                                 }
         print(f"{essay_name}")
