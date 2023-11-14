@@ -6,7 +6,7 @@ class ArgumentRelationPreprocessing():
     def __init__(self, all_components): 
         self.components = all_components 
 
-    def relation_probabilities(self, essay_files): 
+    def relation_probabilities(self, essay_files,type): 
         # get the probability that a component is related to another component 
         # ratio of num of components with at least one incoming relation to all components 
         #   to the total number of components in the entire dataset 
@@ -36,10 +36,14 @@ class ArgumentRelationPreprocessing():
                                                             }
         relation_probabilities = {"outgoing": num_components_with_relation["outgoing"] / total_components,
                                 "incoming": num_components_with_relation["incoming"] / total_components }
-        with open(f"CS333AES/stab/models/relation_probabilities.json","w") as file: 
-            json.dump(relation_probabilities, file)
-        with open(f"CS333AES/stab/models/argument_relation_info.json","w") as file: 
-            json.dump(self.arguments, file)
+        if type == "training": 
+            with open(f"CS333AES/stab/models/relation_probabilities.json","w") as file: 
+                json.dump(relation_probabilities, file)
+            with open(f"CS333AES/stab/models/argument_relation_info.json","w") as file: 
+                json.dump(self.arguments, file)
+        else: 
+            with open(f"CS333AES/stab/models/argument_relation_info_TEST_SET.json","w") as file: 
+                json.dump(self.arguments, file)
         
     def get_all_lemmas(self): 
         # map components to their names in the ann files using their start positions 
@@ -66,7 +70,8 @@ class ArgumentRelationPreprocessing():
                     "lemmas_outgoing": dict(Counter(lemmas_outgoing))}, file)
 
  # this is for the ArgumentAnnotatedEssays-2.0 dataset by Stab and Gurveych 
-if __name__ == "__main__": 
+if __name__ == "__main__":
+    # for training set  
     essay_files = []
     with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
         for line in file.readlines(): 
@@ -81,7 +86,24 @@ if __name__ == "__main__":
         all_components[essay_name] = components
     
     training_data_relations = ArgumentRelationPreprocessing(all_components)
-    training_data_relations.relation_probabilities(essay_files)
+    training_data_relations.relation_probabilities(essay_files,"training")
     training_data_relations.get_all_lemmas()
+
+    # for test set 
+    essay_files = []
+    with open(f"CS333AES/stab/assets/test_text.txt","r") as file: 
+        for line in file.readlines(): 
+            essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
+
+    all_components = {}
+    for essay_file in essay_files: 
+        essay_name = essay_file.split("-final/")[1]
+        # read component data for this essay 
+        with open(f'CS333AES/stab/outputs/test/classification/{essay_name}.json') as file: 
+            components = json.load(file)
+        all_components[essay_name] = components
+    
+    training_data_relations = ArgumentRelationPreprocessing(all_components)
+    training_data_relations.relation_probabilities(essay_files,"test")
 
   
