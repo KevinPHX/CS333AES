@@ -611,7 +611,9 @@ class ArgumentClassification():
         os.chdir('../models/pdtb-parser')
         subprocess.run(['mkdir', pdtb_output_dir])
         subprocess.run(['sudo','java', '-jar', 'parser.jar', f'../{essay}'])
-        essay_name = essay.split('/')[-1]
+        essay_name = essay.split('/')[-1] # for Argument Annotated Dataset 
+        # essay_name = essay # for ASAP set 2 
+        
         # dir_list = os.listdir(pdtb_output_dir)
         pipe = f'{pdtb_output_dir}/{essay_name}.pipe'
         parsings = open(pipe, 'r').read().split('\n')

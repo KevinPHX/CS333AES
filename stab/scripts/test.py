@@ -73,7 +73,7 @@ if __name__ == '__main__':
     
     data = pd.read_csv("../outputs/test/identification.csv")
     print("Argument Classification")
-    argclass = ArgumentClassification(data.to_dict('records'), client, data.token.values.tolist(), probability, vectorizer, dependency_tuples)
+    argclass = ArgumentClassification(data.to_dict('records'), client, data.lemma.values.tolist(), probability, vectorizer, dependency_tuples)
     argclass.process_data('eval')
     with open("../outputs/test/components.json", "w") as f:
         json.dump(argclass.components, f)
