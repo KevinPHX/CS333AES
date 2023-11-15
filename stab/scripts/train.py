@@ -40,7 +40,7 @@ if __name__ == '__main__':
     
     data = pd.read_csv("../outputs/identification.csv")
     print("Argument Classification")
-    argclass = ArgumentClassification(data.to_dict('records'), client, data.token.values.tolist())
+    argclass = ArgumentClassification(data.to_dict('records'), client, data.lemma.values.tolist())
     argclass.process_data('train')
     # with open("../outputs/components.json", "w") as f:
     #     json.dump(argclass.components, f)
