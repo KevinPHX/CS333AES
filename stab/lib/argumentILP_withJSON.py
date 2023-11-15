@@ -1,33 +1,16 @@
 import gurobipy as gp
 from gurobipy import GRB
 from collections import defaultdict
-import json 
 
 class ArgumentTrees(): 
-    def __init__(self, ann_file): 
-        self.incoming_relations = {}
-        self.outgoing_relations = {}
-        self.type = {}
-        self.idx = {}
+    def __init__(self, info): 
+        self.position_to_name = {v:k for k,v in info[essay_name]["idx_to_start"].items()}
+        self.incoming_relations = info[essay_name]["incoming_relations"] 
+        self.outgoing_relations = info[essay_name]["outgoing_relations"] 
+        
         self.claim_types = ["Claim","MajorClaim"]
-        with open(ann_file,"r") as f: 
-            for line in f.readlines(): 
-                info = line.strip('\n').split("\t")
-                name = info[0]
-                if "T" in name: 
-                    self.idx[name] = int(info[1].split(" ")[1])
-                    self.type[name] = info[1].split(" ")[0]
-                    self.outgoing_relations[name] = []
-                    self.incoming_relations[name] = []
-                elif "R" in name:
-                    info = info[1].split(' ')
-                    arg1 = info[1].split(":")[1]
-                    arg2 = info[2].split(":")[1]
-                    self.outgoing_relations[arg1].append(arg2)
-                    self.incoming_relations[arg2].append(arg1)
-        self.start_to_name = {position: name for name,position in self.idx.items()}
 
-    def read_predicted_data(self,components_info,relation_info): 
+    def process_data(self,components_info,relation_info): 
         relations = []
         for pair, info in relation_info.items(): 
             if info["is_a_relation"]: 
@@ -35,13 +18,12 @@ class ArgumentTrees():
 
         self.predicted_info = {}
         self.predicted_per_paragraph = {}
-        self.position_to_name = {}
         for k, info in enumerate(components_info): 
             self.predicted_info[k+1] = {
                 "type": info["claim"], 
                 "start": info["start"],
                 "paragraph": info["paragraph"],
-                "name": self.start_to_name[info["start"]]
+                "name": self.position_to_name[info["start"]]
             } 
             if info["paragraph"] not in self.predicted_per_paragraph: 
                 self.predicted_per_paragraph[info["paragraph"]] = []
@@ -53,7 +35,7 @@ class ArgumentTrees():
             source, target = int(pair.split(",")[0]), int(pair.split(",")[1])
             self.predicted_outgoing[source].append(target)
             self.predicted_incoming[target].append(source)   
-
+    
     def get_weights(self,components,out_neighbors,in_neighbors): 
         n = len(components)
         rel = 0 # total number of relations predicted WITHIN the paragraph
@@ -99,7 +81,7 @@ class ArgumentTrees():
     def optimize(self): 
         self.results_indices = defaultdict(list)
         self.results_names = defaultdict(list) # paragraph idx to optimized relations
-        for p, components in self.predicted_per_paragraph.items(): 
+        for components in self.predicted_per_paragraph.values(): 
             if len(components) > 1: 
                 out_neighbors = defaultdict(dict) 
                 in_neighbors = defaultdict(dict) 
@@ -110,9 +92,9 @@ class ArgumentTrees():
                         in_neighbors[c][source] = True  
                 w = self.get_weights(components,out_neighbors,in_neighbors)
 
-                self.solve_paragraph(p,components,w)
+                self.solve_paragraph(components,w)
             
-    def solve_paragraph(self,p,components,w): 
+    def solve_paragraph(self,components,w): 
         # silence Gurobi output 
         env = gp.Env(empty=True)
         env.setParam("OutputFlag",0)
@@ -189,67 +171,67 @@ class ArgumentTrees():
     
     
     def evaluate(self):
-        true_pos, true_neg, false_pos, false_neg = 0,0,0,0
+        self.evaluations = {
+            "TP": [], # true positives
+            "TN": [], # true negatives
+            "FP": [], # false positives 
+            "FN": []  # false negatives 
+        }
+        # iterate through the optimized predictions 
         for i,j_list in self.results_names.items():
+            # see if the prediction matches ground truth 
             if i in self.outgoing_relations: 
                 for j in j_list: 
                     if j in self.outgoing_relations[i]: 
-                        true_pos += 1 
+                        self.evaluations["TP"].append((i,j))
                     else: 
-                        false_pos += 1 
+                        self.evaluations["FP"].append((i,j))
                         print(f"False Positive ({i},{j})")
-            else: 
-                true_neg += 1 
+        # iterate through the ground truth  
         for i,j_list in self.outgoing_relations.items(): 
             if i in self.outgoing_relations:
                 for j in j_list: 
+                    # see if a true relation is missing or not 
                     if j not in self.results_names[i]: 
-                        false_neg += 1
+                        self.evaluations["FN"].append((i,j))
                         print(f"False Negative ({i},{j})")  
-        if false_neg == 0 and false_pos == 0: 
-            return True 
-        # else: 
-        #     print(f"True positive rate: {true_pos/(true_pos+false_neg)}") 
-        #     print(f"True negative rate: {true_neg/(true_neg+false_pos)}") 
-        #     print(f"False negative rate: {false_pos/(true_neg+false_pos)}") 
-        #     print(f"False positive rate: {false_neg/(true_pos+false_neg)}") 
-        return False
+        
+        true_pos, false_pos = len(self.evaluations["TP"]), len(self.evaluations["FP"])
+        true_neg, false_neg = len(self.evaluations["TN"]), len(self.evaluations["FN"])
+        TNR, FNR = 0.0, 0.0
+        TPR = true_pos/(true_pos+false_neg)
+        FPR = false_neg/(true_pos+false_neg)
+        if false_pos != 0: 
+            TNR = true_neg/(true_neg+false_pos)
+            FNR = false_pos/(true_neg+false_pos)
+        self.evaluation_rates = {"TPR": TPR, 
+                                "TNR": TNR,
+                                "FPR": FPR,
+                                "FNR": FNR}
 
 
+import json 
 if __name__ == "__main__": 
     essay_files = []
+    # open document that lists all the essays of the test set in the Argument Annotated essays dataset 
     with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
         for line in file.readlines(): 
             essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
 
-    arguments = {}
     for essay_file in essay_files:
         essay_name = essay_file.split("-final/")[1]
-        essay_ann_file = essay_file.replace(".txt",".ann")
         # read in relation information 
         with open(f'CS333AES/stab/outputs/relations/{essay_name}.json') as file: 
             relation_info = json.load(file)
         with open(f'CS333AES/stab/outputs/classification/{essay_name}.json') as file: 
             components_info = json.load(file)
-
-        # initialize class for data formatting & ILP evaluation 
-        argument = ArgumentTrees(essay_ann_file)
-        print(f"{essay_name}")
-        argument.read_predicted_data(components_info, relation_info)
-        argument.optimize()
-
-        # prepare to write output out to the relations json file 
-        for i,j_list in argument.predicted_outgoing.items(): 
-            for j in j_list: 
-                if i == j: continue 
-                # initialize field to know whether the ILP makes this pair a relation 
-                relation_info[f"{i},{j}"]["is_optimized_relation"] = 0 
-        for source,target_list in argument.results_indices.items(): 
-            for target in target_list: 
-                relation_info[f"{source},{target}"]["is_optimized_relation"] = 1 
-
-        argument.evaluate()
-        with open(f"CS333AES/stab/outputs/relations/{essay_name}.TESTING.json","w") as file: 
-            json.dump(relation_info,file)
+        # relation information for each essay 
+        with open("CS333AES/stab/models/argument_relation_info.json") as file: 
+            ground_truth = json.load(file)
         
-        break
+        # initialize class for data formatting & ILP evaluation 
+        argument = ArgumentTrees(ground_truth)
+        print(f"{essay_name}")
+        argument.process_data(components_info, relation_info)
+        argument.optimize()
+        argument.evaluate()

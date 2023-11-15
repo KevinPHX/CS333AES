@@ -8,7 +8,6 @@ INDICATOR_TYPES = ["forward","backwards","thesis","rebuttal"]
 class ArgumentRelationIdentification(): 
     def __init__(self, essay_name, components, relation_prob_file,lemma_file,relation_info_file=None): 
         self.components = components
-        
         self.is_training_data = False 
         if relation_info_file is not None: 
             self.idx_to_name = []
@@ -19,8 +18,7 @@ class ArgumentRelationIdentification():
                 self.relations = info[essay_name]["outgoing_relations"] 
             for c in self.components: 
                 name = self.position_to_name[c["start"]]
-                self.idx_to_name.append(name)
-
+                self.idx_to_name.append(name) 
         with open(relation_prob_file) as file: 
             info = json.load(file)
             self.p_outgoing = info["outgoing"]
@@ -111,6 +109,8 @@ class ArgumentRelationIdentification():
                 
                 if self.is_training_data: 
                     if self.idx_to_name[j] in self.relations[self.idx_to_name[i]]: 
+                        # print(self.idx_to_name[i], self.idx_to_name[j])
+                        # print(f"{i+1},{j+1}")
                         self.pairwise[f"{i+1},{j+1}"]["is_a_relation"] = 1 
 
                 self.pairwise[f"{i+1},{j+1}"].update(self.get_indicator_info(source,target))
@@ -238,22 +238,24 @@ class ArgumentRelationIdentification():
 if __name__=='__main__':
 
     essay_names = []
-    with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
+    with open(f"CS333AES/stab/assets/test_text.txt","r") as file: 
         for line in file.readlines(): 
             essay_names.append(line.split("-final/")[1].strip("\n"))
 
     for essay_name in essay_names: 
+        if essay_name != "essay004.txt": continue
         # read component data for this essay 
-        with open(f'CS333AES/stab/outputs/classification/{essay_name}.json') as file: 
+        with open(f'CS333AES/stab/outputs/test/classification/{essay_name}.json') as file: 
             components = json.load(file)
         # relation information for each essay 
-        relation_info_file = "CS333AES/stab/models/argument_relation_info.json"
+        relation_info_file = "CS333AES/stab/models/argument_relation_info_TEST_SET.json"
         # relation probabilities 
         relation_prob_file = "CS333AES/stab/models/relation_probabilities.json"
         # lemma information for components of training data 
         lemma_file = "CS333AES/stab/models/training_data_lemmas.json"
         # run argument relation features extraction 
         argrelation = ArgumentRelationIdentification(essay_name, components,relation_prob_file,lemma_file,relation_info_file)
-        with open(f"CS333AES/stab/outputs/relations/{essay_name}.json", "w") as file:
+        with open(f"CS333AES/stab/outputs/test_relations/{essay_name}.json", "w") as file:
             json.dump(argrelation.pairwise, file)
         print(essay_name)
+        break

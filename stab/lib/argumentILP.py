@@ -73,7 +73,7 @@ class ArgumentTrees():
     def solve(self,txt_file): 
         self.get_components_per_paragraph(txt_file)
         self.results = defaultdict(list) # paragraph idx to optimized relations
-        for p,components in self.components_per_paragraph.items():
+        for components in self.components_per_paragraph.values():
             if len(components) > 1:
                 idx_to_name = {idx:name for idx,name in enumerate(components)} 
                 name_to_idx = {name:idx for idx,name in idx_to_name.items()}
@@ -92,9 +92,9 @@ class ArgumentTrees():
                 # print(f"weights")
                 # for w_list in w: print(w_list)
                 
-                self.solve_paragraph(p,idx_to_name,w)
+                self.solve_paragraph(idx_to_name,w)
 
-    def solve_paragraph(self,p,idx_to_name,w): 
+    def solve_paragraph(self,idx_to_name,w): 
         components = list(idx_to_name.keys())
         # silence Gurobi output 
         env = gp.Env(empty=True)
@@ -197,7 +197,7 @@ class ArgumentTrees():
                         self.components_per_paragraph[p_idx].append(c) 
                 
     def evaluate(self):
-        true_pos, true_neg, false_pos, false_neg = 0,0,0,0
+        true_pos, false_pos, false_neg = 0,0,0
         for i,j_list in self.results.items():
             if i in self.outgoing_relations: 
                 for j in j_list: 
@@ -206,43 +206,26 @@ class ArgumentTrees():
                     else: 
                         false_pos += 1 
                         print(f"False Positive ({i},{j})")
-            else: 
-                true_neg += 1 
         for i,j_list in self.outgoing_relations.items(): 
             if i in self.outgoing_relations:
                 for j in j_list: 
                     if j not in self.results[i]: 
                         false_neg += 1
                         print(f"False Negative ({i},{j})")  
-        if false_neg == 0 and false_pos == 0: 
-            return True 
-        # else: 
-        #     print(f"True positive rate: {true_pos/(true_pos+false_neg)}") 
-        #     print(f"True negative rate: {true_neg/(true_neg+false_pos)}") 
-        #     print(f"False negative rate: {false_pos/(true_neg+false_pos)}") 
-        #     print(f"False positive rate: {false_neg/(true_pos+false_neg)}") 
-        return False
 
-# if __name__ == "__main__": 
-#     essay_files = []
-#     with open(f"CS333AES/stab/assets/test_text.txt","r") as file: 
-#         for line in file.readlines(): 
-#             essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
+if __name__ == "__main__": 
+    essay_files = []
+    with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
+        for line in file.readlines(): 
+            essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
 
-#     arguments = {}
-#     for essay_file in essay_files:
-#         essay_name = essay_file.split("-final/")[1]
-#         essay_ann_file = essay_file.replace(".txt",".ann")
+    arguments = {}
+    for essay_file in essay_files:
+        essay_name = essay_file.split("-final/")[1]
+        essay_ann_file = essay_file.replace(".txt",".ann")
 
-#         # initialize class for data formatting & ILP evaluation 
-#         argument = ArgumentTrees(essay_ann_file)
-#         arguments[essay_file.split("-final/")[1]] = {  
-#                                                     "idx_to_start": argument.idx, 
-#                                                     # "incoming_relations": argument.incoming_relations,
-#                                                     "outgoing_relations": argument.outgoing_relations
-#                                                 }
-#         print(f"{essay_name}")
-#         # argument.solve(essay_file)
-#         # argument.evaluate()
-#         with open(f"CS333AES/stab/models/argument_relation_info_TEST_SET.json","w") as file: 
-#             json.dump(arguments, file)
+        # initialize class for data formatting & ILP evaluation 
+        argument = ArgumentTrees(essay_ann_file)
+        print(f"{essay_name}")
+        argument.solve(essay_file)
+        argument.evaluate()
