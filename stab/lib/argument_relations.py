@@ -235,27 +235,25 @@ class ArgumentRelationIdentification():
             info["presence_negative_associations"] = 1 
         return info
 
-if __name__=='__main__':
+# if __name__=='__main__':
 
-    essay_names = []
-    with open(f"CS333AES/stab/assets/test_text.txt","r") as file: 
-        for line in file.readlines(): 
-            essay_names.append(line.split("-final/")[1].strip("\n"))
+#     essay_names = []
+#     with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
+#         for line in file.readlines(): 
+#             essay_names.append(line.split("-final/")[1].strip("\n"))
 
-    for essay_name in essay_names: 
-        if essay_name != "essay004.txt": continue
-        # read component data for this essay 
-        with open(f'CS333AES/stab/outputs/test/classification/{essay_name}.json') as file: 
-            components = json.load(file)
-        # relation information for each essay 
-        relation_info_file = "CS333AES/stab/models/argument_relation_info_TEST_SET.json"
-        # relation probabilities 
-        relation_prob_file = "CS333AES/stab/models/relation_probabilities.json"
-        # lemma information for components of training data 
-        lemma_file = "CS333AES/stab/models/training_data_lemmas.json"
-        # run argument relation features extraction 
-        argrelation = ArgumentRelationIdentification(essay_name, components,relation_prob_file,lemma_file,relation_info_file)
-        with open(f"CS333AES/stab/outputs/test_relations/{essay_name}.json", "w") as file:
-            json.dump(argrelation.pairwise, file)
-        print(essay_name)
-        break
+#     for essay_name in essay_names: 
+#         # read component data for this essay 
+#         with open(f'CS333AES/stab/outputs/classification/{essay_name}.json') as file: 
+#             components = json.load(file)
+#         # relation information for each essay 
+#         relation_info_file = "CS333AES/stab/models/argument_relation_info.json"
+#         # relation probabilities 
+#         relation_prob_file = "CS333AES/stab/models/relation_probabilities.json"
+#         # lemma information for components of training data 
+#         lemma_file = "CS333AES/stab/models/training_data_lemmas.json"
+#         # run argument relation features extraction 
+#         argrelation = ArgumentRelationIdentification(essay_name, components,relation_prob_file,lemma_file,relation_info_file)
+#         with open(f"CS333AES/stab/outputs/relations/{essay_name}.json", "w") as file:
+#             json.dump(argrelation.pairwise, file)
+#         print(essay_name)

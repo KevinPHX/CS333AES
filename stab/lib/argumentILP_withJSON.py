@@ -4,16 +4,16 @@ from collections import defaultdict
 
 class ArgumentTrees(): 
     def __init__(self, info): 
-        self.position_to_name = {v:k for k,v in info[essay_name]["idx_to_start"].items()}
-        self.incoming_relations = info[essay_name]["incoming_relations"] 
-        self.outgoing_relations = info[essay_name]["outgoing_relations"] 
+        self.position_to_name = {v:k for k,v in info["idx_to_start"].items()}
+        self.incoming_relations = info["incoming_relations"] 
+        self.outgoing_relations = info["outgoing_relations"] 
         
         self.claim_types = ["Claim","MajorClaim"]
 
     def process_data(self,components_info,relation_info): 
         relations = []
         for pair, info in relation_info.items(): 
-            if info["is_a_relation"]: 
+            if info["is_predicted_relation"]: 
                 relations.append(pair)
 
         self.predicted_info = {}
@@ -180,21 +180,22 @@ class ArgumentTrees():
         # iterate through the optimized predictions 
         for i,j_list in self.results_names.items():
             # see if the prediction matches ground truth 
-            if i in self.outgoing_relations: 
-                for j in j_list: 
-                    if j in self.outgoing_relations[i]: 
-                        self.evaluations["TP"].append((i,j))
-                    else: 
-                        self.evaluations["FP"].append((i,j))
-                        print(f"False Positive ({i},{j})")
+            for j in j_list: 
+                if j in self.outgoing_relations[i]: 
+                    self.evaluations["TP"].append((i,j))
+                else: 
+                    self.evaluations["FP"].append((i,j))
+                    # print(f"False Positive ({i},{j})")
         # iterate through the ground truth  
         for i,j_list in self.outgoing_relations.items(): 
-            if i in self.outgoing_relations:
+            if len(j_list) == 0 and i not in self.results_names: 
+                self.evaluations["TN"].append((i,j))
+            elif len(j_list) > 0 and i in self.results_names:                 
                 for j in j_list: 
                     # see if a true relation is missing or not 
                     if j not in self.results_names[i]: 
                         self.evaluations["FN"].append((i,j))
-                        print(f"False Negative ({i},{j})")  
+                        # print(f"False Negative ({i},{j})")  
         
         true_pos, false_pos = len(self.evaluations["TP"]), len(self.evaluations["FP"])
         true_neg, false_neg = len(self.evaluations["TN"]), len(self.evaluations["FN"])
@@ -209,29 +210,3 @@ class ArgumentTrees():
                                 "FPR": FPR,
                                 "FNR": FNR}
 
-
-import json 
-if __name__ == "__main__": 
-    essay_files = []
-    # open document that lists all the essays of the test set in the Argument Annotated essays dataset 
-    with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
-        for line in file.readlines(): 
-            essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
-
-    for essay_file in essay_files:
-        essay_name = essay_file.split("-final/")[1]
-        # read in relation information 
-        with open(f'CS333AES/stab/outputs/relations/{essay_name}.json') as file: 
-            relation_info = json.load(file)
-        with open(f'CS333AES/stab/outputs/classification/{essay_name}.json') as file: 
-            components_info = json.load(file)
-        # relation information for each essay 
-        with open("CS333AES/stab/models/argument_relation_info.json") as file: 
-            ground_truth = json.load(file)
-        
-        # initialize class for data formatting & ILP evaluation 
-        argument = ArgumentTrees(ground_truth)
-        print(f"{essay_name}")
-        argument.process_data(components_info, relation_info)
-        argument.optimize()
-        argument.evaluate()
