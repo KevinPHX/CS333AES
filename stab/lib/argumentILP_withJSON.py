@@ -188,25 +188,30 @@ class ArgumentTrees():
                     # print(f"False Positive ({i},{j})")
         # iterate through the ground truth  
         for i,j_list in self.outgoing_relations.items(): 
-            if len(j_list) == 0 and i not in self.results_names: 
-                self.evaluations["TN"].append((i,j))
+            if len(j_list) == 0:
+                for j in self.outgoing_relations:
+                    if i == j: continue  
+                    if j not in self.results_names: 
+                        self.evaluations["TN"].append((i,j))
             elif len(j_list) > 0 and i in self.results_names:                 
                 for j in j_list: 
                     # see if a true relation is missing or not 
                     if j not in self.results_names[i]: 
                         self.evaluations["FN"].append((i,j))
-                        # print(f"False Negative ({i},{j})")  
+                        # print(f"False Negative ({i},{j})")
+            elif len(j_list) > 0 and i not in self.results_names: 
+                for j in j_list: 
+                    self.evaluations["FN"].append((i,j))
         
         true_pos, false_pos = len(self.evaluations["TP"]), len(self.evaluations["FP"])
         true_neg, false_neg = len(self.evaluations["TN"]), len(self.evaluations["FN"])
-        TNR, FNR = 0.0, 0.0
+        TNR, FPR = 1.0, 0.0
         TPR = true_pos/(true_pos+false_neg)
-        FPR = false_neg/(true_pos+false_neg)
+        FNR = false_neg/(true_pos+false_neg)
         if false_pos != 0: 
             TNR = true_neg/(true_neg+false_pos)
-            FNR = false_pos/(true_neg+false_pos)
+            FPR = false_pos/(true_neg+false_pos)
         self.evaluation_rates = {"TPR": TPR, 
+                                 "FNR":FNR,
                                 "TNR": TNR,
-                                "FPR": FPR,
-                                "FNR": FNR}
-
+                                "FPR": FPR}

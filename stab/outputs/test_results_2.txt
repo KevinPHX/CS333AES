@@ -1,0 +1,28 @@
+[predicted by models trained without essay330]
+
+Argument Classification
+              precision    recall  f1-score   support
+
+  MajorClaim       0.72      0.72      0.72       153
+       Claim       0.45      0.10      0.16       304
+     Premise       0.74      0.97      0.84       809
+
+    accuracy                           0.73      1266
+   macro avg       0.64      0.59      0.57      1266
+weighted avg       0.67      0.73      0.66      1266
+
+[[110  16  27]
+ [ 34  29 241]
+ [  8  19 782]]
+Argument Relation Identification
+              precision    recall  f1-score   support
+
+          No       0.91      0.32      0.48      4113
+         Yes       0.20      0.84      0.32       809
+
+    accuracy                           0.41      4922
+   macro avg       0.55      0.58      0.40      4922
+weighted avg       0.79      0.41      0.45      4922
+
+[[1321 2792]
+ [ 128  681]]
