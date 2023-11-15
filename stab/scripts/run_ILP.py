@@ -15,7 +15,7 @@ if __name__ == "__main__":
         ground_truth = json.load(file)
     
     optimized_relations = {} # maps essay_name to another dictionary 
-    overall_rates = {"TPR":[],"TNR":[],"FPR":[],"FNR":[]}
+    overall_rates = {"TPR":[],"TNR":[],"FPR":[],"FNR":[],"accuracy":[],"precision":[]}
     label_to_type = {0: "MajorClaim", 1: "Claim", 2: "Premise"}
     c_idx, r_idx = 0, 0 # used to find prediction info  
     for essay_file in essay_files:

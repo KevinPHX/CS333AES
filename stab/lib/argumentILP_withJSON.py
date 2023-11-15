@@ -214,4 +214,6 @@ class ArgumentTrees():
         self.evaluation_rates = {"TPR": TPR, 
                                  "FNR":FNR,
                                 "TNR": TNR,
-                                "FPR": FPR}
+                                "FPR": FPR,
+                                "accuracy": (true_pos+true_neg)/(true_pos+true_neg+false_pos+false_neg),
+                                "precision":(true_pos)/(true_pos+false_pos)}
