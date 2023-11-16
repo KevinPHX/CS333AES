@@ -3,7 +3,8 @@ from gurobipy import GRB
 from collections import defaultdict
 
 class ArgumentTrees(): 
-    def __init__(self, ground_truth=None): 
+    def __init__(self, ground_truth=None):
+        self.ground_truth = ground_truth 
         if ground_truth:  
             self.position_to_name = {v:k for k,v in ground_truth["idx_to_start"].items()}
             self.incoming_relations = ground_truth["incoming_relations"] 
@@ -24,8 +25,10 @@ class ArgumentTrees():
                 "type": info["claim"], 
                 "start": info["start"],
                 "paragraph": info["paragraph"],
-                "name": self.position_to_name[info["start"]]
             } 
+            if self.ground_truth: 
+                self.predicted_info[k+1]["name"] = self.position_to_name[info["start"]]
+
             if info["paragraph"] not in self.predicted_per_paragraph: 
                 self.predicted_per_paragraph[info["paragraph"]] = []
             self.predicted_per_paragraph[info["paragraph"]].append(k+1)
@@ -157,15 +160,17 @@ class ArgumentTrees():
                     num_relations += int(x[(i,j)].X)
                     decision = int(x[(i,j)].X)
                     if decision == 1: 
-                        source = self.predicted_info[i]["name"]
-                        target = self.predicted_info[j]["name"]
+                        if self.ground_truth: 
+                            source = self.predicted_info[i]["name"]
+                            target = self.predicted_info[j]["name"]
                         # enforce the constraint within the annotation guidelines that no claims should be linked to each other  
                         source_type = self.predicted_info[i]["type"]
                         target_type = self.predicted_info[j]["type"]
                         if source_type in self.claim_types and target_type in self.claim_types:
                             continue 
                         # only link premises to claims 
-                        self.results_names[source].append(target) 
+                        if self.ground_truth: 
+                            self.results_names[source].append(target) 
                         self.results_indices[i].append(j)
             # f.write(f'Number of Relations: {num_relations}\n')
             # f.close()
