@@ -213,24 +213,6 @@ class ArgumentIdentification():
             probabilities.append(len(preceding_instance)/len(label_instance))
         index = np.argmax(probabilities)
         return probabilities[index]
-    '''
-    # for compatibility with ASAP essay set 2
-
-    def process_file(self, essay_id, text, train = True):
-        print(f"starting essay {essay_id}")
-        paragraphs = []
-        data =[]
-
-        for p in text.split("\n"):
-            paragraphs.append(p)
-
-        for k, para in enumerate(paragraphs):
-            document = self.client.annotate(para)   
-            for i, sent in enumerate(document.sentence):
-                for j, token in enumerate(sent.token):
-                    start = token.beginChar
-                    # the rest is the same 
-    '''
     
     def process_file(self, file, train = True):
         print(f"starting essay {file}")
@@ -349,14 +331,6 @@ class ArgumentIdentification():
                     d['probability'] = self.probability_calc(self.probability, [data[i-1]['lemma'], data[i-2]['lemma'], data[i-3]['lemma']])
         self.train_data = sum(ret, [])
 
-    '''
-    # for compatibility with ASAP essay set 2 
-    def run_evaluate(self):
-        ret = []
-        for essay_id, text in self.file.items():
-            ret.append(self.process_file(essay_id,text, True))
-        # the rest is the same 
-    '''
     def run_predict(self):
         assert(self.ann_file == None)
         ret = []

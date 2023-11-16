@@ -112,6 +112,10 @@ class ArgumentClassification():
                                 else:
                                     preceding_tokens = [x for x in " ".join(preceding_tokens).split('.')[-1].split(' ') if x != '']
                                     preceding_lemmas = preceding_lemmas[-len(preceding_tokens):]
+
+                                # for ASAP Set 2 
+                                # file_path = f"/Users/amycweng/Downloads/CS333_Project/asap_set2/{each['essay']}.txt"
+                                # text_info = self.read_file(file_path, paragraph, sentence, start_index, end_index)
                                 text_info = self.read_file(each['essay'], paragraph, sentence, start_index, end_index)
                                 # print('sentence_size',str(component_stats['sentence_size']))
                                 fields = {
@@ -610,9 +614,14 @@ class ArgumentClassification():
         cwd = os.getcwd() #current directory
         os.chdir('../models/pdtb-parser')
         subprocess.run(['mkdir', pdtb_output_dir])
+        # for Argument Annotated Dataset 
         subprocess.run(['sudo','java', '-jar', 'parser.jar', f'../{essay}'])
-        essay_name = essay.split('/')[-1] # for Argument Annotated Dataset 
-        # essay_name = essay # for ASAP set 2 
+        essay_name = essay.split('/')[-1] 
+        
+        # for ASAP Set 2 
+        # essay_file = f'{path}/asap_set2/{essay}.txt'
+        # subprocess.run(['sudo','java', '-jar', 'parser.jar', essay_file])
+        # essay_name = essay  
         
         # dir_list = os.listdir(pdtb_output_dir)
         pipe = f'{pdtb_output_dir}/{essay_name}.pipe'

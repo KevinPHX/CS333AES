@@ -3,10 +3,11 @@ from gurobipy import GRB
 from collections import defaultdict
 
 class ArgumentTrees(): 
-    def __init__(self, info): 
-        self.position_to_name = {v:k for k,v in info["idx_to_start"].items()}
-        self.incoming_relations = info["incoming_relations"] 
-        self.outgoing_relations = info["outgoing_relations"] 
+    def __init__(self, ground_truth=None): 
+        if ground_truth:  
+            self.position_to_name = {v:k for k,v in ground_truth["idx_to_start"].items()}
+            self.incoming_relations = ground_truth["incoming_relations"] 
+            self.outgoing_relations = ground_truth["outgoing_relations"] 
         
         self.claim_types = ["Claim","MajorClaim"]
 

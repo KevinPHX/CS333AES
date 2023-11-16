@@ -40,12 +40,12 @@ class ArgumentRelationIdentification():
             c["pmi_outgoing"] = []
             for idx,prob in enumerate(c["p_token"]):
                 lemma = c["component_lemmas"][idx]
-                if lemma in self.lemmas_incoming: 
+                if lemma in self.lemmas_incoming and prob > 0: 
                     p_t_in = self.lemmas_incoming[lemma] / self.num_all_lemmas
                     c[f"pmi_incoming"].append( log( p_t_in / (prob * self.p_incoming)) )
                 else: 
                     c[f"pmi_incoming"].append(0)
-                if lemma in self.lemmas_outgoing: 
+                if lemma in self.lemmas_outgoing and prob > 0: 
                     p_t_out = self.lemmas_outgoing[lemma] / self.num_all_lemmas
                     c[f"pmi_outgoing"].append( log( p_t_out / (prob * self.p_outgoing)) )
                 else: 

@@ -15,9 +15,7 @@ os.environ["CORENLP_HOME"] = corenlp_dir
 
 from stanza.server import CoreNLPClient
 
-path = '/Users/amycweng/Downloads/CS333_Project/CS333AES/stab'
-if __name__ == '__main__':
-
+def features(): 
     # Import ID models
     with open(f'{path}/models/identification_probability.json', 'r') as f:
         identifier_prob = json.load(f)
@@ -34,9 +32,9 @@ if __name__ == '__main__':
     with open(f"/Users/amycweng/Downloads/CS333_Project/asap-aes/test_essays.json") as file: 
         text = json.load(file) 
     count = 0
-    for id, info in text.items():
+    for name in text:
         count += 1  
-        sample[id] = info["text"]
+        sample[name] = text[name]["text"]
         if count == 200: break
 
     '''Extract features for the component identification step'''
@@ -44,12 +42,11 @@ if __name__ == '__main__':
     identifier = ArgumentIdentification(client, sample, None, identifier_prob)
     identifier.run_evaluate()
     test = pd.DataFrame(identifier.predicted_data)
-    test.to_csv(f"{path}/outputs/asap_set2/identification_01.csv")
+    test.to_csv(f"{path}/outputs/asap_set2/identification.csv")
     client.stop()
 
+def predict(): 
     '''Predict components'''
-    with open(f'{path}/models/identification_probability.pkl', 'rb') as f:
-        identifier_prob = pickle.load(f)
     tagger = pycrfsuite.Tagger()
     tagger.open('/Users/amycweng/Downloads/CS333_Project/models/argument_identification.crfsuite')          
 
@@ -89,5 +86,13 @@ if __name__ == '__main__':
             row_dict[field] = item[row_idx]
         row_dict["IOB"] = y_pred[essay][pred_idx]
         rows.append(row_dict)
+        pred_idx += 1 
     results = pd.DataFrame(rows)
-    results.to_csv(f"{path}/outputs/asap_set2/identification_01_predictions.csv")
+    results.to_csv(f"{path}/outputs/asap_set2/identification.csv")
+
+if __name__ == '__main__':
+
+    # features()
+    predict()
+
+   
