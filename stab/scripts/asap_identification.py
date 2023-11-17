@@ -3,7 +3,7 @@ import sys, os
 path = os.path.abspath("../CS333_Project/CS333AES/stab")
 sys.path.append(path)
 
-from argument_identification import ArgumentIdentification
+from argument_identification_asap import ArgumentIdentification
 corenlp_dir = '../corenlp'
 import pickle
 import json
@@ -15,7 +15,7 @@ os.environ["CORENLP_HOME"] = corenlp_dir
 
 from stanza.server import CoreNLPClient
 
-def features(): 
+def features(start,end,file_idx): 
     # Import ID models
     with open(f'{path}/models/identification_probability.json', 'r') as f:
         identifier_prob = json.load(f)
@@ -24,34 +24,31 @@ def features():
 
     client = CoreNLPClient(
         annotators=['tokenize','ssplit', 'pos', 'lemma', 'ner', 'sentiment', 'depparse'], 
-        memory='4G', 
+        memory='8G', 
         endpoint='http://localhost:9005',
         be_quiet=True)
     client.start()
     sample = {}
     with open(f"/Users/amycweng/Downloads/CS333_Project/asap-aes/test_essays.json") as file: 
         text = json.load(file) 
-    count = 0
     for name in text:
-        count += 1  
-        sample[name] = text[name]["text"]
-        if count == 200: break
-
+        if start <= int(name) <= end: 
+            sample[name] = text[name]["text"]
     '''Extract features for the component identification step'''
     print("Argument Identification - Features")
     identifier = ArgumentIdentification(client, sample, None, identifier_prob)
     identifier.run_evaluate()
     test = pd.DataFrame(identifier.predicted_data)
-    test.to_csv(f"{path}/outputs/asap_set2/identification.csv")
+    test.to_csv(f"{path}/outputs/asap_set2/identification_{file_idx}.csv")
     client.stop()
 
-def predict(): 
+def predict(file_idx): 
     '''Predict components'''
     tagger = pycrfsuite.Tagger()
     tagger.open('/Users/amycweng/Downloads/CS333_Project/models/argument_identification.crfsuite')          
 
     print('Argument Identification - Predictions')
-    test = pd.read_csv(f'{path}/outputs/asap_set2/identification.csv')
+    test = pd.read_csv(f'{path}/outputs/asap_set2/identification_{file_idx}.csv')
     sent_x = []
     sent_y = []
     for e in sorted(set(test.essay.values)):
@@ -88,11 +85,22 @@ def predict():
         rows.append(row_dict)
         pred_idx += 1 
     results = pd.DataFrame(rows)
-    results.to_csv(f"{path}/outputs/asap_set2/identification.csv")
+    results.to_csv(f"{path}/outputs/asap_set2/identification_{file_idx}.csv")
 
 if __name__ == '__main__':
+    # # total 900 essays, half of set 2
+    # features(2978,3177,0)
+    # predict(0)
 
-    # features()
-    predict()
+    # features(3178,3377,1)
+    # features(3378,3477,2)
+    # features(3478,3509,3)
+    # # skip essay 3510 because it is too long for CoreNLP to process 
+    # features(3511,3571,4)
+    # # skip essay 3572 for the same reason 
+    # features(3573,3700,5)
+    # features(3701,3879,6)
+    predict(1)
+    predict(2)
 
    

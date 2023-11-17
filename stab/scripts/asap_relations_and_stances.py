@@ -9,13 +9,13 @@ sys.path.append(path)
 
 if __name__ == '__main__':
     sample = {}
-    with open(f"{path}/asap-aes/test_essays.json") as file: 
+    with open(f"/Users/amycweng/Downloads/CS333_Project/asap-aes/test_essays.json") as file: 
         text = json.load(file) 
     count = 0
     for name in text:
         count += 1  
         sample[name] = text[name]["text"]
-        if count == 200: break
+        if count == 400: break
 
     # Import Relation Models
     with open(f'{path}/models/relation_model.pkl', 'rb') as f:

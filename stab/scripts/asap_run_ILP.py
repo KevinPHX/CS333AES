@@ -12,7 +12,7 @@ if __name__ == "__main__":
     for name in text:
         count += 1  
         sample[name] = text[name]["text"]
-        if count == 200: break
+        if count == 400: break
 
     optimized_relations = {} # maps essay_name to another dictionary 
     overall_rates = {"TPR":[],"TNR":[],"FPR":[],"FNR":[],"accuracy":[],"precision":[]}
