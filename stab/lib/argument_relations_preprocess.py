@@ -1,7 +1,7 @@
 from argumentILP import ArgumentTrees 
 from collections import Counter
 import json 
-
+path = "/Users/amycweng/Downloads/CS333_Project"
 class ArgumentRelationPreprocessing():
     def __init__(self, all_components): 
         self.components = all_components 
@@ -13,9 +13,8 @@ class ArgumentRelationPreprocessing():
         num_components_with_relation = {"outgoing": 0, "incoming":0}
         total_components = 0 
         self.arguments = {}
-        argument_info = {}
         for essay_file in essay_files:
-            essay_ann_file = essay_file.replace(".txt",".ann")
+            essay_ann_file = f"{path}/{essay_file.replace('.txt','.ann')}"
             # the init function of the class in the ILP code file is helpful here 
             argument = ArgumentTrees(essay_ann_file)
             # update total count of components 
@@ -31,18 +30,19 @@ class ArgumentRelationPreprocessing():
             # add argument info to dictionary 
             self.arguments[essay_file.split("-final/")[1]] = {  
                                                                 "idx_to_start": argument.idx, 
+                                                                "true_type": argument.type,
                                                                 "incoming_relations": argument.incoming_relations,
                                                                 "outgoing_relations": argument.outgoing_relations
                                                             }
         relation_probabilities = {"outgoing": num_components_with_relation["outgoing"] / total_components,
                                 "incoming": num_components_with_relation["incoming"] / total_components }
         if type == "training": 
-            with open(f"CS333AES/stab/models/relation_probabilities.json","w") as file: 
+            with open(f"{path}/CS333AES/stab/models/relation_probabilities.json","w") as file: 
                 json.dump(relation_probabilities, file)
-            with open(f"CS333AES/stab/models/argument_relation_info.json","w") as file: 
+            with open(f"{path}/CS333AES/stab/models/argument_relation_info.json","w") as file: 
                 json.dump(self.arguments, file)
         else: 
-            with open(f"CS333AES/stab/models/argument_relation_info_TEST_SET.json","w") as file: 
+            with open(f"{path}/CS333AES/stab/models/argument_relation_info_TEST_SET.json","w") as file: 
                 json.dump(self.arguments, file)
         
     def get_all_lemmas(self): 
@@ -64,7 +64,7 @@ class ArgumentRelationPreprocessing():
                 if len(self.arguments[essay_name].outgoing_relations[name]) > 0: 
                     lemmas_outgoing.extend(c["component_lemmas"])
         
-        with open("CS333AES/stab/models/training_data_lemmas.json","w") as file: 
+        with open(f"{path}/CS333AES/stab/models/training_data_lemmas.json","w") as file: 
             json.dump({"num_all_lemmas": all_lemmas, 
                     "lemmas_incoming": dict(Counter(lemmas_incoming)), 
                     "lemmas_outgoing": dict(Counter(lemmas_outgoing))}, file)
@@ -72,26 +72,26 @@ class ArgumentRelationPreprocessing():
  # this is for the ArgumentAnnotatedEssays-2.0 dataset by Stab and Gurveych 
 if __name__ == "__main__":
     # for training set  
-    essay_files = []
-    with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
-        for line in file.readlines(): 
-            essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
+    # essay_files = []
+    # with open(f"CS333AES/stab/assets/train_text.txt","r") as file: 
+    #     for line in file.readlines(): 
+    #         essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
 
-    all_components = {}
-    for essay_file in essay_files: 
-        essay_name = essay_file.split("-final/")[1]
-        # read component data for this essay 
-        with open(f'CS333AES/stab/outputs/classification/{essay_name}.json') as file: 
-            components = json.load(file)
-        all_components[essay_name] = components
+    # all_components = {}
+    # for essay_file in essay_files: 
+    #     essay_name = essay_file.split("-final/")[1]
+    #     # read component data for this essay 
+    #     with open(f'CS333AES/stab/outputs/classification/{essay_name}.json') as file: 
+    #         components = json.load(file)
+    #     all_components[essay_name] = components
     
-    training_data_relations = ArgumentRelationPreprocessing(all_components)
-    training_data_relations.relation_probabilities(essay_files,"training")
-    training_data_relations.get_all_lemmas()
+    # training_data_relations = ArgumentRelationPreprocessing(all_components)
+    # training_data_relations.relation_probabilities(essay_files,"training")
+    # training_data_relations.get_all_lemmas()
 
     # for test set 
     essay_files = []
-    with open(f"CS333AES/stab/assets/test_text.txt","r") as file: 
+    with open(f"{path}/CS333AES/stab/assets/test_text.txt","r") as file: 
         for line in file.readlines(): 
             essay_files.append(line.split("../data/")[1].strip("\n").replace(" 2/data/","/"))
 
@@ -99,11 +99,11 @@ if __name__ == "__main__":
     for essay_file in essay_files: 
         essay_name = essay_file.split("-final/")[1]
         # read component data for this essay 
-        with open(f'CS333AES/stab/outputs/test/classification/{essay_name}.json') as file: 
+        with open(f'{path}/CS333AES/stab/outputs/test/classification/{essay_name}.json') as file: 
             components = json.load(file)
         all_components[essay_name] = components
     
-    training_data_relations = ArgumentRelationPreprocessing(all_components)
-    training_data_relations.relation_probabilities(essay_files,"test")
+    test_data_relations = ArgumentRelationPreprocessing(all_components)
+    test_data_relations.relation_probabilities(essay_files,"test")
 
   
