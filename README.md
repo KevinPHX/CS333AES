@@ -36,7 +36,7 @@ This is a replication study of a paper by Stab & Gurveych (2017) on persuasive e
 - run_ILP.py
     - Formats inputs and calls the argumentILP_withJSON.py script to perform ILP for the AAE dataset. Writes outputs to the stab/outputs/test_set_optimized_relations.json file. Prints classification reports for both revised relations and components, which we stored in the ILP_results.txt file. 
 - asap.py 
-    - Selects a subset of essays from the ASAP dataset and formats all relevant essays and domain 1 scores into the stab/assets/asap_essays.json file.  
+    - Selects a subset of essays from the ASAP dataset and formats all relevant essays and domain 1 scores for storage in the stab/assets/asap_essays.json file.  
 - asap_run_ILP.py 
     - Formats inputs and calls the argumentILP_withJSON.py script to perform ILP for the ASAP dataset. Writes the output to stab/outputs/asap_set2/optimized_relations.json. 
 - asap_classification.py
@@ -44,7 +44,7 @@ This is a replication study of a paper by Stab & Gurveych (2017) on persuasive e
 - asap_identification.py
     - Performs Argument Identification for the ASAP dataset. Writes outputs to CSVs in the stab/outputs/asap_set2 folder. 
 - asap_relations_and_stances.py
-    - Performs Relation Identification and Stance Recognition for the ASAP dataset. Writes outputs to the stab/outputs/asap_set2/relations and stab/outputs/asap_set2/stance folder. 
+    - Performs Relation Identification and Stance Recognition for the ASAP dataset. Writes outputs to the stab/outputs/asap_set2/relations and stab/outputs/asap_set2/stance folders. 
 
 ### stab/assets 
 The files in this folder contain the names of the essays in our training data, AAE test set, and the subset of ASAP essays that we are working with. 
