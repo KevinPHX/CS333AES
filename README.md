@@ -8,7 +8,7 @@ This is a replication study of a paper by Stab & Gurveych (2017) on persuasive e
 - ASAP Set 2: Censorship in libraries https://www.kaggle.com/c/asap-aes 
 - Argument Annotated Essay (AAE) Dataset (Stab & Gurveych 2017): https://tudatalib.ulb.tu-darmstadt.de/handle/tudatalib/2422
 
-## Main Code Files
+## Repository Directory
 
 ### stab/lib
 - argument_identification.py
@@ -21,16 +21,18 @@ This is a replication study of a paper by Stab & Gurveych (2017) on persuasive e
     - Performs pairwise feature extraction for Relation Identification based on the outputs of argument_classification.py and argument_relations_preprocess.py. 
 - argumentILP_withJSON.py
     - Performs optimization of relations and components that result from the outputs of the base SVM classifiers for the classification and relation identification stage. 
+- argumentILP.py 
+    - ILP code compatible with inputs read directly from the annotated files of the AAE dataset. 
 - stance_recognition.py
     - Performs feature extraction for Stance Recognition using information extracted from Argument Classification as a list of dictionaries
 
 ### stab/scripts 
 - train.py
-    - Runs Argument Identification, Argument Classification, Argument Relation Identification, and Stance Identification on training data and saves files as a CSV or JSON in stab/outputs. We also extract and save dependency and probability features 
+    - Runs Argument Identification, Argument Classification, Argument Relation Identification, and Stance Recognition on training data and saves files as a CSV or JSON in stab/outputs. We also extract and save dependency and probability features 
 - train_models.py
-    - Trains the CRF for Argument Identification, and SVMs for Argument Classification, Argument Relation Identification, and Stance Identification and saves them in stab/models
+    - Trains the CRF for Argument Identification, and SVMs for Argument Classification, Argument Relation Identification, and Stance Recognition and saves them in stab/models
 - test.py
-    - Runs Argument Identification, Argument Classification, Argument Relation Identification, and Stance Identification on test data and saves files as a CSV or JSON in stab/outputs/test. Note that the dependency and probability features from train.py must be inputs
+    - Runs Argument Identification, Argument Classification, Argument Relation Identification, and Stance Recognition on test data and saves files as a CSV or JSON in stab/outputs/test. Note that the dependency and probability features from train.py must be inputs
 - test_models.py 
     - Runs the trained CRF and SVMs on test data and prints out classification reports and confusion matrices for each step
 - run_ILP.py
