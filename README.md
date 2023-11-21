@@ -60,6 +60,6 @@ Some Jupyter Notebooks for initial exploration and evaluation. Other IPYNB files
     - This file contains our code for essay scoring and visualization. 
 ### stab/outputs 
 This folder contains files and subfolders of files storing the features and predictions we obtain for each step of the algorithm. 
-- visualization.py 
+- asap_set2/visualization.py 
     - This file visualizes argument trees as interactive graphs. 
 
