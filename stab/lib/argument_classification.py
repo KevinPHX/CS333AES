@@ -16,6 +16,9 @@ os.environ["CORENLP_HOME"] = corenlp_dir
 pdtb_output_dir = '../../data/ArgumentAnnotatedEssays-2.0 2/data/brat-project-final/output'
 from stanza.server import CoreNLPClient
 import subprocess
+from sentence_transformers import SentenceTransformer
+
+embed = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
 
 class ArgumentClassification():
@@ -150,7 +153,7 @@ class ArgumentClassification():
                                     **pos_dist,
                                     **self.annotate_sentence(sentence, text_info, component, each['essay']),
                                     **self.indicators_context(text_info['paragraph'], text_info['component_text']),
-                                    **self.embed_component(component+preceding_tokens),
+                                    **self.embed_component(" ".join(preceding_tokens)+ ' ' + text_info['component_text']),
                                     **self.component_pdtb(parsings, start_index, end_index),
                                     **self.type_indicators_text(" ".join(preceding_tokens), "preceding"),
                                     **self.type_indicators_text(" ".join(following_tokens), "following"),
@@ -284,13 +287,7 @@ class ArgumentClassification():
 
 
     def embed_component(self, component):
-        ret = 0
-        
-        for word in component:
-            try:
-                ret += w[word]
-            except:
-                continue
+        ret = embed.encode(component)
         ret_dict = {}
         for i, each in enumerate(ret):
             ret_dict[f"dim_{i}"] = float(each)

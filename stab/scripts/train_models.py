@@ -11,40 +11,40 @@ from features import COMPONENT_FEATURES, RELATION_FEATURES, STANCE_FEATURES
 
 if __name__== '__main__':
     train_text = open("../assets/train_text.txt", "r").read().split('\n')
-    print("Training CRF for Argument Identification")
-    test = pd.read_csv('../outputs/identification.csv')
-    sent_x = []
-    sent_y = []
-    for e in set(test.essay.values):
-        for p in set(test[test.essay==e].paragraph.values):
-            for s in set(test[(test.essay==e)&(test.paragraph==p)].sentence.values):
-                temp_test = test[(test.essay == e) & (test.paragraph == p) & (test.sentence == s)]
-                # if not (count_o > max_len and count_i > max_len) :
-                #     unique, counts = np.unique(temp_test.IOB.values, return_counts=True)
-                #     un = dict(zip(unique, counts))
-                #     print(un)
-                #     if 'O' in un.keys():
-                #         count_o += un['O']
-                #     if 'Arg-I' in un.keys():
-                #         count_i += un['Arg-I']
+    # print("Training CRF for Argument Identification")
+    # test = pd.read_csv('../outputs/identification_bert.csv')
+    # sent_x = []
+    # sent_y = []
+    # for e in set(test.essay.values):
+    #     for p in set(test[test.essay==e].paragraph.values):
+    #         for s in set(test[(test.essay==e)&(test.paragraph==p)].sentence.values):
+    #             temp_test = test[(test.essay == e) & (test.paragraph == p) & (test.sentence == s)]
+    #             # if not (count_o > max_len and count_i > max_len) :
+    #             #     unique, counts = np.unique(temp_test.IOB.values, return_counts=True)
+    #             #     un = dict(zip(unique, counts))
+    #             #     print(un)
+    #             #     if 'O' in un.keys():
+    #             #         count_o += un['O']
+    #             #     if 'Arg-I' in un.keys():
+    #             #         count_i += un['Arg-I']
 
-                sent_x.append(temp_test.loc[:, ~temp_test.columns.isin(['Unnamed: 0','IOB', 'essay', 'head_lemma', 'token_sentiment', 'sentence_sentiment'])].to_dict("records"))
-                sent_y.append(temp_test.IOB.values)
-    trainer = pycrfsuite.Trainer(verbose=False)
+    #             sent_x.append(temp_test.loc[:, ~temp_test.columns.isin(['Unnamed: 0','IOB', 'essay', 'head_lemma', 'token_sentiment', 'sentence_sentiment'])].to_dict("records"))
+    #             sent_y.append(temp_test.IOB.values)
+    # trainer = pycrfsuite.Trainer(verbose=False)
     
-    for xseq, yseq in zip(sent_x, sent_y):
-        trainer.append(xseq, yseq)
-    trainer.set_params({
-        'c1': 1.0,   # coefficient for L1 penalty
-        'c2': 1e-3,  # coefficient for L2 penalty
-        'max_iterations': 50,  # stop earlier
+    # for xseq, yseq in zip(sent_x, sent_y):
+    #     trainer.append(xseq, yseq)
+    # trainer.set_params({
+    #     'c1': 1.0,   # coefficient for L1 penalty
+    #     'c2': 1e-3,  # coefficient for L2 penalty
+    #     'max_iterations': 50,  # stop earlier
 
-        # include transitions that are possible, but not observed
-        'feature.possible_transitions': True
-    })
-    trainer.train('../models/argument_identification.crfsuite')
-    print(trainer.logparser.last_iteration)
-    print("Done!")
+    #     # include transitions that are possible, but not observed
+    #     'feature.possible_transitions': True
+    # })
+    # trainer.train('../models/argument_identification_bert.crfsuite')
+    # print(trainer.logparser.last_iteration)
+    # print("Done!")
     print("Training SVM for Argument Classification")
     
     X_class = []
@@ -53,7 +53,7 @@ if __name__== '__main__':
     legend = {"MajorClaim":0, "Claim":1, "Premise":2}
     for essay_file in train_text: 
         essay_name = essay_file.split("-final/")[1]
-        with open(f'../outputs/classification/{essay_name}.json') as file: 
+        with open(f'../outputs/classification_bert/{essay_name}.json') as file: 
             components = json.load(file)
         for c in components:
             x = []
@@ -68,9 +68,8 @@ if __name__== '__main__':
             X_class.append(x[:-1])
 
             y_class.append(legend[x[-1]])
-            
     clf_class.fit(X_class, y_class)
-    with open('../models/classification_model.pkl', 'wb') as f:
+    with open('../models/classification_model_bert.pkl', 'wb') as f:
         pickle.dump(clf_class, f)
 
     print("Done!")
@@ -83,7 +82,7 @@ if __name__== '__main__':
     count = 0
     for essay_file in train_text: 
         essay_name = essay_file.split("-final/")[1]
-        with open(f'../outputs/relations/{essay_name}.json') as file: 
+        with open(f'../outputs/relations_bert/{essay_name}.json') as file: 
             relations = json.load(file)
     
        
@@ -106,7 +105,7 @@ if __name__== '__main__':
                 y_rel.append(x[0])
 
     clf_rel.fit(X_rel, y_rel)
-    with open('../models/relation_model.pkl', 'wb') as f:
+    with open('../models/relation_model_bert.pkl', 'wb') as f:
         pickle.dump(clf_rel, f)
     
     print("Done!")
@@ -120,7 +119,7 @@ if __name__== '__main__':
     count = 0
     for essay_file in train_text: 
         essay_name = essay_file.split("-final/")[1]
-        with open(f'../outputs/stance/{essay_name}.json') as file: 
+        with open(f'../outputs/stance_bert/{essay_name}.json') as file: 
             stance = json.load(file)
     
         for s in stance:
@@ -135,7 +134,7 @@ if __name__== '__main__':
                 y_stance.append(stance_legend[x[-1]])
            
     clf_stance.fit(X_stance, y_stance)
-    with open('../models/stance_model.pkl', 'wb') as f:
+    with open('../models/stance_model_bert.pkl', 'wb') as f:
         pickle.dump(clf_stance, f)
     
 
